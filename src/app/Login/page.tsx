@@ -4,11 +4,11 @@ import LoginPage from '@/components/Login'
 type Props = {}
 
 const component = (props: Props) => {
-  return (
-    <>
-      <LoginPage/>
-    </>
-  )
+    return (
+        <>
+            <LoginPage />
+        </>
+    )
 }
 
 export default component;

@@ -20,7 +20,7 @@ export default function Homepage() {
     return (
         <div
             className="bg-cover bg-center pt-24 pb-20 px-52"
-            style={{ backgroundImage: "url(./Login/Bg.svg)" }}
+            style={{ backgroundImage: "url(./Login/bg-gadient.svg)" }}
         >
             <h2 className="text-4xl font-bold text-center">
                 Welcome To <span className="text-[#4B50F7]">Heber Dashboard</span>
@@ -57,15 +57,6 @@ export default function Homepage() {
                     >
                         Sign Up
                     </button>
-                    {/* <button
-                        className="bg-[#4B50F7] rounded-lg text-white px-6 py-2 mt-4 mx-1"
-                        type="submit"
-                        onClick={() => {
-                            LoginUser(email, password);
-                        }}
-                    >
-                        Log In
-                    </button> */}
                 </div>
                 <Image src={Blob} width={520} alt="Login Image"></Image>
             </div>
