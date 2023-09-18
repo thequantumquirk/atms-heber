@@ -1,0 +1,26 @@
+<svg width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1440" height="1024" fill="#1E1E1E"/>
+<g clip-path="url(#clip0_0_1)">
+<rect width="1440" height="1024" fill="white"/>
+<mask id="mask0_0_1" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="1024">
+<rect width="1440" height="1024" fill="#808080"/>
+</mask>
+<g mask="url(#mask0_0_1)">
+<circle cx="952" cy="972" r="86.5" stroke="#4D47EB"/>
+<circle cx="450" cy="805" r="47.5" stroke="#4D47EB"/>
+<circle cx="178" cy="647" r="44.5" stroke="#4D47EB"/>
+<circle cx="244" cy="316" r="75.5" stroke="#4D47EB"/>
+<circle cx="247" cy="28" r="75.5" stroke="#4D47EB"/>
+<circle cx="1422.5" cy="927.5" r="20" stroke="#4D47EB"/>
+<circle cx="1130" cy="418" r="27.5" stroke="#4D47EB"/>
+<path d="M105.5 181C105.5 196.188 93.1878 208.5 78 208.5C62.8122 208.5 50.5 196.188 50.5 181C50.5 165.812 62.8122 153.5 78 153.5C93.1878 153.5 105.5 165.812 105.5 181Z" stroke="#4D47EB"/>
+<circle cx="1429" cy="214" r="113.5" stroke="#4D47EB"/>
+<circle cx="1212.27" cy="693.271" r="93.9511" transform="rotate(18.2425 1212.27 693.271)" stroke="#4D47EB"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_1">
+<rect width="1440" height="1024" fill="white"/>
+</clipPath>
+</defs>
+</svg>
