@@ -2,8 +2,7 @@ import React from 'react'
 import LoginPage from '@/components/Login'
 
 type Props = {}
-
-const component = (props: Props) => {
+const loginComponent = (props: Props) => {
   return (
     <>
       <LoginPage/>
@@ -11,4 +10,4 @@ const component = (props: Props) => {
   )
 }
 
-export default component;
+export default loginComponent;

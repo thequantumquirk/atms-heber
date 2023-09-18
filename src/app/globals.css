@@ -8,6 +8,22 @@
     --background-end-rgb: 255, 255, 255;
 }
 
-body {
+body {}
 
+.EaseFadeIn {
+    animation: FadeIn 1s
+}
+
+@keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
