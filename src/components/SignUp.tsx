@@ -16,10 +16,10 @@ export default function Signup() {
         }
 
         return(
-            <div className='flex justify-center items-center bg-cover h-[100vh]'
+            <div className="md:flex justify-center items-center bg-cover h-[100vh] bgImage"
             style={{backgroundImage : 'url(./Login/circle-scatter-2.svg)'}}>
-                <div className='w-[30vw] flex flex-col gap-5 p-8'>
-                    <h1 className="text-3xl font-medium mb-2">Sign-Up to Continue</h1>
+                <div className='pt-12 md:w-[30vw] flex flex-col gap-2 md:gap-5 p-8'>
+                    <h1 className="text-center mb-5 text-3xl sm:text-left font-medium sm:mb-2">Sign-Up to Continue</h1>
                     <div>
                     <label className='text-lg font-medium'>Email ID</label>
                     <input

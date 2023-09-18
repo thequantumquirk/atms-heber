@@ -8,6 +8,8 @@
     --background-end-rgb: 255, 255, 255;
 }
 
-body {
-
+@media only screen and (min-width: 768px){
+    .bgImage{
+        background-image: url(../../public/Login/circle-scatter-2.svg);
+    }
 }

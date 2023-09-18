@@ -6,12 +6,12 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
 
     return(
-        <div className='flex justify-center items-center h-[100vh] flex-col gap-12 bg-cover' 
+        <div className='flex justify-center items-center h-[100vh] flex-col gap-12 bg-cover ' 
         style={{backgroundImage : 'url(./Login/circle-scatter.svg)'}}>
             <h2 className="text-4xl text-center font-semibold"> 
                 Welcome to <span className='text-[hsl(242,80%,60%)]'>Heber Dashboard</span>
             </h2>
-            <div className='w-[30vw] p-8 flex flex-col gap-5'>
+            <div className='md:w-[30vw] p-8 flex flex-col gap-5'>
                 <h1 className='text-3xl font-medium mb-2'>Login</h1>
                 <div>
                 <label className='text-lg font-medium'>Institutional Mail ID</label>
