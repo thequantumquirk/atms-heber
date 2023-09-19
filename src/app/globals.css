@@ -8,8 +8,23 @@
     --background-end-rgb: 255, 255, 255;
 }
 
-@media only screen and (min-width: 768px){
-    .bgImage{
-        background-image: url(../../public/Login/circle-scatter-2.svg);
+
+body {}
+
+.EaseFadeIn {
+    animation: FadeIn 1s
+}
+
+@keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }

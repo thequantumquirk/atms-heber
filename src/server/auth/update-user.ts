@@ -31,6 +31,20 @@ export async function resendSignupOtp(
   }
 }
 
+export async function resetPasswordWithEmail(email: string) {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: "http://localhost:3000/update-password",
+  });
+  if (error) {
+    return { status: false, error: error.message };
+  } else {
+    return {
+      status: true,
+      data: `Your password reset link has been sent to ${email}`,
+    };
+  }
+}
+
 export async function updatePassword(
   password: string
 ): Promise<SupabaseResponse> {

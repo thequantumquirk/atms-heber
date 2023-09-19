@@ -1,9 +1,9 @@
-'use client'
-import {useState} from 'react';
+"use client";
+import { useState } from "react";
 
 const LoginPage = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
     return(
         <div className='flex justify-center items-center h-[100vh] flex-col gap-12 bg-cover ' 
@@ -40,10 +40,41 @@ const LoginPage = () => {
                 <h3 className='text-center mt-3'>Don't have an account? <a href="/Signup" className='text-[#4d47eb] underline'>SignUp</a></h3>
             </div>
         </div>
+        <div>
+          <label className="text-lg font-medium">Password</label>
+          <input
+            className="w-full bg-slate-200 rounded-lg px-4 py-2 mt-2"
+            type="password"
+            id="name"
+            required
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </div>
+        <div className="flex items-end justify-between">
+          <button
+            type="submit"
+            className="p-2 w-[6rem] rounded-lg text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)] transition-all ease-linear"
+          >
+            Login
+          </button>
+          <a
+            href="/forgot-password"
+            className="text-base text-[hsl(242,80%,60%)] underline"
+          >
+            Forgot password?
+          </a>
+        </div>
+        <h3 className="text-center mt-3">
+          Don't have an account?{" "}
+          <a href="/Signup" className="text-[#4d47eb] underline">
+            SignUp
+          </a>
+        </h3>
+      </div>
+    </div>
+  );
+};
 
-    )
-
-}
-
-export default LoginPage
-
+export default LoginPage;
