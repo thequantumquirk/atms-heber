@@ -12,7 +12,8 @@ const VerifyMail = (props: Props) => {
         setdisplay('block')
     }
     return (
-        <div className=' flex gap-20 flex-col justify-center items-center h-[100vh]'>
+        <div className=' flex gap-20 flex-col justify-center items-center h-[100vh] bg-cover '
+            style={{ backgroundImage: 'url(./Login/circle-scatter.svg)' }}>
             <div className='w-[35vw] p-8'>
                 <div className={`${Div1} my-14 MoveUp`}>
                     <h1 className='text-3xl font-semibold mb-6'>E-Mail Verification</h1>
