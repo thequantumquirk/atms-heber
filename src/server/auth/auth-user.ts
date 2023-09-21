@@ -16,7 +16,11 @@ export async function signUp(
   if (error) {
     return { status: false, error: error.message };
   } else {
-    return { status: true, data: "User signed up successfully" };
+    return {
+      status: true,
+      data: data.user?.email,
+      message: "User signed up successfully",
+    };
   }
 }
 
@@ -35,7 +39,11 @@ export async function login(
   if (error) {
     return { status: false, error: error.message };
   } else {
-    return { status: true, data: "User logged in successfully" };
+    return {
+      status: true,
+      data: data.user?.email,
+      message: "User logged in successfully",
+    };
   }
 }
 

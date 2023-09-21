@@ -10,6 +10,7 @@ export type SupabaseResponse = {
   status: boolean;
   data?: string;
   error?: string;
+  message?: string;
 };
 
 export interface Database {
