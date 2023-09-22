@@ -1,14 +1,12 @@
-import React from 'react'
-import Signup from '@/components/SignUp'
-type Props = {}
+import Signup from "@/components/signup";
+type Props = {};
 
 const signupComponent = (props: Props) => {
   return (
     <>
-        <Signup/>       
+      <Signup />
     </>
-  )
-}
+  );
+};
 
 export default signupComponent;
-

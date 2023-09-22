@@ -55,7 +55,7 @@ const LoginPage = () => {
             </a>
           </div>
           <h3 className="text-center mt-3">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a href="/signup" className="text-[#4d47eb] underline">
               SignUp
             </a>
