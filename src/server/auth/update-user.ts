@@ -1,4 +1,4 @@
-import { SupabaseResponse } from "@/types/SupabaseTypes";
+import { SupabaseResponse } from "@/types/supabase-types";
 import supabase from "../supabase";
 
 export async function verifySignupOtp(
