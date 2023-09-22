@@ -60,6 +60,7 @@ export async function getSession() {
   const { data, error } = await supabase.auth.getSession();
   if (error) {
     return { status: false, error: error.message };
+  } else {
+    return { status: true, data: data.session };
   }
-  console.log(data);
 }
