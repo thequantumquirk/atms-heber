@@ -20,7 +20,7 @@ export default function Signup() {
             alert(`${res.data} - Logged In Successfully`)
             router.push('/')
         } else {
-            console.log(res.error);
+            alert(res.error);
         }
     }
 
