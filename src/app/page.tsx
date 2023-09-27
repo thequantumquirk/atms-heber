@@ -1,12 +1,14 @@
 'use client'
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import Dashboard from "@/components/dashboard";
+
 
 export default function Home() {
     const mail = useSelector((state: RootState) => state.auth.email);
     return (
-        <div className="text-black font-medium text-center text-3xl m-40">
-            <span className="text-[hsl(242,80%,60%)]">{mail}</span><span> has Logged In Successfully!</span>
-        </div>
+        <>
+            <Dashboard />
+        </>
     )
 }
