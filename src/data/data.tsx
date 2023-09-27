@@ -9,11 +9,12 @@ export const Principal:TaskType[] = [
                 name: "Submit report", 
                 description: "Report on monthly academic achivements",
                 deadline: "2024-03-12T12:30:00.000Z",
-                milestones: {
-                    "part1": true,
-                    "part2": true,
-                    "part3": true,
-                    "part5": false
+                 milestones: {
+                    "Milestone-1": true,
+                    "Milestone-2": true,
+                    "Milestone-3": true,
+                    "Milestone-5": true,
+                    "Milestone-6": false
                 },
             }
         },
