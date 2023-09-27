@@ -17,7 +17,7 @@ const LoginPage = () => {
             dispatch(setEmail(email))
             router.push('/')
         } else {
-            console.log(res.error);
+            alert(res.error);
         }
     }
     return (
