@@ -29,12 +29,11 @@ export default function TaskForm() {
             to: String(event.target.user.value),
             name: String(event.target.name.value),
             desc: String(event.target.desc.value),
-            comments: String(event.target.comments.value),
             milestones: String(event.target.milestones.value),
             deadlineDate: String(event.target.deadlineDate.value),
             deadlineTime: String(event.target.deadlineTime.value)
         }
-
+        console.log(details)
         // const res = await fetch(`${pathname}/api`, {
         //     method: "PUT",
         //     headers: {
@@ -83,7 +82,7 @@ export default function TaskForm() {
                                         <option selected className="text-left">Assignee</option>
                                             {people.map((person,key)=>{
                                                 return(
-                                                    <option key={key} value={person.name}>{person.name}</option>
+                                                    <option key={key} value={person.name} id="name">{person.name}</option>
                                                 )
                                             })}
                                         </select>

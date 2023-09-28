@@ -1,7 +1,7 @@
 import { Filter } from "@/types/filter"
 import { TaskType } from "@/types/tasktype"
 
-export const Principal:TaskType[] = [
+export const principalTo:TaskType[] = [
         {
             mail : "hod@bhc.edu.in",
             to: "Dr K Rajkumar" , 
@@ -56,7 +56,7 @@ export const Principal:TaskType[] = [
 ]
 
 
-export const HOD :TaskType[]= [
+export const HodTo :TaskType[]= [
     {
         mail : "staff@bhc.edu.in",
         to: "Dr Ramah Sivakumar" , 
@@ -110,7 +110,7 @@ export const HOD :TaskType[]= [
     }
 }
 ]
-export const Teacher :TaskType[]= [
+export const staffTo :TaskType[]= [
     {
         mail : "student@bhc.edu.in",
         to: "Abirami" , 

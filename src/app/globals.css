@@ -2,14 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --secondary-font: #3e38f5;
-    --background-start-rgb: 255, 255, 255;
-    --background-end-rgb: 255, 255, 255;
+
+
+body {
+    color:#020030
 }
-
-
-body {}
 
 .EaseFadeIn {
     animation: FadeIn 1s
