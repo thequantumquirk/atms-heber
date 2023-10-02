@@ -66,23 +66,17 @@ export default function TaskForm() {
                                     <div >
                                         <p className='font-semibold text-lg pb-2'>Taskie Details</p>
                                         <div className='grid grid-cols-2 gap-3'>
-                                        <Dropdown>
-                                        <DropdownTrigger>
-                                            <Button className={inputtext}>
-                                                Assignee Role
-                                            </Button>
-                                        </DropdownTrigger>
-                                        <DropdownMenu aria-label="Static Actions" onAction={(key) => setRole(String(key))}>
-                                        <DropdownItem key="HOD">HoD</DropdownItem>
-                                        <DropdownItem key="Staff">Staff</DropdownItem>
-                                        <DropdownItem key="Student">Student</DropdownItem>
-                                        </DropdownMenu>
-                                        </Dropdown>
+                                        <select className={inputtext}>
+                                            <option>HOD</option>
+                                            <option>Staff</option>
+                                            <option>Student</option>
+                                        </select>
+                                        
                                         <select className={inputtext}>
                                         <option selected className="text-left">Assignee</option>
                                             {people.map((person,key)=>{
                                                 return(
-                                                    <option key={key} value={person.name} id="name">{person.name}</option>
+                                                    <option key={key} value={person.name} >{person.name}</option>
                                                 )
                                             })}
                                         </select>
