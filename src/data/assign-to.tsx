@@ -1,7 +1,7 @@
 import { Filter } from "@/types/filter";
-import { TaskType } from "@/types/tasktotype";
+import { TaskToType } from "@/types/tasktotype";
 
-export const principalTo: TaskType[] = [
+export const principalTo: TaskToType[] = [
   {
     mail: "hod@bhc.edu.in",
     to: "Dr K Rajkumar",
@@ -55,7 +55,7 @@ export const principalTo: TaskType[] = [
   },
 ];
 
-export const HodTo: TaskType[] = [
+export const HodTo: TaskToType[] = [
   {
     mail: "staff@bhc.edu.in",
     to: "Dr Ramah Sivakumar",
@@ -109,7 +109,7 @@ export const HodTo: TaskType[] = [
     },
   },
 ];
-export const staffTo: TaskType[] = [
+export const staffTo: TaskToType[] = [
   {
     mail: "student@bhc.edu.in",
     to: "Abirami",
