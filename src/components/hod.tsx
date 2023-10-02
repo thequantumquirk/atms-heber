@@ -18,21 +18,6 @@ type Props = {};
 
 const HOD = (props: Props) => {
   const [filter, setFilter] = useState("assigned");
-  console.log(filter)
-  let component;
-  // useEffect(() => {
-  //   if (filter == "assignedTo") {
-  //     component = 
-  //       <div>
-          
-  //       </div>
-  //   } else {
-  //     component = 
-  //       <div>
-  //         {}
-  //       </div>
-  //   }
-  // }, [filter]);
   return (
     <div>
       <Dashboard />
@@ -40,7 +25,7 @@ const HOD = (props: Props) => {
           {filter == "assigned" ? (
             <div className="px-20">
         <div className="flex justify-between items-center mt-9">
-          <h1 className="text-3xl font-medium">Assigned By You</h1>
+          <h1 className="text-3xl font-medium">Assigned To You</h1>
           <Dropdown>
             <DropdownTrigger>
               <Button variant="bordered" className="py-3 px-7">
@@ -53,8 +38,8 @@ const HOD = (props: Props) => {
                 setFilter(e.toString());
               }}
             >
-              <DropdownItem key="assigned">Assigned By You</DropdownItem>
-              <DropdownItem key="assignedTo">Assigned to You</DropdownItem>
+              <DropdownItem key="assigned">Assigned To You</DropdownItem>
+              <DropdownItem key="assignedTo">Assigned By You</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
@@ -71,7 +56,7 @@ const HOD = (props: Props) => {
           ) : (
             <div className="px-20">
         <div className="flex justify-between items-center mt-9">
-          <h1 className="text-3xl font-medium">Assigned To You</h1>
+          <h1 className="text-3xl font-medium">Assigned By You</h1>
           <Dropdown>
             <DropdownTrigger>
               <Button variant="bordered" className="py-3 px-7">
@@ -84,8 +69,8 @@ const HOD = (props: Props) => {
                 setFilter(e.toString());
               }}
             >
-              <DropdownItem key="assigned">Assigned</DropdownItem>
-              <DropdownItem key="assignedTo">Assigned to</DropdownItem>
+              <DropdownItem key="assigned">Assigned To You</DropdownItem>
+              <DropdownItem key="assignedTo">Assigned By You</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
