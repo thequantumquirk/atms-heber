@@ -43,7 +43,7 @@ export default function Home() {
       break;
     default:
       // Handle cases where 'page' doesn't match any known page
-      pageComponent = <div>Page not found</div>;
+      pageComponent = <HOD />;
   }
     
     return (

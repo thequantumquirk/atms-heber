@@ -11,7 +11,7 @@ const CardsFrom = (props: Props) => {
             <div>
               <p className="text-2xl">{assigned.name}</p>
               <p className="mt-2">
-                To : <span className="text-[#3e38f5]">{assigned.from}</span>
+                From : <span className="text-[#3e38f5]">{assigned.from}</span>
               </p>
             </div>
             <div>
