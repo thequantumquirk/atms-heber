@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HodTo } from "@/data/assign-to";
 import { Hod } from "@/data/assign-from";
 import Dashboard from "./dashboard";
@@ -10,12 +10,16 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  getKeyValue,
 } from "@nextui-org/react";
 
 type Props = {};
 
 const HOD = (props: Props) => {
-  const [filter, setFilter] = useState<Selection>("assigned")
+  const [filter, setFilter] = useState("assigned")
+  useEffect(()=>{
+    console.log(filter)
+  }, [filter])
   return (
     <div>
       <Dashboard />
@@ -30,14 +34,11 @@ const HOD = (props: Props) => {
             </DropdownTrigger>
             <DropdownMenu
               aria-label="Static Actions"
-              onSelectionChange={(e) => {
-                setFilter(e);
+              onAction={(e:React.Key) => {
+                setFilter(e.toString());
               }}
             >
               <DropdownItem
-                onPress={(e) => {
-                  setFilter(e);
-                }}
                 key="assigned"
               >
                 Assigned
