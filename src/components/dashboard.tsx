@@ -20,7 +20,7 @@ export default function Dashboard() {
   }
     return (
       <>
-        <div className="px-24 py-10 flex justify-between items-center  bg-[#f0f0f0]">
+        <div className="px-20 py-10 flex justify-between items-center  bg-[#f0f0f0]">
           <h1 className="text-4xl">{greeting} <span className="text-[#3e38f5]">{mail}</span>!</h1>
           <div className="flex gap-12  items-center justify-center">
             <TaskForm/>
