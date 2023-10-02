@@ -17,6 +17,7 @@ export default function Home() {
     useEffect(()=>{
         async function fetchSession(){
             const data = await getSession()
+            console.log(data.data)
             if(data.data==null){
                 router.push('/login')
             }
