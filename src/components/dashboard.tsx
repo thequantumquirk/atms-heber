@@ -22,12 +22,8 @@ export default function Dashboard() {
   }
     return (
       <>
-      {mail!="cs215114102@bhc.edu.in" ?
-        <div className="px-20 py-8 flex justify-between items-center font-medium bg-[#f0f0f0]">
-        <div>
-            <h1 className="text-4xl font-medium">{greeting}!</h1>
-            <p className="text-[#9594b0] py-1"> Here is your Tasks <span className="text-[#3e38f5]">{user!=undefined ? user.name : ""}</span></p>
-        </div>
+        <div className="px-20 py-10 flex justify-between items-center  bg-[#f0f0f0]">
+          <h1 className="text-4xl">{greeting} <span className="text-[#3e38f5]">{mail}</span>!</h1>
           <div className="flex gap-12  items-center justify-center">
             <TaskForm/>
             <Dropdown>
@@ -48,7 +44,7 @@ export default function Dashboard() {
                         <h1 className="text-4xl font-medium">{greeting}!</h1>
             <p className="text-[#9594b0] py-1"> Here is your Tasks <span className="text-[#3e38f5]">{user!=undefined ? user.name : ""}</span></p>
         </div>
-}
+
       </>
     );
 }
