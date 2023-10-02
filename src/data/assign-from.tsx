@@ -1,4 +1,4 @@
-export const HOD ={
+export const Hod ={
     mail : "hod@bhc.edu.in",
     name: "Dr K Rajkumar",
     role: "HOD",
@@ -45,7 +45,7 @@ export const HOD ={
     ]
 }
 
-export const Staff ={
+export const staff ={
     mail : "hod@bhc.edu.in",
     name: "Dr Karthikeyan",
     role: "HOD",
@@ -92,7 +92,7 @@ export const Staff ={
     ]
 }
 
-export const Student ={
+export const student ={
     mail : "student@bhc.edu.in",
     name: "Abirami M",
     role: "Student",
@@ -139,7 +139,7 @@ export const Student ={
     ]
 }
 
-const users =[
+export const users =[
     {
         email : "hod@bhc.edu.in",
         name : "Dr K Rajkumar"
