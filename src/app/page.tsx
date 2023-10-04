@@ -43,7 +43,7 @@ export default function Home() {
       break;
     default:
       // Handle cases where 'page' doesn't match any known page
-      pageComponent = <HOD />;
+      pageComponent = <div className="text-3xl h-screen flex justify-center items-center font-medium">Page not found</div>;
   }
     
     return (

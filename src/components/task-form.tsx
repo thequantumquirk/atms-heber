@@ -10,7 +10,7 @@ import { Filter } from "@/types/filter"
 import plus from "../../public/plus.svg"
 
 
-const inputtext = "bg-[#6466F1]/10 w-full rounded-lg px-5 py-2 text-sm "
+const inputtext = "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm "
 export default function TaskForm() {
     const pathname = usePathname()
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -71,9 +71,7 @@ export default function TaskForm() {
                 >
                   <ModalBody>
                     <div>
-                      <p className="font-semibold text-lg pb-2">
-                        Task Details
-                      </p>
+                      <p className="font-semibold text-lg pb-2">Task Details</p>
                       <div className="grid grid-cols-2 gap-3">
                         <select className={inputtext}>
                           <option>HOD</option>
@@ -140,9 +138,14 @@ export default function TaskForm() {
                       type="submit"
                       name="submit"
                       id="submit"
-                      className=" mx-auto bg-[#4B50F7]/10 border-1 border-[#4B50F7] rounded-lg flex w-[8.8rem] h-10 py-2 px-5 gap-2 my-3"
+                      className=" mx-auto bg-slate-100 rounded-lg flex w-[8.8rem] h-10 py-2 px-5 gap-2 my-2"
                     >
-                      <Image src={Plus} width={18} alt="Plus"></Image>
+                      <Image
+                        src={Plus}
+                        width={16}
+                        alt="Plus"
+                        className="mt-0.5"
+                      ></Image>
                       <p>Add Task</p>
                     </button>
                   </ModalFooter>
