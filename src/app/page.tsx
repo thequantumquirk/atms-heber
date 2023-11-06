@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getSession } from "@/server/auth/auth-user";
+import { getSession, signOut } from "@/server/auth/auth-user";
 import { fetchTasks, fetchUsers } from "@/server/data/fetch-data";
 import { ProfileType } from "@/types/profiletype";
 import { ToLocalTime } from "@/utilities/utillities";
@@ -60,6 +60,16 @@ export default function Home() {
     fetchSession();
   }, [name]);
 
+  async function signUserOut() {
+    console.log("signing out user");
+    const { data, error, message, status } = await signOut();
+    if (status) {
+      router.push("/");
+    } else {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       {rolePower === 1 ? (
@@ -79,7 +89,10 @@ export default function Home() {
             </p>
           </div>
           <div className="flex gap-12  items-center justify-center">
-            <Button className="rounded-lg bg-[rgba(62,56,245,0.9)] text-white font-medium">
+            <Button
+              className="rounded-lg bg-[rgba(62,56,245,0.9)] text-white font-medium"
+              onClick={() => signUserOut()}
+            >
               Sign-out
             </Button>
           </div>
@@ -109,7 +122,10 @@ export default function Home() {
                 <Image src={exportIcon} width={20} alt="Plus"></Image>
                 Export
               </Button>
-              <Button className="rounded-lg bg-[rgba(62,56,245,0.9)] text-white font-medium">
+              <Button
+                className="rounded-lg bg-[rgba(62,56,245,0.9)] text-white font-medium"
+                onClick={() => signUserOut()}
+              >
                 Sign-out
               </Button>
             </div>
