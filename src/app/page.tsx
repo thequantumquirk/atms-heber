@@ -2,24 +2,21 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSession, signOut } from "@/server/auth/auth-user";
-import { fetchTasks, fetchUsers } from "@/server/data/fetch-data";
-import { ProfileType } from "@/types/profiletype";
 import { ToLocalTime } from "@/utilities/utillities";
 import { Button, Skeleton } from "@nextui-org/react";
 import TaskForm from "@/components/task-form";
 import Image from "next/image";
 import exportIcon from "../../public/export.svg";
+import { fetchTasks } from "@/server/data/fetch-data";
 
 export default function Home() {
   const router = useRouter();
-  const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [role, setRole] = useState("");
   const [rolePower, setRolePower] = useState(0);
   const date = new Date();
   const today = ToLocalTime(date);
   const Hour = today.getUTCHours();
-  var greeting: string;
+  let greeting: string;
 
   if (Hour >= 0 && Hour < 12) {
     greeting = "Good Morning";
@@ -32,39 +29,27 @@ export default function Home() {
   const [task, setTask] = useState({});
   useEffect(() => {
     async function fetchSession() {
-      //      const result = createTask('a618b2fe-e563-4d08-9bfa-b6a0c82909b9', 'd636502c-8daf-412f-9aa0-718256f7c366', "Hybernetix Fees", "Collect the fees fir symposium and submit it", new Date(),"MileStone 1, MileStone2, MileStone3", "Milestone3");
-      //      console.log(result)
       const data = await getSession();
-      if (data.data == null) {
+      if (!data.data) {
         router.push("/login");
       } else {
         let id = data.data?.user.id;
-        console.log(id);
+        let meta = data.data?.user.user_metadata;
+        setName(meta.name);
+        setRolePower(meta.role_power);
         const tasks = await fetchTasks(id);
-        const res = await fetchUsers();
         if (tasks.data) {
           setTask(tasks.data);
-        }
-        const users = res.data as ProfileType[];
-        if (users) {
-          let User = users.find((user) => user.id === id);
-          if (User) {
-            setName(User.name);
-            setId(User.id);
-            setRole(User.role);
-            setRolePower(User.role_power);
-          }
         }
       }
     }
     fetchSession();
-  }, [name]);
+  }, []);
 
   async function signUserOut() {
-    console.log("signing out user");
     const { data, error, message, status } = await signOut();
     if (status) {
-      router.push("/");
+      window.location.href = "/";
     } else {
       console.error(error);
     }
