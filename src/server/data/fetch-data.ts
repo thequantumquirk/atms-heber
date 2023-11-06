@@ -6,14 +6,14 @@ export async function fetchTasks(userId: string) {
     .select("*")
     .eq("assigner_id", userId);
   if (error1) {
-    return error1;
+    return { status: false, data: error1, message: "Data Fetch Unsuccessful" };
   }
   let { data: assignedToTasks, error } = await supabase
     .from("tasks")
     .select("*")
-    .eq("assginee_id", userId);
+    .eq("assignee_id", userId);
   if (error) {
-    return error;
+    return { status: false, data: error, message: "Data Fetch Unsuccessful" };
   }
   let response = {
     assignedByTasks,
@@ -24,7 +24,7 @@ export async function fetchTasks(userId: string) {
 
 export async function createTask(
   assigner_id: string,
-  assginee_id: string,
+  assignee_id: string,
   task_title: string,
   task_description: string,
   task_due: Date,
@@ -36,7 +36,7 @@ export async function createTask(
     .insert([
       {
         assigner_id,
-        assginee_id,
+        assignee_id,
         task_title,
         task_description,
         task_due,
@@ -47,7 +47,7 @@ export async function createTask(
     .select();
 
   if (error) {
-    return error;
+    return { status: false, data: error, message: "Adding Task Unsuccessful" };
   }
   return {
     status: true,
@@ -59,7 +59,7 @@ export async function createTask(
 export async function fetchUsers() {
   let { data: profiles, error } = await supabase.from("profiles").select("*");
   if (error) {
-    return error;
+    return { status: false, data: error, message: "Data Fetch Unsuccessful" };
   }
   return {
     status: true,

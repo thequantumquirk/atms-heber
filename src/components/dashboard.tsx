@@ -3,16 +3,18 @@ import { RootState } from "../store/store";
 import {  Dropdown,  DropdownTrigger,  DropdownMenu,  DropdownItem, Button} from "@nextui-org/react";
 import { ToLocalTime } from "../utilities/utillities";
 import TaskForm from "./task-form";
-import {users} from "../data/assign-from"
+
 import exportIcon from "../../public/export.svg"
 import Image from "next/image";
-export default function Dashboard() {
+import { ProfileType } from "@/types/profiletype";
 
+type Props = { user: ProfileType };
+
+const Dashboard = ({user}: Props) => {
+console.log(user,"DASHBOARD")
   const date = new Date();
   const today = ToLocalTime(date);
   const Hour = today.getUTCHours();
-  const mail = useSelector((state: RootState) => state.auth.email);
-  const user = users.find((user)=>user.email==mail)
   var greeting: string;
 
   if (Hour >= 0 && Hour < 12) {
@@ -22,17 +24,18 @@ export default function Dashboard() {
   } else {
     greeting = "Good Evening";
   }
+
     return (
       <>
-        {mail == "cs215114102@bhc.edu.in" ? (
+        {user.role_power==1 ? 
           <div className="px-20 py-7 flex justify-between items-center">
             <div className="flex flex-col gap-1">
               <h1 className="text-4xl font-semibold">
-                {greeting}{" "}
-                <span className="text-[rgba(62,56,245)]">{mail}</span>!
+                {greeting}
+                <span className="text-[rgba(62,56,245)]">{" "}{user.name}</span>!
               </h1>
               <p className="text-xl  text-slate-500 mt-1">
-                Here is a list of your tasks
+                Here is a list of your tasks 
               </p>
             </div>
             <div className="flex gap-12  items-center justify-center">
@@ -41,15 +44,11 @@ export default function Dashboard() {
               </Button>
             </div>
           </div>
-        ) : (
+         : 
           <div className="px-20 py-7 flex justify-between items-center">
             <div className="flex flex-col gap-1">
               <h1 className="text-4xl font-semibold">
-                {greeting}{" "}
-                <span className="text-[rgba(63,56,245)]">
-                  {user != undefined ? user.name : ""}
-                </span>
-                !
+                {greeting}<span className="text-[rgba(63,56,245)]">{" "}{user.name}</span>!
               </h1>
               <p className="text-xl text-slate-500 mt-1">
                 Here is a list of your tasks
@@ -66,7 +65,8 @@ export default function Dashboard() {
               </Button>
             </div>
           </div>
-        )}
+        }
       </>
     );
-}
+    }
+    export default Dashboard
