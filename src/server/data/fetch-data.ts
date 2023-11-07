@@ -56,8 +56,9 @@ export async function createTask(
   };
 }
 
-export async function fetchUsers() {
-  let { data: profiles, error } = await supabase.from("profiles").select("*");
+export async function fetchUsers(rolePower: number) {
+  let { data: profiles, error } = await supabase.from("profiles").select("*").lt("role_power",rolePower);
+  console.log(profiles, error)
   if (error) {
     return { status: false, data: error, message: "Data Fetch Unsuccessful" };
   }
