@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",
+    "@radix-ui/react-toast": "^1.1.5",
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/supabase-js": "^2.33.2",
     "@types/node": "20.6.2",

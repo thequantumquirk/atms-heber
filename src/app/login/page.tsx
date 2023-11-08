@@ -2,21 +2,22 @@
 import { useState } from "react";
 import { login } from "@/server/auth/auth-user";
 import { useRouter } from "next/navigation";
-import { setEmail } from "../../store/slice";
 import { useDispatch } from "react-redux";
-
+import { useToast } from "@/components/ui/use-toast"
 
 const LoginPage = () => {
     const [email, setmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter()
-    const dispatch = useDispatch()
+    const { toast } = useToast()
     async function LoginUser(email: string, password: string) {
         const res = await login(email, password)
         if (res.status) {
             router.push('/')
         } else {
-            alert(res.error);
+            toast({
+                description:res.error,
+              }) 
         }
     }
     return (

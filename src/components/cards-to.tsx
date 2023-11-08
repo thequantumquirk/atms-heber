@@ -1,12 +1,14 @@
 import { TaskToType } from "@/types/tasktotype";
 import React from "react";
 import { FormatDate } from "@/utilities/utillities";
+import { useToast } from "@/components/ui/use-toast"
 
 type Props = { assigned: TaskToType };
 const CardsTo = (props: Props) => {
   const { assigned } = props;
   const date = new Date(assigned.task.deadline);
   const deadline = FormatDate(date);
+  const { toast } = useToast()
   return (
     <div>
       <div className="py-6 px-7 border-2 rounded-lg min-h-full">
