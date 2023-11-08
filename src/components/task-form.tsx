@@ -2,39 +2,62 @@
 import Plus from "../../public/plus.svg"
 import Image from 'next/image'
 import { useEffect, useState } from "react"
-import { usePathname } from 'next/navigation'
 import { dashboardFliter } from "@/data/assign-to"
-import {  Dropdown,  DropdownTrigger,  DropdownMenu,  DropdownItem} from "@nextui-org/react";   
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button, CircularProgress } from "@nextui-org/react";
-import { Filter } from "@/types/filter"
+import { createTask, fetchUsers } from "@/server/data/fetch-data"
 import plus from "../../public/plus.svg"
+import { useToast } from "./ui/use-toast"
 
 
 const inputtext = "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm "
-export default function TaskForm() {
-    const pathname = usePathname()
+type Props ={role:number, userId:string}
+export default function TaskForm({role,userId}:Props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const handleOpen = () => {
         onOpen();
     }
-    const [role, setRole] = useState('')
-    const [people, setpeople] = useState<Filter[]>([])
-    useEffect(()=>{
-        const filteredPeople = dashboardFliter.filter((people)=>people.role==role)
+    const { toast } = useToast()
+    const [people, setpeople] = useState()
+    // useEffect(()=>{
+    //     const filteredPeople = dashboardFliter.filter((people)=>people.role==role)
 
-        setpeople(filteredPeople)
-    }, [role])
+    //     setpeople(filteredPeople)
+    // }, [role])
+    async function fetch(){
+        const data = await fetchUsers(role);
+        if(data.data){
+            setpeople(data.data)
+        }
+        else{
+            toast({
+                description:`${data}`
+              })
+        }
+    }
+    fetch()
     async function handleSubmit(event: any) {
         event.preventDefault()
-        const details = {
-            to: String(event.target.user.value),
-            name: String(event.target.name.value),
-            desc: String(event.target.desc.value),
-            milestones: String(event.target.milestones.value),
-            deadlineDate: String(event.target.deadlineDate.value),
-            deadlineTime: String(event.target.deadlineTime.value)
+            var to= String(event.target.user.value)
+            var name= String(event.target.name.value)
+            var desc=String(event.target.desc.value)
+            var milestones=String(event.target.milestones.value)
+            var due=String(event.target.due.value)
+            var dueDate = new Date(due)
+            const result = await createTask(userId, to, name, desc, dueDate, milestones, "");
+            if(result.status){
+                toast({
+                    description:result.message
+                  })
+            }
+            else{
+                toast({
+                    description:`${result}`
+                  })
+            }
         }
-        console.log(details)
+   
+
+
         // const res = await fetch(`${pathname}/api`, {
         //     method: "PUT",
         //     headers: {
@@ -48,7 +71,7 @@ export default function TaskForm() {
         // else {
         //     alert("Failed to add Taskie");
         // }
-    }
+    
     return (
       <div>
         <Button
@@ -73,19 +96,14 @@ export default function TaskForm() {
                     <div>
                       <p className="font-semibold text-lg pb-2">Task Details</p>
                       <div className="grid grid-cols-2 gap-3">
-                        <select className={inputtext}>
-                          <option>HOD</option>
-                          <option>Staff</option>
-                          <option>Student</option>
-                        </select>
 
-                        <select className={inputtext}>
+                        <select className={inputtext} name="user" id="user">
                           <option selected className="text-left">
-                            Assignee
+                            Assign To
                           </option>
-                          {people.map((person, key) => {
+                          {people.map((person,key) => {
                             return (
-                              <option key={key} value={person.name}>
+                              <option key={key} value={person.id}>
                                 {person.name}
                               </option>
                             );
@@ -117,20 +135,12 @@ export default function TaskForm() {
                       <p className="font-semibold text-lg pb-2">
                         Deadline Details
                       </p>
-                      <div className="flex gap-5">
                         <input
-                          type="date"
+                          type="datetime-local"
                           className={inputtext}
-                          id="deadlineDate"
-                          name="deadlineDate"
+                          id="due"
+                          name="due"
                         ></input>
-                        <input
-                          type="time"
-                          className={inputtext}
-                          id="deadlineTime"
-                          name="deadlineTime"
-                        ></input>
-                      </div>
                     </div>
                   </ModalBody>
                   <ModalFooter>

@@ -7,9 +7,9 @@ import { ToLocalTime } from "@/utilities/utillities";import { signOut } from '@/
 import { useToast } from "@/components/ui/use-toast"
 
 
-type Props = {rolePower:number, name:string}
+type Props = {rolePower:number, name:string, userId:string}
 
-const Dashboard = ({rolePower, name}: Props) => {
+const Dashboard = ({rolePower, name, userId}: Props) => {
     const date = new Date();
   const today = ToLocalTime(date);
   const Hour = today.getUTCHours();
@@ -80,7 +80,7 @@ const Dashboard = ({rolePower, name}: Props) => {
               </div>
               {name ? (
                 <div className="flex gap-12  items-center justify-center">
-                  <TaskForm />
+                  <TaskForm role={rolePower} userId={userId}/>
                   <Button className="rounded-lg bg-slate-100">
                     <Image src={exportIcon} width={20} alt="Plus"></Image>
                     Export

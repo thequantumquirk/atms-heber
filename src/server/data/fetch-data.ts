@@ -6,14 +6,14 @@ export async function fetchTasks(userId: string) {
     .select("*")
     .eq("assigner_id", userId);
   if (error1) {
-    return { status: false, data: error1, message: "Data Fetch Unsuccessful" };
+    return error1;
   }
   let { data: assignedToTasks, error } = await supabase
     .from("tasks")
     .select("*")
     .eq("assignee_id", userId);
   if (error) {
-    return { status: false, data: error, message: "Data Fetch Unsuccessful" };
+    return error;
   }
   let response = {
     assignedByTasks,
@@ -47,7 +47,7 @@ export async function createTask(
     .select();
 
   if (error) {
-    return { status: false, data: error, message: "Adding Task Unsuccessful" };
+    return error;
   }
   return {
     status: true,
@@ -58,9 +58,8 @@ export async function createTask(
 
 export async function fetchUsers(rolePower: number) {
   let { data: profiles, error } = await supabase.from("profiles").select("*").lt("role_power",rolePower);
-  console.log(profiles, error)
   if (error) {
-    return { status: false, data: error, message: "Data Fetch Unsuccessful" };
+    return error;
   }
   return {
     status: true,
