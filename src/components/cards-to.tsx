@@ -17,12 +17,12 @@ const CardsTo = (props: Props) => {
                 const date = FormatDate(task.task_due)
                 return(<div key={key} className="py-6 px-7 border-2 rounded-lg min-h-full">
           <div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col ">
               <div>
                 <p className="font-medium">
-                  From : <span className="text-[#3e38f5]">{task.assigner_id}</span>
+                  From : <span className="text-[#3e38f5]">{task.assignee_name}</span>
                 </p>
-                <p className="text-2xl font-medium h-14 my-3">{task.task_title}</p>
+                <p className="text-2xl font-medium">{task.task_title}</p>
               </div>
               <div>
                 <p>{task.task_description}</p>
