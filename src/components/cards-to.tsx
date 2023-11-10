@@ -1,11 +1,10 @@
 import { Tasktype } from "@/types/tasktype";
 import React from "react";
 import { FormatDate } from "@/utilities/utillities";
-import { useToast } from "@/components/ui/use-toast"
 import NoTask from "../../public/notask.png"
 import Image from "next/image";
 
-type Props = { assigned: Tasktype[] };
+type Props = { assigned: Tasktype[]|undefined};
 const CardsTo = (props: Props) => {
   const { assigned } = props;
   if(assigned){

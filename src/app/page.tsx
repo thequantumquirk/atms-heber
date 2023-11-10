@@ -38,7 +38,7 @@ export default function Home() {
                 })
               );
             }
-        const tasks = await fetchTasks(id);
+        const tasks:any|null = await fetchTasks(id);
         console.log(tasks)
         if (tasks.data) {
             setAssignedTo(tasks.data.assignedToTasks);

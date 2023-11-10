@@ -6,6 +6,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import { createTask, fetchUsers } from "@/server/data/fetch-data"
 import plus from "../../public/plus.svg"
 import { useToast } from "./ui/use-toast"
+import { PersonType } from "@/types/usertype";
 
 
 const inputtext = "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm "
@@ -16,14 +17,10 @@ export default function TaskForm({role,userId}:Props) {
         onOpen();
     }
     const { toast } = useToast()
-    const [people, setpeople] = useState()
-    // useEffect(()=>{
-    //     const filteredPeople = dashboardFliter.filter((people)=>people.role==role)
+    const [people, setpeople] = useState<PersonType[]>()
 
-    //     setpeople(filteredPeople)
-    // }, [role])
     async function fetch(){
-        const data = await fetchUsers(role);
+        const data:any|null = await fetchUsers(role);
         if(data.data){
             setpeople(data.data)
         }
@@ -42,7 +39,7 @@ export default function TaskForm({role,userId}:Props) {
             var milestones=String(event.target.milestones.value)
             var due=String(event.target.due.value)
             var dueDate = new Date(due)
-            const result = await createTask(userId, to, name, desc, dueDate, milestones, "");
+            const result:any|null = await createTask(userId, to, name, desc, dueDate, milestones, "");
             if(result.status){
                 toast({
                     description:result.message
@@ -54,7 +51,7 @@ export default function TaskForm({role,userId}:Props) {
                   })
             }
         }
-    
+    if(people){
     return (
       <div>
         <Button
@@ -150,4 +147,6 @@ export default function TaskForm({role,userId}:Props) {
       </div>
     );
 }
+}
+
 
