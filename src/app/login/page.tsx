@@ -1,19 +1,20 @@
 "use client";
 import { useState } from "react";
-import { login } from "@/server/auth/auth-user";
+import { getSession, login } from "@/server/auth/auth-user";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { useToast } from "@/components/ui/use-toast"
+
 
 const LoginPage = () => {
     const [email, setmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter()
     const { toast } = useToast()
+
     async function LoginUser(email: string, password: string) {
         const res = await login(email, password)
         if (res.status) {
-            router.push('/')
+            router.push("/")
         } else {
             toast({
                 description:res.error,

@@ -1,8 +1,7 @@
 'use client'
 import Plus from "../../public/plus.svg"
 import Image from 'next/image'
-import { useEffect, useState } from "react"
-import { dashboardFliter } from "@/data/assign-to"
+import { useState } from "react"
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button, CircularProgress } from "@nextui-org/react";
 import { createTask, fetchUsers } from "@/server/data/fetch-data"
 import plus from "../../public/plus.svg"
@@ -51,26 +50,10 @@ export default function TaskForm({role,userId}:Props) {
             }
             else{
                 toast({
-                    description:`${result}`
+                    description:`${result.message}`
                   })
             }
         }
-   
-
-
-        // const res = await fetch(`${pathname}/api`, {
-        //     method: "PUT",
-        //     headers: {
-        //         "Content-type": "application/json"
-        //     },
-        //     body: JSON.stringify(details)
-        // })
-        // if (res.ok) {
-        //     alert("Taskie Added Successfully");
-        // }
-        // else {
-        //     alert("Failed to add Taskie");
-        // }
     
     return (
       <div>
@@ -101,7 +84,7 @@ export default function TaskForm({role,userId}:Props) {
                           <option selected className="text-left">
                             Assign To
                           </option>
-                          {people.map((person,key) => {
+                          {people.map((person, key) => {
                             return (
                               <option key={key} value={person.id}>
                                 {person.name}
