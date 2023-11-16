@@ -78,11 +78,15 @@ export async function fetchUsers(rolePower: number) {
 export async function updateTask(id: string, current_status: string) {
   const { data, error } = await supabase
     .from("tasks")
-    .update({ current_status })
+    .update({ 'current_status': current_status })
     .eq("id", id)
     .select();
   if (error) {
-    return error;
+    return {
+        status: false,
+        error,
+        message: "Status update Unsuccessful",
+      };
   }
   return {
     status: true,
