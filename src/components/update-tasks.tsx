@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,14 +9,16 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast"
 import { updateTask } from '@/server/data/fetch-data';
+import { Button } from "@nextui-org/react";
 
 type Props = {
   id: string;
   status_details: string;
   current_status: string;
+  style: string;
 };
 
-const Update = ({ id, status_details, current_status }: Props) => {
+const Update = ({ id, status_details, current_status, style }: Props) => {
     const { toast } = useToast()
   const [milestoneChecked, setMilestoneChecked] = useState<{ [key: string]: boolean }>({});
 
@@ -26,7 +27,7 @@ const Update = ({ id, status_details, current_status }: Props) => {
 
   // Initialize checkbox states based on current_status
   useEffect(() => {
-    const completedMilestones: string[] = current_status.split(',');
+    const completedMilestones: string[] = current_status.split(',').map(milestone => milestone.trim());
     const initialMilestoneChecked: { [key: string]: boolean } = {};
     milestones.forEach((milestone) => {
       initialMilestoneChecked[milestone.trim()] = completedMilestones.includes(milestone.trim());
@@ -76,7 +77,7 @@ const Update = ({ id, status_details, current_status }: Props) => {
     <div>
       <Dialog>
         <DialogTrigger>
-          <Button>Open</Button>
+        <Button className={`${style}`}>Update Task</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

@@ -6,11 +6,22 @@ import { fetchTasks } from "@/server/data/fetch-data";
 import Dashboard from "@/components/dashboard";
 import { useToast } from "@/components/ui/use-toast"
 import CardsTo from "@/components/cards-to";
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/reducer';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../store/reducer';
 import { setUserInfo } from "@/store/slice";
 import { useDispatch } from "react-redux";
 import { Tasktype } from "@/types/tasktype";
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import CardsFrom from "@/components/cards-from";
 
 export default function Home() {
     const router = useRouter();
@@ -19,6 +30,7 @@ export default function Home() {
     const [assignedTo, setAssignedTo] = useState<Tasktype[]>();
     const [assignedBy, setAssignedBy] = useState();
     const [details, setDetails] = useState({name:"", id:"", rolePower:0})
+    const [state, setState] = useState("To")
   useEffect(() => {
     async function fetchSession() {
         const data = await getSession()
@@ -56,10 +68,32 @@ export default function Home() {
     fetchSession();
   }, []//rendering once
   );
+  if(details.rolePower==5){
+    setState("By")
+  }
   return (
     <>
        <Dashboard rolePower={details.rolePower} name={details.name} userId={details.id}/>
-       <CardsTo assigned={assignedTo}/>
+       <div className="mx-20 mt-2 mb-5">
+       {details.rolePower!=1 && details.rolePower!=5? 
+       <div className="flex justify-end ">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild><Button className="rounded bg-slate-100">Filter</Button></DropdownMenuTrigger>
+                <DropdownMenuContent className="">
+                    <DropdownMenuLabel>Filter Tasks</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                     <DropdownMenuRadioGroup value={state} onValueChange={setState}>
+                        <DropdownMenuRadioItem value="By">Assigned By You</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="To">Assigned To You</DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
+        :
+        <div></div>
+        }    
+        {state== "To"?<CardsTo assigned={assignedTo}/>:<CardsFrom assigned={assignedBy}/>}
+        </div>
        </>
   );
 }

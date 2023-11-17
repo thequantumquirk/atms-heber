@@ -53,7 +53,7 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
               </div>
               <div className="flex gap-12  items-center justify-center">
                 <Button
-                  className="rounded-lg bg-[rgba(62,56,245,0.9)] text-white font-medium"
+                  className="rounded bg-[rgba(62,56,245,0.9)] text-white font-medium"
                   onClick={() => signUserOut()}
                 >
                   Sign-out
@@ -81,12 +81,12 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
               {name ? (
                 <div className="flex gap-12  items-center justify-center">
                   <TaskForm role={rolePower} userId={userId}/>
-                  <Button className="rounded-lg bg-slate-100">
+                  <Button className="rounded bg-slate-100">
                     <Image src={exportIcon} width={20} alt="Plus"></Image>
                     Export
                   </Button>
                   <Button
-                    className="rounded-lg bg-[rgba(62,56,245,0.9)] text-white font-medium"
+                    className="rounded bg-[rgba(62,56,245,0.9)] text-white font-medium"
                     onClick={() => signUserOut()}
                   >
                     Sign-out

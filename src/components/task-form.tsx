@@ -56,7 +56,7 @@ export default function TaskForm({role,userId}:Props) {
       <div>
         <Button
           onPress={() => handleOpen()}
-          className="py-2 rounded-lg bg-slate-100 px-4"
+          className="py-2 rounded bg-slate-100 px-4"
         >
           <Image src={plus} alt="plus icon"></Image>
           Assign Task

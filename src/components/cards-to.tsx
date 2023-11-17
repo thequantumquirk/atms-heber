@@ -4,36 +4,39 @@ import { FormatDate } from "@/utilities/utillities";
 import NoTask from "../../public/notask.png"
 import Image from "next/image";
 import Update from "./update-tasks";
+import Progress from "./progress";
 
 type Props = { assigned: Tasktype[]|undefined};
 const CardsTo = (props: Props) => {
   const { assigned } = props;
   if(assigned){
-    console.log(assigned)
   return (
     <>
     {assigned.length!=0?
-        <div>
+        <div className="grid grid-cols-3 gap-5 my-7">
             {assigned.map((task, key)=>{
-
                 const date = FormatDate(task.task_due)
-                return(<div key={key} className="py-6 px-7 border-2 rounded-lg min-h-full">
-          <div>
-            <div className="flex flex-col ">
-              <div>
-                <p className="font-medium">
-                  From : <span className="text-[#3e38f5]">{task.assigner_name.name}</span>
-                </p>
-                <p className="text-2xl font-medium">{task.task_title}</p>
-              </div>
-              <div>
-                <p>{task.task_description}</p>
-                <p className="font-medium">Due : {date}</p>
-                <Update id={task.assignee_id} status_details={task.status_details} current_status={task.current_status}/>
-              </div>
-            </div>
-          </div>
-        </div>)})}
+                const complete = Math.ceil(task.current_status.length*100/task.status_details.length)
+                return(
+                    <div key={key} className="bg-[#3e38f5]/10 px-7 py-5 rounded">
+                    <div>
+                        <div className="flex justify-between leading-10">
+                            <div className="py-1 h-14">
+                                <p className="text-xl font-bold">{task.task_title}</p>
+                                <p className="text-sm text-[#a7a9d2]">{task.task_description}</p>
+                                <p>Assigned By : <span className="text-[#3e38f5] font-semibold">{task.assigner_name.name}</span></p>
+                            </div>
+                            <div>
+                                <Progress percent={complete}/>
+                            </div>
+                        </div>
+                        <div className="grid grid-flow-col justify-end pt-5 w-full gap-5">
+                            <div className="font-medium bg-indigo-600/10 py-1 px-3 rounded ring-1 ring-inset w-40 ring-indigo-600/50 text-center">{date}</div>
+                            <Update style="rounded bg-[rgba(62,56,245,0.9)] text-white font-medium w-40"id={task.assignee_id} status_details={task.status_details} current_status={task.current_status}/>
+                        </div>
+                    </div>
+                </div>
+            )})}
         
       </div>
         :
