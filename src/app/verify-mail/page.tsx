@@ -1,6 +1,6 @@
 "use client";
 import { useToast } from "@/components/ui/use-toast"
-
+import { Button } from "@nextui-org/react";
 import { useState } from "react";
 
 type Props = {};
@@ -32,14 +32,14 @@ const VerifyMail = (props: Props) => {
             placeholder="rollnoorstaffname@bhc.edu.in"
           ></input>
           <br></br>
-          <button
+          <Button
             onClick={() => {
               sendOTP();
             }}
-            className="bg-[#4d47eb] text-white px-5 py-2 mt-6 rounded-xl"
+            className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white px-5 py-2 mt-6 rounded p-1"
           >
             Send OTP
-          </button>
+          </Button>
           <br></br>
         </div>
         <div id="OTPSection" className={`${display} EaseFadeIn`}>

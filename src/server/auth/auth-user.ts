@@ -4,19 +4,22 @@ import supabase from "../supabase";
 export async function signUp(
   name: string,
   email: string,
-  password: string
+  password: string,
+  role:string
 ): Promise<SupabaseResponse> {
   if (!email.endsWith("@bhc.edu.in")) {
     return { status: false, error: "Invalid Email ID" };
   }
   let number = /\d/;
-  let role = "Student";
   let role_power = 1;
-  console.log(number.test(email));
-  if (!number.test(email)) {
-    role = "Faculty";
-    role_power = 2;
-  }
+  if(role=="Professor")  role_power = 2
+  if(role=="HOD")  role_power = 3
+  else  role_power = 5
+//   console.log(number.test(email));
+//   if (!number.test(email)) {
+//     role = "Faculty";
+//     role_power = 2;
+//   }
   const { data, error } = await supabase.auth.signUp({
     email,
     password,

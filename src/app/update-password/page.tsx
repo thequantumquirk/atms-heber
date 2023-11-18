@@ -4,6 +4,7 @@ import supabase from "@/server/supabase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@nextui-org/react";
 
 function UpdatePassword() {
     const [password1, setPassword1] = useState("");
@@ -61,13 +62,13 @@ function UpdatePassword() {
                     onChange={(e) => setPassword2(e.target.value)}
                 ></input>
                 <br></br>
-                <button
-                    className="bg-[#4d47eb]  hover:bg-[hsl(242,80%,65%)] focus:bg-[hsl(242,89%,71%)]  text-white px-5 py-2 mt-6 rounded-xl p-1"
+                <Button
+                    className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white px-5 py-2 mt-6 rounded p-1"
                     onClick={updatePass}
                 >
                     {" "}
                     Confirm
-                </button>
+                </Button>
             </div>
         </div>
     );

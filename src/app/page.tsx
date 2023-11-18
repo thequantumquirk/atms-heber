@@ -16,6 +16,7 @@ import CardsFrom from "@/components/cards-from";
 import Image from "next/image";
 import Arrow from '../../public/arrowup.svg'
 import Calendar from "@/components/calander";
+import Filter from "../../public/filter.svg"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -103,13 +104,13 @@ console.log(assignedTo)
        {details.rolePower!=1 && details.rolePower!=5? 
        <div className="flex justify-end ">
             <DropdownMenu>
-                <DropdownMenuTrigger asChild><Button className="rounded bg-slate-100">Filter</Button></DropdownMenuTrigger>
-                <DropdownMenuContent className="">
+                <DropdownMenuTrigger asChild><Button className="rounded bg-slate-100"><Image src={Filter} width={15} className="mr-2" alt="filterIcon"></Image>Filter</Button></DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-white">
                     <DropdownMenuLabel>Filter Tasks</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                      <DropdownMenuRadioGroup value={state} onValueChange={setState}>
-                        <DropdownMenuRadioItem value="By">Assigned By You</DropdownMenuRadioItem>
                         <DropdownMenuRadioItem value="To">Assigned To You</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="By">Assigned By You</DropdownMenuRadioItem>
                     </DropdownMenuRadioGroup>
                 </DropdownMenuContent>
             </DropdownMenu>

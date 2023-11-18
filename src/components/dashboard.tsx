@@ -36,7 +36,7 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
     return (
         <>
           {rolePower === 1 ? (
-            <div className="px-20 py-7 flex justify-between items-center">
+            <div className="px-20 py-12 flex justify-between items-center">
               <div className="flex flex-col gap-1">
                 <h1 className="text-4xl font-semibold">
                   {greeting}
@@ -53,7 +53,7 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
               </div>
               <div className="flex gap-12  items-center justify-center">
                 <Button
-                  className="rounded bg-[rgba(62,56,245,0.9)] text-white font-medium"
+                  className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white px-5 py-2 mt-6 rounded p-1"
                   onClick={() => signUserOut()}
                 >
                   Sign-out
@@ -61,7 +61,7 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
               </div>
             </div>
           ) : (
-            <div className="px-20 py-7 flex justify-between items-center">
+            <div className="px-20 py-12 flex justify-between items-center">
               <div className="flex flex-col gap-1">
                 <h1 className="text-4xl font-semibold flex gap-2">
                   {greeting}

@@ -16,8 +16,8 @@ export default function FilterButton() {
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
+      <DropdownItem key="By">Assigned To You</DropdownItem>
         <DropdownItem key="To">Assigned By You</DropdownItem>
-        <DropdownItem key="By">Assigned To You</DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

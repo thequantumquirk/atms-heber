@@ -3,6 +3,7 @@ import { useState } from "react";
 import { getSession, login } from "@/server/auth/auth-user";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@nextui-org/react";
 
 
 const LoginPage = () => {
@@ -12,8 +13,14 @@ const LoginPage = () => {
     const { toast } = useToast()
 
     async function LoginUser(email: string, password: string) {
+        toast({
+            description:"Loading...",
+          }) 
         const res = await login(email, password)
         if (res.status) {
+            toast({
+                description:"Logged in Successfully",
+              }) 
             router.push("/")
         } else {
             toast({
@@ -58,13 +65,13 @@ const LoginPage = () => {
                         />
                     </div>
                     <div className="flex items-end justify-between">
-                        <button
+                        <Button
                             type="submit"
                             onClick={() => { LoginUser(email, password) }}
-                            className="p-2 w-[6rem] rounded-lg text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)] focus:bg-[hsl(242,89%,71%)] transition-all ease-linear"
+                            className="p-2 w-[6rem] rounded text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)] transition-all ease-linear"
                         >
                             Login
-                        </button>
+                        </Button>
                         <a
                             href="/verify-mail"
                             className="text-base text-[hsl(242,80%,60%)] underline"

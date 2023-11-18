@@ -1,24 +1,37 @@
-"use client";
+"use client"
 import { useState } from "react";
 import { signUp, login } from "@/server/auth/auth-user";
 import vector from "../../../public/Login/signup-vector.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
+import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu"
 
 export default function Signup() {
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [role, setRole] = useState("")
   const router = useRouter();
   const { toast } = useToast()
-  async function signupUser(name: string, email: string, password: string) {
-    const res = await signUp(name, email, password);
+  async function signupUser(name: string, email: string, password: string, role:string) {
+    toast({
+        description:"Loading...",
+      }) 
+    const res = await signUp(name, email, password, role);
     if (res.status) {
       login(email, password);
       toast({
-        title: `Logged In Successfully`,
+        title: `Signed Up Successfully`,
         description:res.data,
       }) 
       router.push("/");
@@ -39,9 +52,9 @@ export default function Signup() {
           Sign-Up to Continue
         </h1>
         <div>
-          <label className="text-lg font-medium">Name</label>
+          <label className="text-stone-500 font-medium">Name</label>
           <input
-            className="w-full bg-slate-200 rounded-lg px-4 py-2 mt-2"
+            className="w-full bg-slate-100 rounded px-4 py-2 "
             type="text"
             required
             onChange={(e) => {
@@ -50,9 +63,9 @@ export default function Signup() {
           ></input>
         </div>
         <div>
-          <label className="text-lg font-medium">Email ID</label>
+          <label className="text-stone-500  font-medium">Email ID</label>
           <input
-            className="w-full bg-slate-200 rounded-lg px-4 py-2 mt-2"
+            className="w-full bg-slate-100 rounded px-4 py-2"
             type="mail"
             id="name"
             required
@@ -61,10 +74,11 @@ export default function Signup() {
             }}
           ></input>
         </div>
-        <div>
-          <label className="text-lg font-medium">Enter Password</label>
+        <div className="flex gap-4">
+            <div>
+          <label className="text-stone-500  font-medium">Enter Password</label>
           <input
-            className="w-full bg-slate-200 rounded-lg px-4 py-2 mt-2"
+            className="w-full bg-slate-100 rounded px-4 py-2"
             type="password"
             id="name"
             required
@@ -72,16 +86,32 @@ export default function Signup() {
               setPassword(e.target.value);
             }}
           ></input>
+          </div>
+          <div>
+          <label className="text-stone-500  font-medium">Role</label>
+          <DropdownMenu>
+                <DropdownMenuTrigger asChild><Button className="w-40 bg-slate-100 rounded px-4 py-2">{role}</Button></DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-white">
+                    <DropdownMenuLabel>Your Role</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                     <DropdownMenuRadioGroup value={role} onValueChange={setRole}>
+                        <DropdownMenuRadioItem value="Student">Student</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="Professor">Professor</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="HOD">Head of Department</DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-        <button
+        <Button
           type="submit"
-          className="p-2 mt-3 w-[6rem] mx-auto rounded-lg text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)] focus:bg-[hsl(242,89%,71%)]  transition-all ease-linear"
+          className="p-2 mt-3 w-[6rem] mx-auto rounded text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)] transition-all ease-linear"
           onClick={() => {
-            signupUser(name, email, password);
+            signupUser(name, email, password, role);
           }}
         >
           Sign-Up{" "}
-        </button>
+        </Button>
         <h3 className="text-center mt-1">
           Have an account?{" "}
           <a href="/login" className="text-[#4d47eb] underline">

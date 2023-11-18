@@ -96,7 +96,7 @@ const Update = ({ id, status_details, current_status, style, onUpdateTasks }: Pr
                   </div>
                 ))}
                 </div>
-                <Button onClick={updateTaskStatus} className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)]  transition-all ease-linear">Update</Button>
+                <Button onClick={updateTaskStatus} className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed]  transition-all ease-linear">Update</Button>
               </div>
             </DialogDescription>
           </DialogHeader>

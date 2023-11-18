@@ -11,7 +11,9 @@ export default function ResetPassword() {
     const resetPass = async () => {
         const { status, error } = await resetPasswordWithEmail(email);
         if (status) {
-            alert("Password Updated Successfully"); //Will change this soon to customized alert
+            toast({
+                description:"Password Updated Successfully"
+            })
             router.push("/");
         } else {
             toast({
@@ -33,7 +35,7 @@ export default function ResetPassword() {
                     onChange={(e) => setEmail(e.target.value)}
                 ></input>
                 <button
-                    className="bg-[#4d47eb]  hover:bg-[hsl(242,80%,65%)] focus:bg-[hsl(242,89%,71%)] text-white px-5 py-2 mt-6 rounded-xl p-1"
+                    className="bg-[#4d47eb]  hover:bg-[hsl(242,80%,65%)] focus:bg-[hsl(242,89%,71%)] text-white px-5 py-2 mt-6 rounded p-1"
                     onClick={resetPass}
                 >
                     {" "}
