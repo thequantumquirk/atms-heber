@@ -10,18 +10,20 @@ import {
 import { useToast } from "@/components/ui/use-toast"
 import { updateTask } from '@/server/data/fetch-data';
 import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   id: string;
   status_details: string;
   current_status: string;
   style: string;
+  onUpdateTasks: () => void;
 };
 
-const Update = ({ id, status_details, current_status, style }: Props) => {
+const Update = ({ id, status_details, current_status, style, onUpdateTasks }: Props) => {
     const { toast } = useToast()
   const [milestoneChecked, setMilestoneChecked] = useState<{ [key: string]: boolean }>({});
-
+  const router = useRouter();
   // Parse status_details to get milestones
   const milestones: string[] = status_details.split(',');
 
@@ -51,7 +53,6 @@ const Update = ({ id, status_details, current_status, style }: Props) => {
       
     });
     const updatedCurrentStatus: string = updatedMilestones.join(',');
-    console.log(updatedCurrentStatus)
     
     updateTask(id, updatedCurrentStatus)
       .then((response) => {
@@ -60,6 +61,7 @@ const Update = ({ id, status_details, current_status, style }: Props) => {
             toast({
                 description:response.message,
               })
+              onUpdateTasks()
         } else {
             toast({
                 description:"Unable to Update Task. Try again."
@@ -76,14 +78,13 @@ const Update = ({ id, status_details, current_status, style }: Props) => {
   return (
     <div>
       <Dialog>
-        <DialogTrigger>
-        <Button className={`${style}`}>Update Task</Button>
-        </DialogTrigger>
-        <DialogContent>
+        <DialogTrigger  className={`${style}`}>Update Task</DialogTrigger>
+        <DialogContent className='bg-white'>
           <DialogHeader>
             <DialogTitle>Update Your Tasks</DialogTitle>
             <DialogDescription>
               <div>
+                <div className='my-4 mx-7'>
                 {milestones.map((milestone, key) => (
                   <div key={key}>
                     <input
@@ -94,7 +95,8 @@ const Update = ({ id, status_details, current_status, style }: Props) => {
                     {milestone.trim()}
                   </div>
                 ))}
-                <Button onClick={updateTaskStatus}>Update</Button>
+                </div>
+                <Button onClick={updateTaskStatus} className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)]  transition-all ease-linear">Update</Button>
               </div>
             </DialogDescription>
           </DialogHeader>

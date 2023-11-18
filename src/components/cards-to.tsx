@@ -1,22 +1,35 @@
+"use client"
 import { Tasktype } from "@/types/tasktype";
-import React from "react";
+import React, { useState } from "react";
 import { FormatDate } from "@/utilities/utillities";
 import NoTask from "../../public/notask.png"
 import Image from "next/image";
 import Update from "./update-tasks";
 import Progress from "./progress";
+import { fetchTasks } from "@/server/data/fetch-data";
 
-type Props = { assigned: Tasktype[]|undefined};
-const CardsTo = (props: Props) => {
-  const { assigned } = props;
-  if(assigned){
-  return (
+type Props = { Assigned: Tasktype[]|undefined};
+const CardsTo = ({Assigned}: Props) => {
+    const [assigned, setAssigned] = useState<Tasktype[] | undefined>(Assigned);
+
+  async function fetchUpdatedTasks() {
+    if (assigned) {
+      const data: any | null = await fetchTasks(assigned[0].assignee_id);
+      if (data.data) {
+        setAssigned(data.data.assignedToTasks);
+      }
+    }
+  }
+    if(assigned){
+    return (
     <>
     {assigned.length!=0?
         <div className="grid grid-cols-3 gap-5 my-7">
             {assigned.map((task, key)=>{
                 const date = FormatDate(task.task_due)
-                const complete = Math.ceil(task.current_status.length*100/task.status_details.length)
+                const status_details = task.status_details.split(",");
+                const current_status = task.current_status.split(",");
+                const complete = Math.ceil(current_status.length/status_details.length*100)
                 return(
                     <div key={key} className="bg-[#3e38f5]/10 px-7 py-5 rounded">
                     <div>
@@ -30,9 +43,9 @@ const CardsTo = (props: Props) => {
                                 <Progress percent={complete}/>
                             </div>
                         </div>
-                        <div className="grid grid-flow-col justify-end pt-5 w-full gap-5">
-                            <div className="font-medium bg-indigo-600/10 py-1 px-3 rounded ring-1 ring-inset w-40 ring-indigo-600/50 text-center">{date}</div>
-                            <Update style="rounded bg-[rgba(62,56,245,0.9)] text-white font-medium w-40"id={task.id} status_details={task.status_details} current_status={task.current_status}/>
+                        <div className="grid grid-flow-col justify-stretch pt-5 w-full gap-3">
+                            <div className="font-medium bg-indigo-600/10  rounded ring-1 ring-inset w-44 ring-indigo-600/50 text-center leading-10 ml-2">{date}</div>
+                            <Update onUpdateTasks={fetchUpdatedTasks} style="rounded bg-[rgba(62,56,245,0.9)] text-white font-medium w-44 py-2"id={task.id} status_details={task.status_details} current_status={task.current_status}/>
                         </div>
                     </div>
                 </div>

@@ -4,8 +4,7 @@ import { signUp, login } from "@/server/auth/auth-user";
 import vector from "../../../public/Login/signup-vector.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { setEmail } from "../../store/slice";
-import { useDispatch } from "react-redux";
+
 import { useToast } from "@/components/ui/use-toast"
 
 export default function Signup() {
@@ -14,11 +13,9 @@ export default function Signup() {
   const [name, setName] = useState("");
   const router = useRouter();
   const { toast } = useToast()
-  const dispatch = useDispatch();
   async function signupUser(name: string, email: string, password: string) {
     const res = await signUp(name, email, password);
     if (res.status) {
-      dispatch(setEmail(email));
       login(email, password);
       toast({
         title: `Logged In Successfully`,

@@ -12,6 +12,10 @@ import { setUserInfo } from "@/store/slice";
 import { useDispatch } from "react-redux";
 import { Tasktype } from "@/types/tasktype";
 import { Button } from "@/components/ui/button"
+import CardsFrom from "@/components/cards-from";
+import Image from "next/image";
+import Arrow from '../../public/arrowup.svg'
+import Calendar from "@/components/calander";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +25,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import CardsFrom from "@/components/cards-from";
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+  } from "@/components/ui/sheet"
+
 
 export default function Home() {
     const router = useRouter();
@@ -31,6 +43,17 @@ export default function Home() {
     const [assignedBy, setAssignedBy] = useState();
     const [details, setDetails] = useState({name:"", id:"", rolePower:0})
     const [state, setState] = useState("To")
+    const fetchUpdatedTasks = async () => {
+        // Fetch updated tasks
+        const updatedTasks: any = await fetchTasks(details.id);
+        if (updatedTasks.data) {
+          setAssignedTo(updatedTasks.data.assignedToTasks);
+          setAssignedBy(updatedTasks.data.assignedByTasks);
+        } else {
+          toast({ description: `${updatedTasks.message}` });
+        }
+      };
+    
   useEffect(() => {
     async function fetchSession() {
         const data = await getSession()
@@ -66,11 +89,13 @@ export default function Home() {
       }
     }
     fetchSession();
+    router.refresh()
   }, []//rendering once
   );
   if(details.rolePower==5){
     setState("By")
   }
+console.log(assignedTo)
   return (
     <>
        <Dashboard rolePower={details.rolePower} name={details.name} userId={details.id}/>
@@ -92,7 +117,22 @@ export default function Home() {
         :
         <div></div>
         }    
-        {state== "To"?<CardsTo assigned={assignedTo}/>:<CardsFrom assigned={assignedBy}/>}
+        {state== "To"?
+        <div>
+            <CardsTo Assigned={assignedTo}/>
+            <Sheet>
+                <SheetTrigger asChild><Button className="bg-slate-100 rounded-full px-3 py-6 fixed bottom-20 right-20"><Image src={Arrow} alt="arrow" width={25}/></Button></SheetTrigger>
+                    <SheetContent className="bg-white" side="bottom">
+                        <SheetHeader>
+                            <SheetTitle className="mx-5">Upcoming Task Due Dates</SheetTitle>
+                            <SheetDescription>
+                                <Calendar tasks={assignedTo}/>
+                            </SheetDescription>
+                        </SheetHeader>
+                    </SheetContent>
+</Sheet></div>:<CardsFrom assigned={assignedBy}/>}
+        
+        
         </div>
        </>
   );
