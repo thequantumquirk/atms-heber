@@ -41,7 +41,7 @@ export interface Database {
             columns: ["id"];
             referencedRelation: "users";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       tasks: {
@@ -87,7 +87,7 @@ export interface Database {
             columns: ["assigner_id"];
             referencedRelation: "profiles";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
     };

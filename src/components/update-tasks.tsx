@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,8 +7,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast"
-import { updateTask } from '@/server/data/fetch-data';
+import { useToast } from "@/components/ui/use-toast";
+import { updateTask } from "@/server/data/fetch-data";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
@@ -20,19 +20,31 @@ type Props = {
   onUpdateTasks: () => void;
 };
 
-const Update = ({ id, status_details, current_status, style, onUpdateTasks }: Props) => {
-    const { toast } = useToast()
-  const [milestoneChecked, setMilestoneChecked] = useState<{ [key: string]: boolean }>({});
+const Update = ({
+  id,
+  status_details,
+  current_status,
+  style,
+  onUpdateTasks,
+}: Props) => {
+  const { toast } = useToast();
+  const [milestoneChecked, setMilestoneChecked] = useState<{
+    [key: string]: boolean;
+  }>({});
   const router = useRouter();
   // Parse status_details to get milestones
-  const milestones: string[] = status_details.split(',');
+  const milestones: string[] = status_details.split(",");
 
   // Initialize checkbox states based on current_status
   useEffect(() => {
-    const completedMilestones: string[] = current_status.split(',').map(milestone => milestone.trim());
+    const completedMilestones: string[] = current_status
+      .split(",")
+      .map((milestone) => milestone.trim());
     const initialMilestoneChecked: { [key: string]: boolean } = {};
     milestones.forEach((milestone) => {
-      initialMilestoneChecked[milestone.trim()] = completedMilestones.includes(milestone.trim());
+      initialMilestoneChecked[milestone.trim()] = completedMilestones.includes(
+        milestone.trim(),
+      );
     });
     setMilestoneChecked(initialMilestoneChecked);
   }, [status_details, current_status]);
@@ -50,53 +62,57 @@ const Update = ({ id, status_details, current_status, style, onUpdateTasks }: Pr
       if (isChecked) {
         updatedMilestones.push(milestone);
       }
-      
     });
-    const updatedCurrentStatus: string = updatedMilestones.join(',');
-    
+    const updatedCurrentStatus: string = updatedMilestones.join(",");
+
     updateTask(id, updatedCurrentStatus)
       .then((response) => {
         // Handle success response
         if (response.status) {
-            toast({
-                description:response.message,
-              })
-              onUpdateTasks()
+          toast({
+            description: response.message,
+          });
+          onUpdateTasks();
         } else {
-            toast({
-                description:"Unable to Update Task. Try again."
-              })
+          toast({
+            description: "Unable to Update Task. Try again.",
+          });
         }
       })
       .catch((error) => {
         toast({
-            description:error.message
-          })
+          description: error.message,
+        });
       });
   };
 
   return (
     <div>
       <Dialog>
-        <DialogTrigger  className={`${style}`}>Update Task</DialogTrigger>
-        <DialogContent className='bg-white'>
+        <DialogTrigger className={`${style}`}>Update Task</DialogTrigger>
+        <DialogContent className="bg-white">
           <DialogHeader>
             <DialogTitle>Update Your Tasks</DialogTitle>
             <DialogDescription>
               <div>
-                <div className='my-4 mx-7'>
-                {milestones.map((milestone, key) => (
-                  <div key={key}>
-                    <input
-                      type="checkbox"
-                      checked={milestoneChecked[milestone.trim()] || false}
-                      onChange={() => handleCheckboxChange(milestone.trim())}
-                    />
-                    {milestone.trim()}
-                  </div>
-                ))}
+                <div className="my-4 mx-7">
+                  {milestones.map((milestone, key) => (
+                    <div key={key}>
+                      <input
+                        type="checkbox"
+                        checked={milestoneChecked[milestone.trim()] || false}
+                        onChange={() => handleCheckboxChange(milestone.trim())}
+                      />
+                      {milestone.trim()}
+                    </div>
+                  ))}
                 </div>
-                <Button onClick={updateTaskStatus} className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed]  transition-all ease-linear">Update</Button>
+                <Button
+                  onClick={updateTaskStatus}
+                  className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed]  transition-all ease-linear"
+                >
+                  Update
+                </Button>
               </div>
             </DialogDescription>
           </DialogHeader>

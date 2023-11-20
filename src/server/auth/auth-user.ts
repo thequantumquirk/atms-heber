@@ -4,7 +4,7 @@ import supabase from "../supabase";
 export async function signUp(
   name: string,
   email: string,
-  password: string
+  password: string,
 ): Promise<SupabaseResponse> {
   if (!email.endsWith("@bhc.edu.in")) {
     return { status: false, error: "Invalid Email ID" };
@@ -42,7 +42,7 @@ export async function signUp(
 
 export async function login(
   email: string,
-  password: string
+  password: string,
 ): Promise<SupabaseResponse> {
   if (!email.endsWith("@bhc.edu.in")) {
     return { status: false, error: "Invalid Email ID" };
