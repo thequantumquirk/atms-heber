@@ -74,7 +74,7 @@ export default function Home() {
                 name: meta.name,
                 id: id,
                 role_power: meta.role_power,
-              }),
+              })
             );
           }
           //fetching all the tasks regarding that userId and storing in variables
@@ -90,12 +90,11 @@ export default function Home() {
       fetchSession();
       router.refresh();
     },
-    [], //rendering once
+    [] //rendering once
   );
   if (details.rolePower == 5) {
     setState("By");
   }
-  console.log(assignedTo);
   return (
     <>
       <Dashboard
