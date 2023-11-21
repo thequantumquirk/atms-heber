@@ -1,0 +1,18 @@
+#!/bin/bash
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$branch" == "main" ]; then
+    echo "Running npm run build..."
+
+    if npm run build; then
+        echo "Build successful. Proceeding with push."
+        exit 0
+    else
+        echo "Build failed. Please fix the issues before pushing to the main branch."
+        exit 1
+    fi
+fi
+
+# For branches other than main, allow the push without checking the build.
+exit 0
