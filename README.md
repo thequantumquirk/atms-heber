@@ -35,6 +35,8 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser to see the 
 
 **Setting up Pre-Push hook is mandatory to contribute to the main branch**.
 
+This hook makes sure that the `npm build` succeeds before pushing to the main branch. As failing `npm build` will result in failed deployment
+
 To automatically copy the `pre-push` file to the appropriate Git hooks directory, use the provided Python script. This script works on both Unix-like systems (Linux, macOS) and Windows.
 
 ### Prerequisites
