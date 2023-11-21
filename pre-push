@@ -1,18 +1,28 @@
-#!/bin/bash
+##!/bin/bash
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if [ "$branch" == "main" ]; then
-    echo "Running npm run build..."
+function are_changes_in_src {
+    local changed_files=$(git diff --name-only origin/main HEAD)
+    echo "$changed_files" | grep -q "^src/"
+}
 
-    if npm run build; then
-        echo "Build successful. Proceeding with push."
-        exit 0
+if [ "$branch" == "main" ]; then
+    if are_changes_in_src; then
+        echo "Changes detected in the src/ directory. Running npm run build..."
+
+        if npm run build; then
+            echo "Build successful. Proceeding with push."
+            exit 0
+        else
+            echo "Build failed. Please fix the issues before pushing to the main branch."
+            exit 1
+        fi
     else
-        echo "Build failed. Please fix the issues before pushing to the main branch."
-        exit 1
+        echo "No changes detected in the src/ directory. Skipping build."
+        exit 0
     fi
 fi
 
-# For branches other than main, allow the push without checking the build.
 exit 0
+
