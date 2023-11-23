@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use client'
 import Plus from "../../public/plus.svg"
 import Image from 'next/image'
@@ -7,24 +6,6 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import { createTask, fetchUsers } from "@/server/data/fetch-data"
 import plus from "../../public/plus.svg"
 import { useToast } from "./ui/use-toast"
-=======
-"use client";
-import Plus from "../../public/plus.svg";
-import Image from "next/image";
-import { useState } from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  Button,
-} from "@nextui-org/react";
-import { createTask, fetchUsers } from "@/server/data/fetch-data";
-import plus from "../../public/plus.svg";
-import { useToast } from "./ui/use-toast";
->>>>>>> 7288940c9750a0d6f22a93d8d6bef722759b42ed
 import { PersonType } from "@/types/usertype";
 import { Skeleton } from "@nextui-org/react";
 
@@ -35,19 +16,6 @@ export default function TaskForm({ role, userId }: Props) {
   const handleOpen = () => {
     onOpen();
   };
-  const { toast } = useToast();
-  const [people, setpeople] = useState<PersonType[]>();
-
-  async function fetch() {
-    const data: any | null = await fetchUsers(role);
-    if (data.data) {
-      setpeople(data.data);
-    } else {
-      toast({
-        description: `${data}`,
-      });
-    }
-<<<<<<< HEAD
     const { toast } = useToast()
     const [people, setpeople] = useState<PersonType[]>()
     async function fetch(){
@@ -74,6 +42,7 @@ export default function TaskForm({ role, userId }: Props) {
             toast({
                 description:"Loading..."
               })
+            onClose()
             if(result.status){
                 toast({
                     description:result.message
@@ -84,41 +53,9 @@ export default function TaskForm({ role, userId }: Props) {
                     description:`${result.message}`
                   })
             }
-            onClose()
+            
         }
     if(people){
-=======
-  }
-  fetch();
-  async function handleSubmit(event: any) {
-    event.preventDefault();
-    var to = String(event.target.user.value);
-    var name = String(event.target.name.value);
-    var desc = String(event.target.desc.value);
-    var milestones = String(event.target.milestones.value);
-    var due = String(event.target.due.value);
-    var dueDate = new Date(due);
-    const result: any | null = await createTask(
-      userId,
-      to,
-      name,
-      desc,
-      dueDate,
-      milestones,
-      "",
-    );
-    if (result.status) {
-      toast({
-        description: result.message,
-      });
-    } else {
-      toast({
-        description: `${result.message}`,
-      });
-    }
-  }
-  if (people) {
->>>>>>> 7288940c9750a0d6f22a93d8d6bef722759b42ed
     return (
       <div>
         <Button
@@ -213,9 +150,7 @@ export default function TaskForm({ role, userId }: Props) {
       </div>
     );
   }
-}
-<<<<<<< HEAD
-else{
+  else{
     return(
         <Skeleton className="w-32 h-10 rounded-lg" />
       )
@@ -223,5 +158,4 @@ else{
 }
 
 
-=======
->>>>>>> 7288940c9750a0d6f22a93d8d6bef722759b42ed
+
