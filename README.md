@@ -1,34 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ATMS-Heber
+
+Welcome to ATMS-Heber! This is an Advanced Task Management System built for Bishop Heber College.
 
 ## Getting Started
 
-First, run the development server:
+Follow these steps to set up the project:
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) installed on your machine.
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/fosslover69/atms-heber.git
+cd atms-heber
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) in your browser to see the app!
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setting up Pre-Push Hook
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**Setting up Pre-Push hook is mandatory to contribute to the main branch**.
 
-## Learn More
+This hook makes sure that the `npm build` succeeds before pushing to the main branch. As failing `npm build` will result in failed deployment
 
-To learn more about Next.js, take a look at the following resources:
+To automatically copy the `pre-push` file to the appropriate Git hooks directory, use the provided Python script. This script works on both Unix-like systems (Linux, macOS) and Windows.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prerequisites
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Python installed on your machine.
 
-## Deploy on Vercel
+### Run the Setup Script
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+python setup-hooks.py
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This script will detect your operating system and execute the corresponding shell script (`setup-hooks.sh` for Unix-like systems, `setup-hooks.bat` for Windows). The pre-push hook ensures that certain checks are performed before pushing changes to the remote repository.
