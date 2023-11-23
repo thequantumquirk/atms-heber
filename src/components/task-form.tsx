@@ -2,11 +2,12 @@
 import Plus from "../../public/plus.svg"
 import Image from 'next/image'
 import { useState } from "react"
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button, CircularProgress } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button } from "@nextui-org/react";
 import { createTask, fetchUsers } from "@/server/data/fetch-data"
 import plus from "../../public/plus.svg"
 import { useToast } from "./ui/use-toast"
 import { PersonType } from "@/types/usertype";
+import { Skeleton } from "@nextui-org/react";
 
 
 const inputtext = "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm "
@@ -18,7 +19,6 @@ export default function TaskForm({role,userId}:Props) {
     }
     const { toast } = useToast()
     const [people, setpeople] = useState<PersonType[]>()
-
     async function fetch(){
         const data:any|null = await fetchUsers(role);
         if(data.data){
@@ -26,7 +26,7 @@ export default function TaskForm({role,userId}:Props) {
         }
         else{
             toast({
-                description:`${data}`
+                description:data.message
               })
         }
     }
@@ -40,6 +40,9 @@ export default function TaskForm({role,userId}:Props) {
             var due=String(event.target.due.value)
             var dueDate = new Date(due)
             const result:any|null = await createTask(userId, to, name, desc, dueDate, milestones, "");
+            toast({
+                description:"Loading..."
+              })
             if(result.status){
                 toast({
                     description:result.message
@@ -50,6 +53,7 @@ export default function TaskForm({role,userId}:Props) {
                     description:`${result.message}`
                   })
             }
+            onClose()
         }
     if(people){
     return (
@@ -146,6 +150,11 @@ export default function TaskForm({role,userId}:Props) {
         </Modal>
       </div>
     );
+}
+else{
+    return(
+        <Skeleton className="w-32 h-10 rounded-lg" />
+      )
 }
 }
 

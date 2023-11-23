@@ -69,6 +69,9 @@ export default function Home() {
             if(id && meta){
                 //storing into local variables for refreshing purpose
                 setDetails({name:meta.name,id:id,rolePower:meta.role_power })
+                if(meta.role_power==5){
+                    setState("By")
+                  }
             //     storing into redux store for later use. comment if not needed
                 dispatch(
                 setUserInfo({
@@ -90,13 +93,11 @@ export default function Home() {
       }
     }
     fetchSession();
+    
     router.refresh()
   }, []//rendering once
   );
-  if(details.rolePower==5){
-    setState("By")
-  }
-console.log(assignedTo)
+  
   return (
     <>
        <Dashboard rolePower={details.rolePower} name={details.name} userId={details.id}/>

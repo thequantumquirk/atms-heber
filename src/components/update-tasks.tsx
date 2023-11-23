@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -81,25 +83,30 @@ const Update = ({ id, status_details, current_status, style, onUpdateTasks }: Pr
         <DialogTrigger  className={`${style}`}>Update Task</DialogTrigger>
         <DialogContent className='bg-white'>
           <DialogHeader>
-            <DialogTitle>Update Your Tasks</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className='text-xl'>Update Your Tasks</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
               <div>
                 <div className='my-4 mx-7'>
                 {milestones.map((milestone, key) => (
-                  <div key={key}>
+                  <div key={key} className='text-[1.1rem] leading-[1.5rem] my-1'>
                     <input
                       type="checkbox"
                       checked={milestoneChecked[milestone.trim()] || false}
                       onChange={() => handleCheckboxChange(milestone.trim())}
+                      className='w-4 h-4 mr-2'
                     />
                     {milestone.trim()}
                   </div>
                 ))}
                 </div>
-                <Button onClick={updateTaskStatus} className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed]  transition-all ease-linear">Update</Button>
               </div>
             </DialogDescription>
-          </DialogHeader>
+          <DialogFooter>
+          <DialogClose asChild >
+                <Button onClick={updateTaskStatus} className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed]  transition-all ease-linear">Update</Button>
+                </DialogClose>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

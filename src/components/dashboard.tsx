@@ -78,7 +78,7 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
                   Here is a list of your tasks
                 </p>
               </div>
-              {name ? (
+              {/* {name ? ( */}
                 <div className="flex gap-12  items-center justify-center">
                   <TaskForm role={rolePower} userId={userId}/>
                   <Button className="rounded bg-slate-100">
@@ -92,7 +92,7 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
                     Sign-out
                   </Button>
                 </div>
-              ) : null}
+              {/* ) : null} */}
             </div>
           )}
         </>
