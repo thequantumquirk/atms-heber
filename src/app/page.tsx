@@ -88,13 +88,13 @@ export default function Home() {
         }
       }
       fetchSession();
+      if (details.rolePower == 5) {
+        setState("By");
+      }
       router.refresh();
     },
     [] //rendering once
   );
-  if (details.rolePower == 5) {
-    setState("By");
-  }
   return (
     <>
       <Dashboard
