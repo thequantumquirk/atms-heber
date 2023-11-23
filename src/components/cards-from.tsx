@@ -1,5 +1,4 @@
-import { Tasktype } from '@/types/tasktype'
-import React from 'react'
+import { Tasktype } from "@/types/tasktype";
 import { FormatDate } from "@/utilities/utillities";
 import Progress from "./progress";
 import NoTask from "../../public/notask.svg"
@@ -7,7 +6,7 @@ import Image from 'next/image';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button } from "@nextui-org/react";
 import {CircularProgress} from "@nextui-org/react";
 
-type Props = {assigned: Tasktype[]|undefined}
+type Props = { assigned: Tasktype[] | undefined };
 
 const CardsFrom = ({assigned}: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,7 +21,7 @@ const CardsFrom = ({assigned}: Props) => {
     if(assigned){
     return (
       <>
-      {assigned.length!=0?
+        {assigned.length != 0 ? (
           <div className="grid grid-cols-3 gap-5 my-7">
               {assigned.map((task, key)=>{
                   const date = FormatDate(task.task_due)
@@ -68,29 +67,34 @@ const CardsFrom = ({assigned}: Props) => {
               )})}
           
         </div>
-         
-          :
+        ):(
           <div className="text-center">
             <Image src={NoTask} alt="NoTask" className="mx-auto"></Image>
-            <p className=" text-stone-400 text-sm -my-10 ">No one to monitor at the moment</p>
-        </div>
-         }
-     </>
+            <p className=" text-stone-400 text-sm -my-10 ">
+              No one to monitor at the moment
+            </p>
+          </div>
+        )}
+      </>
+    );
+  } else {
+    return (
+      <div className="my-14">
+        <CircularProgress
+          classNames={{
+            svg: "w-14 h-14 drop-shadow-md",
+            indicator: "stroke-indigo-600",
+            track: "stroke-white/10",
+          }}
+          className="mx-auto"
+          aria-label="Loading..."
+        />
+        <p className="flex justify-center text-stone-600 font-semibold text-xl my-1">
+          Loading
+        </p>
+      </div>
     );
   }
-  else{
-      return(
-        <div className='my-14'>
-        <CircularProgress classNames={{
-    svg: "w-14 h-14 drop-shadow-md",
-    indicator: "stroke-indigo-600",
-    track: "stroke-white/10",
-  }}    className="mx-auto" aria-label="Loading..." />
-        <p className="flex justify-center text-stone-600 font-semibold text-xl my-1">Loading</p>
-  </div>
-      )
-  }
-  }
-  
-  export default CardsFrom;
-  
+};
+
+export default CardsFrom;

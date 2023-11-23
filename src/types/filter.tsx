@@ -1,4 +1,4 @@
-export interface Filter{
-    name: string,
-    role:string
+export interface Filter {
+  name: string;
+  role: string;
 }

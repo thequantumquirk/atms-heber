@@ -12,7 +12,7 @@ export async function fetchTasks(userId: string) {
   let { data: assignedToTasks, error } = await supabase
     .from("tasks")
     .select(
-      "*, assigner_name:assigner_id(name), assignee_name:assignee_id(name)"
+      "*, assigner_name:assigner_id(name), assignee_name:assignee_id(name)",
     )
     .eq("assignee_id", userId);
   if (error) {
@@ -33,7 +33,7 @@ export async function createTask(
   task_description: string,
   task_due: Date,
   status_details: string,
-  current_status: string
+  current_status: string,
 ) {
   const { data, error } = await supabase
     .from("tasks")
@@ -78,15 +78,15 @@ export async function fetchUsers(rolePower: number) {
 export async function updateTask(id: string, current_status: string) {
   const { data, error } = await supabase
     .from("tasks")
-    .update({ 'current_status': current_status })
+    .update({ current_status: current_status })
     .eq("id", id)
     .select();
   if (error) {
     return {
-        status: false,
-        error,
-        message: "Status update Unsuccessful",
-      };
+      status: false,
+      error,
+      message: "Status update Unsuccessful",
+    };
   }
   return {
     status: true,

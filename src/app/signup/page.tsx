@@ -5,27 +5,27 @@ import vector from "../../../public/Login/signup-vector.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/react";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Signup() {
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const router = useRouter();
-  const { toast } = useToast()
+  const { toast } = useToast();
   async function signupUser(name: string, email: string, password: string) {
     const res = await signUp(name, email, password);
     if (res.status) {
       login(email, password);
       toast({
         title: `Logged In Successfully`,
-        description:res.data,
-      }) 
+        description: res.data,
+      });
       router.push("/");
     } else {
-        toast({
-            description:res.error,
-          })
+      toast({
+        description: res.error,
+      });
     }
   }
 

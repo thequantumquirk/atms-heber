@@ -1,20 +1,19 @@
-import React from 'react'
 import { Button, Skeleton } from "@nextui-org/react";
 import TaskForm from "@/components/task-form";
 import Image from "next/image";
 import exportIcon from "../../public/export.svg";
-import { ToLocalTime } from "@/utilities/utillities";import { signOut } from '@/server/auth/auth-user';
-import { useToast } from "@/components/ui/use-toast"
+import { ToLocalTime } from "@/utilities/utillities";
+import { signOut } from "@/server/auth/auth-user";
+import { useToast } from "@/components/ui/use-toast";
 
+type Props = { rolePower: number; name: string; userId: string };
 
-type Props = {rolePower:number, name:string, userId:string}
-
-const Dashboard = ({rolePower, name, userId}: Props) => {
-    const date = new Date();
+const Dashboard = ({ rolePower, name, userId }: Props) => {
+  const date = new Date();
   const today = ToLocalTime(date);
   const Hour = today.getUTCHours();
   let greeting: string;
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   if (Hour >= 0 && Hour < 12) {
     greeting = "Good Morning";
@@ -28,9 +27,9 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
     if (status) {
       window.location.href = "/";
     } else {
-        toast({
-            description:error,
-          })
+      toast({
+        description: error,
+      });
     }
   }
     return (
@@ -94,9 +93,11 @@ const Dashboard = ({rolePower, name, userId}: Props) => {
                 </div>
               {/* ) : null} */}
             </div>
-          )}
-        </>
-      );
-}
+          ) 
+        
+      }
+    </>
+  );
+};
 
-export default Dashboard
+export default Dashboard;

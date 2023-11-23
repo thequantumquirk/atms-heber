@@ -1,7 +1,7 @@
 // rootReducer.ts
 
-import { combineReducers } from '@reduxjs/toolkit';
-import userReducer from './slice';
+import { combineReducers } from "@reduxjs/toolkit";
+import userReducer from "./slice";
 
 const rootReducer = combineReducers({
   user: userReducer,
