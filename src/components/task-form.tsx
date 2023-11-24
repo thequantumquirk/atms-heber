@@ -42,8 +42,8 @@ export default function TaskForm({ role, userId }: Props) {
             toast({
                 description:"Loading..."
               })
-            onClose()
             if(result.status){
+                onClose()
                 toast({
                     description:result.message
                   })
@@ -127,7 +127,7 @@ export default function TaskForm({ role, userId }: Props) {
                     </div>
                   </ModalBody>
                   <ModalFooter>
-                    <button
+                    <Button
                       type="submit"
                       name="submit"
                       id="submit"
@@ -140,7 +140,7 @@ export default function TaskForm({ role, userId }: Props) {
                         className="mt-0.5"
                       ></Image>
                       <p>Add Task</p>
-                    </button>
+                    </Button>
                   </ModalFooter>
                 </form>
               </>

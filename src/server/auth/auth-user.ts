@@ -10,13 +10,13 @@ export async function signUp(
     return { status: false, error: "Invalid Email ID" };
   }
   let number = /\d/;
-  let role = "HOD";
-  let role_power = 3;
-//   console.log(number.test(email));
-//   if (!number.test(email)) {
-//     role = "Faculty";
-//     role_power = 2;
-//   }
+  let role = "Student";
+  let role_power = 1;
+  console.log(number.test(email));
+  if (!number.test(email)) {
+    role = "Faculty";
+    role_power = 2;
+  }
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
