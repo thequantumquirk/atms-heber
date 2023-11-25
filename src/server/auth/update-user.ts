@@ -3,7 +3,7 @@ import supabase from "../supabase";
 
 export async function verifySignupOtp(
   email: string,
-  token: string,
+  token: string
 ): Promise<SupabaseResponse> {
   const { data, error } = await supabase.auth.verifyOtp({
     email,
@@ -18,7 +18,7 @@ export async function verifySignupOtp(
 }
 
 export async function resendSignupOtp(
-  email: string,
+  email: string
 ): Promise<SupabaseResponse> {
   const { data, error } = await supabase.auth.resend({
     type: "signup",
@@ -46,7 +46,7 @@ export async function resetPasswordWithEmail(email: string) {
 }
 
 export async function updatePassword(
-  password: string,
+  password: string
 ): Promise<SupabaseResponse> {
   const { data, error } = await supabase.auth.updateUser({
     password,
