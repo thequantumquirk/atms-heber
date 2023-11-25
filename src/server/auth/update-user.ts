@@ -33,7 +33,7 @@ export async function resendSignupOtp(
 
 export async function resetPasswordWithEmail(email: string) {
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "http://localhost:3000/update-password",
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ""}/update-password`,
   });
   if (error) {
     return { status: false, error: error.message };
