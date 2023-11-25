@@ -22,7 +22,7 @@ export async function resendSignupOtp(
 ): Promise<SupabaseResponse> {
   const { data, error } = await supabase.auth.resend({
     type: "signup",
-    email: "email@example.com",
+    email,
   });
   if (error) {
     return { status: false, error: error.message };
