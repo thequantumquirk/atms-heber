@@ -105,3 +105,21 @@ export async function updateTask(id: string, current_status: string) {
     message: "Status updated successfully",
   };
 }
+
+export async function deleteTask(taskId: string) {
+  let { data, error } = await supabase.from("tasks").delete().eq("id", taskId);
+
+  if (error) {
+    console.log(error);
+    return {
+      status: false,
+      error,
+      message: "Couldn't Delete Task",
+    };
+  }
+  return {
+    status: true,
+    data,
+    message: "Task Deleted Successfully",
+  };
+}

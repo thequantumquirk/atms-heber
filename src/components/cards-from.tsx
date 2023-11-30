@@ -4,6 +4,7 @@ import { FormatDate } from "@/utilities/utillities";
 import Progress from "./progress";
 import NoTask from "../../public/notask.svg";
 import Image from "next/image";
+import { deleteTask } from "@/server/data/fetch-data";
 import {
   Modal,
   ModalContent,
@@ -13,7 +14,7 @@ import {
   Button,
   CircularProgress,
 } from "@nextui-org/react";
-
+import { useToast } from "./ui/use-toast";
 function stripMilestones(status_details: string, current_status: string) {
   const completedMilestones: string[] = current_status
     .split(",")
@@ -26,6 +27,13 @@ type Props = { assigned: Tasktype[] | undefined };
 const CardsFrom = ({ assigned }: Props) => {
   const [openModalIndex, setOpenModalIndex] = useState<number | null>(null);
 
+  const { toast } = useToast();
+  async function remove(taskId: string) {
+    const res = await deleteTask(taskId);
+    toast({
+      description: res.message,
+    });
+  }
   if (!assigned) {
     return (
       <div className="my-14">
@@ -100,6 +108,14 @@ const CardsFrom = ({ assigned }: Props) => {
                       <div className="grid grid-flow-col justify-stretch pt-5 w-full gap-5">
                         <Button className="font-medium bg-indigo-600/10 py-1 px-3 rounded ring-1 ring-inset ring-indigo-600/50 text-center">
                           {date}
+                        </Button>
+                        <Button
+                          className="bg-indigo-500 hover:bg-red-500 py-1 px-3 rounded text-white text-center font-semibold"
+                          onClick={() => {
+                            deleteTask(task.id);
+                          }}
+                        >
+                          Delete Task
                         </Button>
                       </div>
                     </div>

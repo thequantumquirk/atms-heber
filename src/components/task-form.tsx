@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
+import * as z from "zod";
 import {
   Popover,
   PopoverContent,
@@ -41,11 +42,14 @@ const inputtext =
   "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 ";
 type Props = { role: number; userId: string };
 export default function TaskForm({ role, userId }: Props) {
-  const [selectedUser, setSelectedUser] = useState("");
-  const [date, setDate] = useState<Date>();
-  const handleItemChange = (value: string) => {
-    setSelectedUser(value);
+  const [selectedUser, setSelectedUser] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
+  const handleItemChange = (id: string, name: string) => {
+    setSelectedUser({ id, name });
   };
+  const [date, setDate] = useState<Date>();
   const { toast } = useToast();
   const [people, setpeople] = useState<PersonType[]>();
   async function fetch() {
@@ -61,32 +65,38 @@ export default function TaskForm({ role, userId }: Props) {
   fetch();
   async function handleSubmit(event: any) {
     event.preventDefault();
-    var to = String(event.target.user.value);
+    var to = String(selectedUser?.id);
     var name = String(event.target.name.value);
     var desc = String(event.target.desc.value);
     var milestones = String(event.target.milestones.value);
-    var due = String(event.target.due.value);
-    var dueDate = new Date(due);
-    const result: any | null = await createTask(
-      userId,
-      to,
-      name,
-      desc,
-      dueDate,
-      milestones,
-      ""
-    );
-    toast({
-      description: "Loading...",
-    });
-    if (result.status) {
+    var due = String(date);
+    var dueDate;
+    if (date) {
+      var due = String(date);
+      dueDate = new Date(due);
+      console.log(userId, to, name, desc, dueDate, milestones);
+      const result: any | null = await createTask(
+        userId,
+        to,
+        name,
+        desc,
+        dueDate,
+        milestones,
+        ""
+      );
+      console.log(result);
       toast({
-        description: result.message,
+        description: "Loading...",
       });
-    } else {
-      toast({
-        description: `${result.message}`,
-      });
+      if (result.status) {
+        toast({
+          description: result.message,
+        });
+      } else {
+        toast({
+          description: `${result.message}`,
+        });
+      }
     }
   }
   if (people) {
@@ -114,7 +124,7 @@ export default function TaskForm({ role, userId }: Props) {
                         <DropdownMenuTrigger asChild>
                           <Button className={`justify-start ${inputtext}`}>
                             {selectedUser
-                              ? `${selectedUser}`
+                              ? selectedUser.name
                               : "Assign Task To"}
                           </Button>
                         </DropdownMenuTrigger>
@@ -124,13 +134,20 @@ export default function TaskForm({ role, userId }: Props) {
                           </DropdownMenuLabel>
                           <DropdownMenuSeparator />
                           <DropdownMenuRadioGroup
-                            value={selectedUser}
-                            onValueChange={handleItemChange}
+                            value={selectedUser?.id ?? ""}
+                            onValueChange={(value) => {
+                              const user = people.find(
+                                (person) => person.id === value
+                              );
+                              if (user) {
+                                handleItemChange(user.id, user.name);
+                              }
+                            }}
                           >
                             {people.map((item, index) => (
                               <DropdownMenuRadioItem
                                 key={index}
-                                value={item.name}
+                                value={item.id}
                               >
                                 {item.name}
                               </DropdownMenuRadioItem>
@@ -180,28 +197,27 @@ export default function TaskForm({ role, userId }: Props) {
                           )}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
+                      <PopoverContent className="w-auto p-0 bg-white ">
                         <Calendar
                           mode="single"
                           selected={date}
                           onSelect={setDate}
                           initialFocus
+                          className="bg-white"
                         />
                       </PopoverContent>
                     </Popover>
                   </div>
                 </DialogDescription>
                 <DialogFooter>
-                  <DialogClose asChild>
-                    <Button
-                      type="submit"
-                      name="submit"
-                      id="submit"
-                      className=" mx-auto  hover:bg-indigo-700 bg-indigo-600 text-white py-2 mt-6 rounded px-3"
-                    >
-                      <p>Add Task</p>
-                    </Button>
-                  </DialogClose>
+                  <Button
+                    type="submit"
+                    name="submit"
+                    id="submit"
+                    className=" mx-auto  hover:bg-indigo-700 bg-indigo-600 text-white py-2 mt-6 rounded px-3"
+                  >
+                    <p>Add Task</p>
+                  </Button>
                 </DialogFooter>
               </form>
             </>
