@@ -34,8 +34,7 @@ const LoginPage = () => {
         style={{ backgroundImage: "url(./Login/circle-scatter.svg)" }}
       >
         <h2 className="text-4xl text-center font-semibold">
-          Welcome to{" "}
-          <span className="text-[hsl(242,80%,60%)]">ATMS</span>
+          Welcome to <span className="text-[hsl(242,80%,60%)]">ATMS</span>
         </h2>
         <div className="md:w-[30vw] p-8 flex flex-col gap-5">
           <h1 className="text-3xl font-medium mb-2">Login</h1>
@@ -51,6 +50,7 @@ const LoginPage = () => {
               }}
             />
           </div>
+
           <div>
             <label className="text-lg font-medium">Password</label>
             <input
