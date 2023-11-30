@@ -32,70 +32,68 @@ const Dashboard = ({ rolePower, name, userId }: Props) => {
       });
     }
   }
-    return (
-        <>
-          {rolePower === 1 ? (
-            <div className="px-20 py-12 flex justify-between items-center">
-              <div className="flex flex-col gap-1">
-                <h1 className="text-4xl font-semibold">
-                  {greeting}
-                  {name ? (
-                    <span className="text-[rgba(62,56,245)]"> {name}</span>
-                  ) : (
-                    <Skeleton className="h-3 w-3/5 rounded-lg" />
-                  )}
-                  !
-                </h1>
-                <p className="text-xl  text-slate-500 mt-1">
-                  Here is a list of your tasks
-                </p>
-              </div>
-              <div className="flex gap-12  items-center justify-center">
-                <Button
-                  className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white px-5 py-2 mt-6 rounded p-1"
-                  onClick={() => signUserOut()}
-                >
-                  Sign-out
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="px-20 py-12 flex justify-between items-center">
-              <div className="flex flex-col gap-1">
-                <h1 className="text-4xl font-semibold flex gap-2">
-                  {greeting}
-                  {name ? (
-                    <span className="text-[rgba(62,56,245)]"> {name}</span>
-                  ) : (
-                    <span>
-                      <Skeleton className="h-12 w-40 rounded-lg" />
-                    </span>
-                  )}
-                  !
-                </h1>
-                <p className="text-xl text-slate-500 mt-1">
-                  Here is a list of your tasks
-                </p>
-              </div>
-              {/* {name ? ( */}
-                <div className="flex gap-12  items-center justify-center">
-                  <TaskForm role={rolePower} userId={userId}/>
-                  <Button className="rounded bg-slate-100">
-                    <Image src={exportIcon} width={20} alt="Plus"></Image>
-                    Export
-                  </Button>
-                  <Button
-                    className="rounded bg-[rgba(62,56,245,0.9)] text-white font-medium"
-                    onClick={() => signUserOut()}
-                  >
-                    Sign-out
-                  </Button>
-                </div>
-              {/* ) : null} */}
-            </div>
-          ) 
-        
-      }
+  return (
+    <>
+      {rolePower === 1 ? (
+        <div className="px-20 py-12 flex justify-between items-center">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-4xl font-semibold">
+              {greeting}
+              {name ? (
+                <span className="text-[rgba(62,56,245)]"> {name}</span>
+              ) : (
+                <Skeleton className="h-3 w-3/5 rounded-lg" />
+              )}
+              !
+            </h1>
+            <p className="text-xl  text-slate-500 mt-1">
+              Here is a list of your tasks
+            </p>
+          </div>
+          <div className="flex gap-12  items-center justify-center">
+            <Button
+              className=" hover:bg-indigo-600 bg-indigo-500 text-white font-semibold px-5 py-2 mt-6 rounded"
+              onClick={() => signUserOut()}
+            >
+              Sign-out
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="px-20 py-12 flex justify-between items-center">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-4xl font-semibold flex gap-2">
+              {greeting}
+              {name ? (
+                <span className="text-[rgba(62,56,245)]"> {name}</span>
+              ) : (
+                <span>
+                  <Skeleton className="h-12 w-40 rounded-lg" />
+                </span>
+              )}
+              !
+            </h1>
+            <p className="text-xl text-slate-500 mt-1">
+              Here is a list of your tasks
+            </p>
+          </div>
+          {/* {name ? ( */}
+          <div className="flex gap-12  items-center justify-center">
+            <TaskForm role={rolePower} userId={userId} />
+            <Button className="rounded bg-slate-100">
+              <Image src={exportIcon} width={20} alt="Plus"></Image>
+              Export
+            </Button>
+            <Button
+              className=" hover:bg-indigo-700 bg-indigo-600 text-white font-semibold px-5 py-2 rounded"
+              onClick={() => signUserOut()}
+            >
+              Sign-out
+            </Button>
+          </div>
+          {/* ) : null} */}
+        </div>
+      )}
     </>
   );
 };

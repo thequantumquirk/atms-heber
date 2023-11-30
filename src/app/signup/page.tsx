@@ -75,7 +75,7 @@ export default function Signup() {
         </div>
         <Button
           type="submit"
-          className="p-2 mt-3 w-[6rem] mx-auto rounded text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)] transition-all ease-linear"
+          className="p-2 mt-3 w-[6rem] mx-auto rounded text-white font-semibold hover:bg-indigo-600 bg-indigo-500 transition-all ease-linear"
           onClick={() => {
             signupUser(name, email, password);
           }}
