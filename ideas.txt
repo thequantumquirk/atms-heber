@@ -1,7 +1,19 @@
 completion of tasks. seperate filter button
 refresh afrer assigning task
 datetime from nextui or shadcn
-export icon
+export functionality
 adding hod by  principal
 comment for milestones
 enter key click
+
+Responsiveness
+Email Verification
+Forgot Password
+Comments on Milestones
+Export as CSV
+Enter to submit on forms
+Implement Zod
+Change Heading
+Tabbed View
+Delete Task
+Deadlines for comment

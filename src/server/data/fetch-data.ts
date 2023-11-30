@@ -12,7 +12,7 @@ export async function fetchTasks(userId: string) {
   let { data: assignedToTasks, error } = await supabase
     .from("tasks")
     .select(
-      "*, assigner_name:assigner_id(name), assignee_name:assignee_id(name)",
+      "*, assigner_name:assigner_id(name), assignee_name:assignee_id(name)"
     )
     .eq("assignee_id", userId);
   if (error) {
@@ -33,7 +33,7 @@ export async function createTask(
   task_description: string,
   task_due: Date,
   status_details: string,
-  current_status: string,
+  current_status: string
 ) {
   const { data, error } = await supabase
     .from("tasks")
@@ -61,13 +61,24 @@ export async function createTask(
 }
 
 export async function fetchUsers(rolePower: number) {
-  let { data: profiles, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .lt("role_power", rolePower);
+  let { data: profiles, error } = await supabase.from("profiles").select("*");
+
+  if (rolePower === 5) {
+    ({ data: profiles, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("role_power", 3));
+  } else {
+    ({ data: profiles, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .lt("role_power", rolePower));
+  }
+
   if (error) {
     return error;
   }
+
   return {
     status: true,
     data: profiles,
