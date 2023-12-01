@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import * as z from "zod";
+import { useRouter } from "next/navigation";
 import {
   Popover,
   PopoverContent,
@@ -40,8 +40,11 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 
 const inputtext =
   "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 ";
-type Props = { role: number; userId: string };
-export default function TaskForm({ role, userId }: Props) {
+
+type Props = { role: number; userId: string; onAssign: () => void };
+
+export default function TaskForm({ role, userId, onAssign }: Props) {
+  const router = useRouter();
   const [selectedUser, setSelectedUser] = useState<{
     id: string;
     name: string;
@@ -92,6 +95,7 @@ export default function TaskForm({ role, userId }: Props) {
         toast({
           description: result.message,
         });
+        onAssign();
       } else {
         toast({
           description: `${result.message}`,
@@ -129,9 +133,7 @@ export default function TaskForm({ role, userId }: Props) {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-56 bg-white">
-                          <DropdownMenuLabel>
-                            Select a Faculty
-                          </DropdownMenuLabel>
+                          <DropdownMenuLabel>Select a User</DropdownMenuLabel>
                           <DropdownMenuSeparator />
                           <DropdownMenuRadioGroup
                             value={selectedUser?.id ?? ""}

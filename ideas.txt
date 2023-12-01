@@ -1,6 +1,5 @@
 completion of tasks. seperate filter button
 refresh afrer assigning task
-datetime from nextui or shadcn
 export functionality
 adding hod by  principal
 comment for milestones
@@ -15,5 +14,4 @@ Enter to submit on forms
 Implement Zod
 Change Heading
 Tabbed View
-Delete Task
 Deadlines for comment

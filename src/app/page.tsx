@@ -44,7 +44,6 @@ export default function Home() {
   const [details, setDetails] = useState({ name: "", id: "", rolePower: 0 });
   const [state, setState] = useState("To");
   const fetchUpdatedTasks = async () => {
-    // Fetch updated tasks
     const updatedTasks: any = await fetchTasks(details.id);
     if (updatedTasks.data) {
       setAssignedTo(updatedTasks.data.assignedToTasks);
@@ -59,19 +58,18 @@ export default function Home() {
       async function fetchSession() {
         const data = await getSession();
         if (!data.data) {
-            //redirecting to login if no session recorded
-            router.push("/login");
-            toast({description:data.error})
-        } 
-        else {
-            let id =data.data?.user.id;
-            let meta = data.data?.user.user_metadata;
-            if(id && meta){
-                //storing into local variables for refreshing purpose
-                setDetails({name:meta.name,id:id,rolePower:meta.role_power })
-                if(meta.role_power==5){
-                    setState("By")
-                  }
+          //redirecting to login if no session recorded
+          router.push("/login");
+          toast({ description: data.error });
+        } else {
+          let id = data.data?.user.id;
+          let meta = data.data?.user.user_metadata;
+          if (id && meta) {
+            //storing into local variables for refreshing purpose
+            setDetails({ name: meta.name, id: id, rolePower: meta.role_power });
+            if (meta.role_power == 5) {
+              setState("By");
+            }
             //     storing into redux store for later use. comment if not needed
             dispatch(
               setUserInfo({
@@ -92,18 +90,20 @@ export default function Home() {
         }
       }
 
-    fetchSession();
-    
-    router.refresh()
-  }, []//rendering once
+      fetchSession();
+
+      router.refresh();
+    },
+    [] //rendering once
   );
-  
+
   return (
     <>
       <Dashboard
         rolePower={details.rolePower}
         name={details.name}
         userId={details.id}
+        onassign={fetchUpdatedTasks}
       />
       <div className="mx-20 mt-2 mb-5">
         {details.rolePower != 1 && details.rolePower != 5 ? (
@@ -159,7 +159,7 @@ export default function Home() {
             </Sheet>
           </div>
         ) : (
-          <CardsFrom assigned={assignedBy} />
+          <CardsFrom Assigned={assignedBy} onDelete={fetchUpdatedTasks} />
         )}
       </div>
     </>
