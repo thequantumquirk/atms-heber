@@ -60,9 +60,9 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
       setOpenModalIndex(null);
     };
 
-    if (assigned.length != 0) {
-      return (
-        <>
+    return (
+      <>
+        {assigned.length != 0 ? (
           <div className="grid grid-cols-3 gap-5 my-7">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
@@ -166,18 +166,16 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
               );
             })}
           </div>
-        </>
-      );
-    } else {
-      return (
-        <div className="text-center">
-          <Image src={NoTask} alt="NoTask" className="mx-auto"></Image>
-          <p className=" text-stone-400 text-sm -my-10 ">
-            No tasks assigned for you at the moment
-          </p>
-        </div>
-      );
-    }
+        ) : (
+          <div className="text-center">
+            <Image src={NoTask} alt="NoTask" className="mx-auto"></Image>
+            <p className=" text-stone-400 text-sm -my-10 ">
+              No one to Monitor at the moment
+            </p>
+          </div>
+        )}
+      </>
+    );
   } else {
     return (
       <div className="my-14">
