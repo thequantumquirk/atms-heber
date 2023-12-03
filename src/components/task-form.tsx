@@ -19,14 +19,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Autocomplete,
+  AutocompleteSection,
+  AutocompleteItem,
+} from "@nextui-org/react";
 import {
   Dialog,
   DialogContent,
@@ -34,7 +30,6 @@ import {
   DialogHeader,
   DialogFooter,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
@@ -44,6 +39,10 @@ const inputtext =
 type Props = { role: number; userId: string; onAssign: () => void };
 
 export default function TaskForm({ role, userId, onAssign }: Props) {
+  const [filteredPeople, setfilteredPeople] = useState<PersonType[]>();
+  const [inputValue, setInputValue] = useState("");
+  const [filter, setfilter] = useState(false);
+  const [selectedKey, setSelectedKey] = useState(null);
   const router = useRouter();
   const [selectedUser, setSelectedUser] = useState<{
     id: string;
@@ -54,11 +53,10 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
   };
   const [date, setDate] = useState<Date>();
   const { toast } = useToast();
-  const [people, setpeople] = useState<PersonType[]>();
   async function fetch() {
     const data: any | null = await fetchUsers(role);
     if (data.data) {
-      setpeople(data.data);
+      setfilteredPeople(data.data);
     } else {
       toast({
         description: data.message,
@@ -103,7 +101,45 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
       }
     }
   }
-  if (people) {
+  if (filteredPeople) {
+    const students = filteredPeople.filter(
+      (person) => person.role == "Student"
+    );
+    const hods = filteredPeople.filter((person) => person.role == "HOD");
+    const facultys = filteredPeople.filter(
+      (person) => person.role == "Faculty"
+    );
+    const toggleDeptFilter = () => {
+      setfilter(!filter);
+    };
+
+    const filterPeople = (value: string, inputValue: string) => {
+      console.log("Value:", value);
+      console.log("People:", filteredPeople);
+      console.log(filter);
+      if (inputValue.length === 0) {
+        return true;
+      }
+      if (filter) {
+        if (role === 5) {
+          const filter = filteredPeople.filter((person) =>
+            person.dept.toLowerCase().includes(value.toLowerCase())
+          );
+          return filter.length > 0; // Return true if there are filtered people, false otherwise
+        } else {
+          console.log("Students:", students);
+          const filter = students.filter((student) =>
+            student.roll_no?.includes(value)
+          );
+          return filter.length > 0; // Return true if there are filtered students, false otherwise
+        }
+      } else {
+        const filter = filteredPeople.filter((person) =>
+          person.name.toLowerCase().includes(value.toLowerCase())
+        );
+        return filter.length > 0; // Return true if there are filtered people, false otherwise
+      }
+    };
     return (
       <div>
         <Dialog>
@@ -124,39 +160,22 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                   <div>
                     <p className="font-semibold text-lg pb-2">Task Details</p>
                     <div className="grid grid-cols-2 gap-3">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button className={`justify-start ${inputtext}`}>
-                            {selectedUser
-                              ? selectedUser.name
-                              : "Assign Task To"}
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56 bg-white">
-                          <DropdownMenuLabel>Select a User</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuRadioGroup
-                            value={selectedUser?.id ?? ""}
-                            onValueChange={(value) => {
-                              const user = people.find(
-                                (person) => person.id === value
-                              );
-                              if (user) {
-                                handleItemChange(user.id, user.name);
-                              }
-                            }}
-                          >
-                            {people.map((item, index) => (
-                              <DropdownMenuRadioItem
-                                key={index}
-                                value={item.id}
-                              >
-                                {item.name}
-                              </DropdownMenuRadioItem>
-                            ))}
-                          </DropdownMenuRadioGroup>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <Autocomplete
+                        placeholder="Enter Assignee Name"
+                        value={inputValue}
+                        inputProps={{
+                          classNames: {
+                            input: "ml-1",
+                            inputWrapper: `${inputtext}`,
+                          },
+                        }}
+                      >
+                        {filteredPeople.map((person) => (
+                          <AutocompleteItem key={person.id}>
+                            {person.name}
+                          </AutocompleteItem>
+                        ))}
+                      </Autocomplete>
                       <input
                         className={inputtext}
                         type="text"

@@ -61,20 +61,10 @@ export async function createTask(
 }
 
 export async function fetchUsers(rolePower: number) {
-  let { data: profiles, error } = await supabase.from("profiles").select("*");
-
-  if (rolePower === 5) {
-    ({ data: profiles, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("role_power", 3));
-  } else {
-    ({ data: profiles, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .lt("role_power", rolePower));
-  }
-
+  const { data: profiles, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .lt("role_power", rolePower);
   if (error) {
     return error;
   }

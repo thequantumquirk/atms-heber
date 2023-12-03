@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
+
   const router = useRouter();
   const { toast } = useToast();
   const resetPass = async () => {
