@@ -61,13 +61,13 @@ export function GetDay(date: Date) {
   const deadlineDate = new Date(
     deadline.getFullYear(),
     deadline.getMonth(),
-    deadline.getDate(),
+    deadline.getDate()
   );
 
   // Calculate the difference in days
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
   const daysDifference = Math.ceil(
-    (deadlineDate.getTime() - nowDate.getTime()) / millisecondsPerDay,
+    (deadlineDate.getTime() - nowDate.getTime()) / millisecondsPerDay
   );
 
   if (daysDifference < 0) {
@@ -126,4 +126,34 @@ export function getLeastDeadline(Tasks: Tasktype[]) {
   // }
 
   return deadlines;
+}
+
+export function extractRollno(email: string) {
+  const studentRegex = /^([a-zA-Z]+)(\d+)@(.+)\.edu\.in$/;
+  const staffRegex = /^([a-zA-Z]+)\.([a-zA-Z]+)@(.+)\.edu\.in$/;
+
+  let match;
+
+  if ((match = email.match(studentRegex))) {
+    const [, dept, rollNo] = match;
+    const dataToUpdate = {
+      roll_no: rollNo,
+      dept: dept,
+    };
+
+    return dataToUpdate;
+  } else if ((match = email.match(staffRegex))) {
+    const [, , dept] = match;
+    const dataToUpdate = {
+      roll_no: null,
+      dept: dept,
+    };
+    return dataToUpdate;
+  } else {
+    const dataToUpdate = {
+      roll_no: null,
+      dept: null,
+    };
+    return dataToUpdate;
+  }
 }

@@ -3,4 +3,6 @@ export interface PersonType {
   name: string;
   role: string;
   role_power: number;
+  roll_no: string | null;
+  dept: string;
 }

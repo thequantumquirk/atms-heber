@@ -15,3 +15,17 @@ Implement Zod
 Change Heading
 Tabbed View
 Deadlines for comment
+Edit tasks - milestones, name, deadlines
+Edit profile name 
+no milestones component 
+Assignee update tasks - if no milestone: update tasks --> mark as done
+Greeting - space in punctuation 
+filter - "Assigned tasks" "your tasks"
+
+
+i dont know hoew to implement deadlines for milestone
+seems a bit compicated
+
+drop it on ravi 
+
+"s
