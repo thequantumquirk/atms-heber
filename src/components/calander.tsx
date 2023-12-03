@@ -68,7 +68,7 @@ const Calendar = ({ tasks }: Props) => {
             let taskNames: string[] = [];
 
             if (today.getUTCDate() === day.getUTCDate()) {
-              style = `font-semibold bg-[#6466F1] rounded-full text-white w-11 h-11 p-3 shadow-lg`;
+              style = `font-semibold bg-[#6466F1] rounded-full text-white w-11 h-11 px-4 py-3 shadow-lg`;
             } else if (matchingTasks.length > 0) {
               style =
                 "font-semibold p-2.5 rounded-full w-10 h-10 ring-2 ring-[#52DB50]";

@@ -40,9 +40,9 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
   return (
     <>
       {rolePower === 1 ? (
-        <div className="px-20 py-12 flex justify-between items-center">
-          <div className="flex flex-col gap-1">
-            <h1 className="text-4xl font-semibold">
+        <div className="px-20 py-12 flex flex-col xl:flex-row gap-6 justify-between items-center">
+          <div className="flex flex-col gap-3">
+            <h1 className="text-3xl  xl:text-4xl font-semibold flex gap-2">
               {greeting}
               {name ? (
                 <span className="text-[rgba(62,56,245)]"> {name}</span>
@@ -65,9 +65,9 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
           </div>
         </div>
       ) : (
-        <div className="px-20 py-12 flex justify-between items-center">
-          <div className="flex flex-col gap-1">
-            <h1 className="text-4xl font-semibold flex gap-2">
+        <div className="px-20 py-12 flex flex-col xl:flex-row gap-6 justify-between items-center">
+          <div className="flex flex-col gap-3">
+            <h1 className="text-3xl xl:text-4xl font-semibold flex gap-2">
               {greeting}
               {name ? (
                 <span className="text-[rgba(62,56,245)]"> {name}</span>
@@ -78,7 +78,7 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
               )}
               !
             </h1>
-            <p className="text-xl text-slate-500 mt-1">
+            <p className="text-lg xl:text-xl text-slate-500 mt-1">
               Here is a list of your tasks
             </p>
           </div>

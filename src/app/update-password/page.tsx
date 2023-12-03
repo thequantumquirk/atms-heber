@@ -30,33 +30,33 @@ function UpdatePassword() {
       });
     }
   };
-  useEffect(() => {
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event !== "PASSWORD_RECOVERY") {
-        // if there's no password recovery event (this will event will be set by supabase when the reset link is clicked)
-        router.push("/");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   supabase.auth.onAuthStateChange(async (event, session) => {
+  //     if (event !== "PASSWORD_RECOVERY") {
+  //       // if there's no password recovery event (this will event will be set by supabase when the reset link is clicked)
+  //       router.push("/");
+  //     }
+  //   });
+  // }, []);
   return (
     <div
       className=" flex gap-20 flex-col justify-center items-center h-[100vh] bg-cover "
       style={{ backgroundImage: "url(./Login/circle-scatter.svg)" }}
     >
-      <div className="w-[35vw] p-8">
+      <div className="w-full sm:w-[60vw] md:w-[52vw] lg:w-[40vw] xl:w-[30vw] p-8">
         <h1 className="text-3xl font-semibold mb-6">Reset Password</h1>
         <label className="text-lg font-medium">Password</label>
         <input
-          className="border-2 border-grey-400 rounded-lg my-1 h-10 w-full"
-          type="text"
+          className="border-2 border-grey-400 rounded-lg my-1 p-2 h-10 w-full"
+          type="password"
           name="newPassword1"
           id="newPassword1"
           onChange={(e) => setPassword1(e.target.value)}
         ></input>
         <label className="text-lg font-medium">Re-enter Password</label>
         <input
-          className="border-2 border-grey-400 rounded-lg my-1 h-10 w-full"
-          type="text"
+          className="border-2 border-grey-400 rounded-lg my-1 p-2 h-10 w-full"
+          type="password"
           name="newPassword2"
           id="newPassword2"
           onChange={(e) => setPassword2(e.target.value)}
