@@ -39,9 +39,9 @@ const CardsTo = ({ Assigned }: Props) => {
               let count = current_status.length;
               if (current_status[0] == "") count = 0;
               const complete = Math.ceil((count / status_details.length) * 100);
-              console.log(current_status, status_details);
+              // console.log(current_status, status_details);
               return (
-                <div key={key} className="bg-[#3e38f5]/10 px-7 py-5 w-full rounded-small box-border">
+                <div key={key} className="bg-[#3e38f5]/10 px-7 py-5 w-full rounded box-border">
                   <div>
                     <div className="w-full flex justify-between">
                       <div className="py-1 h-14 text-left">

@@ -30,14 +30,14 @@ function UpdatePassword() {
       });
     }
   };
-  // useEffect(() => {
-  //   supabase.auth.onAuthStateChange(async (event, session) => {
-  //     if (event !== "PASSWORD_RECOVERY") {
-  //       // if there's no password recovery event (this will event will be set by supabase when the reset link is clicked)
-  //       router.push("/");
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event !== "PASSWORD_RECOVERY") {
+        // if there's no password recovery event (this will event will be set by supabase when the reset link is clicked)
+        router.push("/");
+      }
+    });
+  }, []);
   return (
     <div
       className=" flex gap-20 flex-col justify-center items-center h-[100vh] bg-cover "
@@ -63,7 +63,7 @@ function UpdatePassword() {
         ></input>
         <br></br>
         <Button
-          className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white px-5 py-2 mt-6 rounded p-1"
+          className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] w-[6rem] text-white font-semibold px-5 py-2 mt-6 rounded p-1"
           onClick={updatePass}
         >
           {" "}

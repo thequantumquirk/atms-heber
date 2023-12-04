@@ -69,7 +69,7 @@ const LoginPage = () => {
               onClick={() => {
                 LoginUser(email, password);
               }}
-              className="p-2 w-[6rem] rounded text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)] transition-all ease-linear"
+              className="px-3 w-[6rem] rounded text-white font-semibold bg-[hsl(242,80%,60%)] hover:bg-[hsl(242,80%,65%)] transition-all ease-linear"
             >
               Login
             </Button>

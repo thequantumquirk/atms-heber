@@ -45,18 +45,18 @@ const VerifyMail = (props: Props) => {
           <label className="text-lg font-medium">Your E-Mail ID</label>
           <br></br>
           <input
-            className="border-2 border-grey-400 rounded-lg my-1 p-2 h-10 w-full"
+            className="border-2 border-grey-400 rounded-lg my-1 px-2 py-3 h-10 w-full"
             value={mail}
             onChange={handleMail}
             type="mail"
-            placeholder="rollnoorstaffname@bhc.edu.in"
+            placeholder="rollno(or)staffname@bhc.edu.in"
           ></input>
           <br></br>
           <Button
             onClick={() => {
               sendOTP(mail);
             }}
-            className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white px-5 py-2 mt-6 rounded p-1"
+            className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white font-semibold px-2 py-1 mt-6 rounded"
           >
             Send OTP
           </Button>
