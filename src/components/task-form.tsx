@@ -1,7 +1,7 @@
 "use client";
 import Plus from "../../public/plus.svg";
 import Image from "next/image";
-import { Key, useState } from "react";
+import React, { Key, useState } from "react";
 import { createTask, fetchUsers } from "@/server/data/fetch-data";
 import plus from "../../public/plus.svg";
 import { useToast } from "./ui/use-toast";
@@ -104,8 +104,8 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     const facultys = filteredPeople.filter(
       (person) => person.role == "Faculty"
     );
-    const onSelectionChange = (id) => {
-      setSelectedUser(id);
+    const onSelectionChange = (id: React.Key) => {
+      setSelectedUser(String(id));
     };
 
     // const filterPeople = (value: string, inputValue: string) => {
