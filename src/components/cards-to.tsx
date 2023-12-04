@@ -31,7 +31,7 @@ const CardsTo = ({ Assigned }: Props) => {
     return (
       <>
         {assigned.length != 0 ? (
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
               const status_details = task.status_details.split(",");
@@ -61,7 +61,7 @@ const CardsTo = ({ Assigned }: Props) => {
                       </div>
                     </div>
                     <div className="flex flex-row justify-between pt-5 w-full gap-5">
-                      <div className="bg-indigo-600/10 rounded ring-1 ring-inset w-fit ring-indigo-600/50 text-center leading-10 cursor-pointer font-medium">
+                      <div className="px-1 bg-indigo-600/10 rounded ring-1 ring-inset w-fit ring-indigo-600/50 text-center leading-10 cursor-pointer font-medium">
                         {date}
                       </div>
                       <Update
