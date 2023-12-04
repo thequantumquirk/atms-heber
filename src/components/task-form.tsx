@@ -1,7 +1,7 @@
 "use client";
 import Plus from "../../public/plus.svg";
 import Image from "next/image";
-import { useState } from "react";
+import { Key, useState } from "react";
 import { createTask, fetchUsers } from "@/server/data/fetch-data";
 import plus from "../../public/plus.svg";
 import { useToast } from "./ui/use-toast";
@@ -41,16 +41,11 @@ type Props = { role: number; userId: string; onAssign: () => void };
 export default function TaskForm({ role, userId, onAssign }: Props) {
   const [filteredPeople, setfilteredPeople] = useState<PersonType[]>();
   const [inputValue, setInputValue] = useState("");
-  const [filter, setfilter] = useState(false);
-  const [selectedKey, setSelectedKey] = useState(null);
-  const router = useRouter();
-  const [selectedUser, setSelectedUser] = useState<{
-    id: string;
-    name: string;
-  } | null>(null);
-  const handleItemChange = (id: string, name: string) => {
-    setSelectedUser({ id, name });
-  };
+  //   const [filter, setfilter] = useState(false);
+  //   const [selectedKey, setSelectedKey] = useState(null);
+  //   const router = useRouter();
+  const [selectedUser, setSelectedUser] = useState("");
+
   const [date, setDate] = useState<Date>();
   const { toast } = useToast();
   async function fetch() {
@@ -66,7 +61,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
   fetch();
   async function handleSubmit(event: any) {
     event.preventDefault();
-    var to = String(selectedUser?.id);
+    var to = String(selectedUser);
     var name = String(event.target.name.value);
     var desc = String(event.target.desc.value);
     var milestones = String(event.target.milestones.value);
@@ -109,37 +104,37 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     const facultys = filteredPeople.filter(
       (person) => person.role == "Faculty"
     );
-    const toggleDeptFilter = () => {
-      setfilter(!filter);
+    const onSelectionChange = (id) => {
+      setSelectedUser(id);
     };
 
-    const filterPeople = (value: string, inputValue: string) => {
-      console.log("Value:", value);
-      console.log("People:", filteredPeople);
-      console.log(filter);
-      if (inputValue.length === 0) {
-        return true;
-      }
-      if (filter) {
-        if (role === 5) {
-          const filter = filteredPeople.filter((person) =>
-            person.dept.toLowerCase().includes(value.toLowerCase())
-          );
-          return filter.length > 0; // Return true if there are filtered people, false otherwise
-        } else {
-          console.log("Students:", students);
-          const filter = students.filter((student) =>
-            student.roll_no?.includes(value)
-          );
-          return filter.length > 0; // Return true if there are filtered students, false otherwise
-        }
-      } else {
-        const filter = filteredPeople.filter((person) =>
-          person.name.toLowerCase().includes(value.toLowerCase())
-        );
-        return filter.length > 0; // Return true if there are filtered people, false otherwise
-      }
-    };
+    // const filterPeople = (value: string, inputValue: string) => {
+    //   console.log("Value:", value);
+    //   console.log("People:", filteredPeople);
+    //   console.log(filter);
+    //   if (inputValue.length === 0) {
+    //     return true;
+    //   }
+    //   if (filter) {
+    //     if (role === 5) {
+    //       const filter = filteredPeople.filter((person) =>
+    //         person.dept.toLowerCase().includes(value.toLowerCase())
+    //       );
+    //       return filter.length > 0; // Return true if there are filtered people, false otherwise
+    //     } else {
+    //       console.log("Students:", students);
+    //       const filter = students.filter((student) =>
+    //         student.roll_no?.includes(value)
+    //       );
+    //       return filter.length > 0; // Return true if there are filtered students, false otherwise
+    //     }
+    //   } else {
+    //     const filter = filteredPeople.filter((person) =>
+    //       person.name.toLowerCase().includes(value.toLowerCase())
+    //     );
+    //     return filter.length > 0; // Return true if there are filtered people, false otherwise
+    //   }
+    // };
     return (
       <div>
         <Dialog>
@@ -163,9 +158,10 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                       <Autocomplete
                         placeholder="Enter Assignee Name"
                         value={inputValue}
+                        onSelectionChange={onSelectionChange}
                         inputProps={{
                           classNames: {
-                            input: "ml-1",
+                            input: "ml-1 ",
                             inputWrapper: `${inputtext}`,
                           },
                         }}
