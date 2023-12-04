@@ -36,27 +36,27 @@ const VerifyMail = (props: Props) => {
 
   return (
     <div
-      className=" flex gap-20 flex-col justify-center items-center h-[100vh] bg-cover "
+      className="flex gap-20 flex-col justify-center items-center h-[100vh] bg-cover "
       style={{ backgroundImage: "url(./Login/circle-scatter.svg)" }}
     >
-      <div className="w-[35vw] p-8">
+      <div className="w-full sm:w-[60vw] md:w-[52vw] lg:w-[40vw] xl:w-[30vw] 2xl:w-[25vw] p-8">
         <div className={`my-14 MoveUp`}>
-          <h1 className="text-3xl font-semibold mb-6">E-Mail Verification</h1>
+          <h1 className="text-2xl sm:text-4xl font-semibold mb-6">E-Mail Verification</h1>
           <label className="text-lg font-medium">Your E-Mail ID</label>
           <br></br>
           <input
-            className="border-2 border-grey-400 rounded-lg my-1 p-1 h-10 w-full"
+            className="border-2 border-grey-400 rounded-lg my-1 px-2 py-3 h-10 w-full"
             value={mail}
             onChange={handleMail}
             type="mail"
-            placeholder="rollnoorstaffname@bhc.edu.in"
+            placeholder="rollno(or)staffname@bhc.edu.in"
           ></input>
           <br></br>
           <Button
             onClick={() => {
               sendOTP(mail);
             }}
-            className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white px-5 py-2 mt-6 rounded p-1"
+            className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white font-semibold px-2 py-1 mt-6 rounded"
           >
             Send OTP
           </Button>

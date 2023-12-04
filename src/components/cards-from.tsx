@@ -63,7 +63,7 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
     return (
       <>
         {assigned.length != 0 ? (
-          <div className="grid grid-cols-3 gap-5 my-7">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
               const completedMilestones = stripMilestones(
@@ -82,11 +82,11 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
               return (
                 <div
                   key={key}
-                  className="bg-[#3e38f5]/10 py-5 rounded hover:bg-[#3e38f5]/20"
+                  className="bg-[#3e38f5]/10 px-7 py-5 w-full rounded hover:bg-[#3e38f5]/20"
                 >
                   <Button
                     onPress={() => handleOpenModal(key)} // Pass 'key' here
-                    className="w-full h-full bg-[#000000]/0"
+                    className="w-full h-full p-1 bg-[#000000]/0"
                   >
                     <div className="w-full">
                       {
@@ -110,12 +110,12 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                               <Progress percent={complete} />
                             </div>
                           </div>
-                          <div className="grid grid-flow-col justify-stretch pt-5 w-full gap-5">
-                            <div className="font-medium bg-indigo-600/10 py-1 px-3 rounded ring-1 ring-inset ring-indigo-600/50 text-center pt-2.5">
+                          <div className="flex flex-row justify-between pt-5 w-full gap-5">
+                            <div className="px-2 bg-indigo-600/10 rounded ring-1 ring-inset w-fit ring-indigo-600/50 text-center leading-10 cursor-pointer font-medium">
                               {date}
                             </div>
                             <Button
-                              className="bg-indigo-500 hover:bg-red-500 py-1 px-3 rounded text-white text-center font-semibold"
+                              className="w-44 py-2 bg-[#3e38f5] hover:bg-[#f53838] rounded text-white font-semibold"
                               onClick={() => {
                                 deleteTask(task.id);
                                 onDelete();
@@ -141,11 +141,10 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                         {milestones.map((milestone, index) => (
                           <p key={index} className="my-1 mx-16">
                             <span
-                              className={`p-2 rounded ${
-                                completedMilestones.includes(milestone.trim())
-                                  ? "bg-green-200"
-                                  : "bg-red-200"
-                              }`}
+                              className={`p-2 rounded ${completedMilestones.includes(milestone.trim())
+                                ? "bg-green-200"
+                                : "bg-red-200"
+                                }`}
                             >
                               {milestone.trim()}
                             </span>
@@ -157,7 +156,7 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                           className="rounded bg-[rgba(62,56,245,0.9)] text-white font-medium"
                           onPress={handleCloseModal}
                         >
-                          Close
+                          Done
                         </Button>
                       </ModalFooter>
                     </ModalContent>

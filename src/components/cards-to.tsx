@@ -31,7 +31,7 @@ const CardsTo = ({ Assigned }: Props) => {
     return (
       <>
         {assigned.length != 0 ? (
-          <div className="grid grid-cols-3 gap-5 my-7">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
               const status_details = task.status_details.split(",");
@@ -39,12 +39,12 @@ const CardsTo = ({ Assigned }: Props) => {
               let count = current_status.length;
               if (current_status[0] == "") count = 0;
               const complete = Math.ceil((count / status_details.length) * 100);
-              console.log(current_status, status_details);
+              // console.log(current_status, status_details);
               return (
-                <div key={key} className="bg-[#3e38f5]/10 px-7 py-5 rounded">
+                <div key={key} className="bg-[#3e38f5]/10 px-7 py-5 w-full rounded box-border">
                   <div>
-                    <div className="flex justify-between leading-10">
-                      <div className="py-1 h-14">
+                    <div className="w-full flex justify-between">
+                      <div className="py-1 h-14 text-left">
                         <p className="text-xl font-bold">{task.task_title}</p>
                         <p className="text-sm text-[#a7a9d2]">
                           {task.task_description}
@@ -60,13 +60,13 @@ const CardsTo = ({ Assigned }: Props) => {
                         <Progress percent={complete} />
                       </div>
                     </div>
-                    <div className="grid grid-flow-col justify-stretch pt-5 w-full gap-3">
-                      <div className="font-medium bg-indigo-600/10  rounded ring-1 ring-inset w-44 ring-indigo-600/50 text-center leading-10 ml-2">
+                    <div className="flex flex-row justify-between pt-5 w-full gap-5">
+                      <div className="px-1 bg-indigo-600/10 rounded ring-1 ring-inset w-fit ring-indigo-600/50 text-center leading-10 cursor-pointer font-medium">
                         {date}
                       </div>
                       <Update
                         onUpdateTasks={fetchUpdatedTasks}
-                        style="rounded bg-[rgba(62,56,245,0.9)]  hover:bg-[hsl(242,80%,65%)] text-white font-medium w-44 py-2"
+                        style="rounded bg-[rgba(62,56,245,0.9)]  hover:bg-[hsl(242,80%,65%)] text-white w-44 py-2"
                         id={task.id}
                         status_details={task.status_details}
                         current_status={task.current_status}

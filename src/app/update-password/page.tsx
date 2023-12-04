@@ -43,27 +43,27 @@ function UpdatePassword() {
       className=" flex gap-20 flex-col justify-center items-center h-[100vh] bg-cover "
       style={{ backgroundImage: "url(./Login/circle-scatter.svg)" }}
     >
-      <div className="w-[35vw] p-8">
+      <div className="w-full sm:w-[60vw] md:w-[52vw] lg:w-[40vw] xl:w-[30vw] p-8">
         <h1 className="text-3xl font-semibold mb-6">Reset Password</h1>
         <label className="text-lg font-medium">Password</label>
         <input
-          className="border-2 border-grey-400 rounded-lg my-1 h-10 w-full"
-          type="text"
+          className="border-2 border-grey-400 rounded-lg my-1 p-2 h-10 w-full"
+          type="password"
           name="newPassword1"
           id="newPassword1"
           onChange={(e) => setPassword1(e.target.value)}
         ></input>
         <label className="text-lg font-medium">Re-enter Password</label>
         <input
-          className="border-2 border-grey-400 rounded-lg my-1 h-10 w-full"
-          type="text"
+          className="border-2 border-grey-400 rounded-lg my-1 p-2 h-10 w-full"
+          type="password"
           name="newPassword2"
           id="newPassword2"
           onChange={(e) => setPassword2(e.target.value)}
         ></input>
         <br></br>
         <Button
-          className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] text-white px-5 py-2 mt-6 rounded p-1"
+          className="bg-[#4d47eb] hover:bg-[hsl(242,80%,65%)] w-[6rem] text-white font-semibold px-5 py-2 mt-6 rounded p-1"
           onClick={updatePass}
         >
           {" "}
