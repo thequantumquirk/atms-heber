@@ -12,7 +12,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { useRouter } from "next/navigation";
+import { Avatar } from "@nextui-org/react";
+import { Switch } from "@nextui-org/react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -24,15 +26,26 @@ import {
   AutocompleteItem,
 } from "@nextui-org/react";
 import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogFooter,
   DialogTrigger,
+  DialogTitle,
 } from "@/components/ui/dialog";
-import { DialogTitle } from "@radix-ui/react-dialog";
-
+import { ro } from "date-fns/locale";
 const inputtext =
   "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 ";
 
@@ -40,11 +53,10 @@ type Props = { role: number; userId: string; onAssign: () => void };
 
 export default function TaskForm({ role, userId, onAssign }: Props) {
   const [filteredPeople, setfilteredPeople] = useState<PersonType[]>();
+  const [open, setOpen] = React.useState(false);
+  const [filtervalue, setfiltervalue] = React.useState("");
   const [inputValue, setInputValue] = useState("");
-  //   const [filter, setfilter] = useState(false);
-  //   const [selectedKey, setSelectedKey] = useState(null);
-  //   const router = useRouter();
-  const [selectedUser, setSelectedUser] = useState("");
+  const [filter, setfilter] = useState(false);
 
   const [date, setDate] = useState<Date>();
   const { toast } = useToast();
@@ -61,7 +73,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
   fetch();
   async function handleSubmit(event: any) {
     event.preventDefault();
-    var to = String(selectedUser);
+    var to = String(inputValue);
     var name = String(event.target.name.value);
     var desc = String(event.target.desc.value);
     var milestones = String(event.target.milestones.value);
@@ -104,37 +116,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     const facultys = filteredPeople.filter(
       (person) => person.role == "Faculty"
     );
-    const onSelectionChange = (id: React.Key) => {
-      setSelectedUser(String(id));
-    };
 
-    // const filterPeople = (value: string, inputValue: string) => {
-    //   console.log("Value:", value);
-    //   console.log("People:", filteredPeople);
-    //   console.log(filter);
-    //   if (inputValue.length === 0) {
-    //     return true;
-    //   }
-    //   if (filter) {
-    //     if (role === 5) {
-    //       const filter = filteredPeople.filter((person) =>
-    //         person.dept.toLowerCase().includes(value.toLowerCase())
-    //       );
-    //       return filter.length > 0; // Return true if there are filtered people, false otherwise
-    //     } else {
-    //       console.log("Students:", students);
-    //       const filter = students.filter((student) =>
-    //         student.roll_no?.includes(value)
-    //       );
-    //       return filter.length > 0; // Return true if there are filtered students, false otherwise
-    //     }
-    //   } else {
-    //     const filter = filteredPeople.filter((person) =>
-    //       person.name.toLowerCase().includes(value.toLowerCase())
-    //     );
-    //     return filter.length > 0; // Return true if there are filtered people, false otherwise
-    //   }
-    // };
     return (
       <div>
         <Dialog>
@@ -154,24 +136,301 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                 <DialogDescription>
                   <div>
                     <p className="font-semibold text-lg pb-2">Task Details</p>
+                    <Switch
+                      size="sm"
+                      color="success"
+                      isSelected={filter}
+                      onValueChange={setfilter}
+                      className={
+                        filter
+                          ? "my-2 text-sm text-black font-semibold"
+                          : `my-2 text-sm text-stone-400`
+                      }
+                    >
+                      Search by {role == 5 ? "Department" : "Roll Number"}
+                    </Switch>
                     <div className="grid grid-cols-2 gap-3">
-                      <Autocomplete
-                        placeholder="Enter Assignee Name"
-                        value={inputValue}
-                        onSelectionChange={onSelectionChange}
-                        inputProps={{
-                          classNames: {
-                            input: "ml-1 ",
-                            inputWrapper: `${inputtext}`,
-                          },
-                        }}
-                      >
-                        {filteredPeople.map((person) => (
-                          <AutocompleteItem key={person.id}>
-                            {person.name}
-                          </AutocompleteItem>
-                        ))}
-                      </Autocomplete>
+                      {filter ? (
+                        role == 5 ? (
+                          <Popover open={open} onOpenChange={setOpen}>
+                            <PopoverTrigger asChild>
+                              <Button
+                                aria-expanded={open}
+                                className=" bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start"
+                              >
+                                {inputValue
+                                  ? filteredPeople.find(
+                                      (person) =>
+                                        person.id.toLowerCase() ==
+                                        inputValue.toLowerCase()
+                                    )?.name
+                                  : "Select Assignee"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[13rem] p-0 bg-white">
+                              <Command>
+                                <CommandInput placeholder="Search User" />
+                                <CommandEmpty>No User found</CommandEmpty>
+                                <CommandGroup heading="Head of Departments">
+                                  {hods.map((hod) => (
+                                    <CommandItem
+                                      key={hod.id}
+                                      value={hod.dept}
+                                      onSelect={(currentValue: string) => {
+                                        console.log(currentValue);
+                                        setInputValue(hod.id);
+                                        setOpen(false);
+                                      }}
+                                      className="hover:bg-stone-500 pointer-events-auto COMMAND cursor-pointer"
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          inputValue === hod.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {hod.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                                <CommandSeparator />
+                                <CommandGroup heading="Professors">
+                                  {facultys.map((student) => (
+                                    <CommandItem
+                                      key={student.id}
+                                      value={student.dept}
+                                      onSelect={(currentValue: string) => {
+                                        console.log(currentValue);
+
+                                        setInputValue(student.id);
+                                        setOpen(false);
+                                      }}
+                                      className="hover:bg-stone-500 pointer-events-auto COMMAND cursor-pointer"
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          inputValue === student.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {student.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                                <CommandSeparator />
+                                <CommandGroup heading="Students">
+                                  {students.map((student) => (
+                                    <CommandItem
+                                      key={student.id}
+                                      value={student.dept}
+                                      onSelect={(currentValue: string) => {
+                                        console.log(currentValue);
+
+                                        setInputValue(student.id);
+                                        setOpen(false);
+                                      }}
+                                      className="hover:bg-stone-500 pointer-events-auto COMMAND cursor-pointer"
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          inputValue === student.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {student.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
+                        ) : (
+                          <Popover open={open} onOpenChange={setOpen}>
+                            <PopoverTrigger asChild>
+                              <Button
+                                aria-expanded={open}
+                                className=" bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start"
+                              >
+                                {inputValue
+                                  ? filteredPeople.find(
+                                      (person) =>
+                                        person.id.toLowerCase() ==
+                                        inputValue.toLowerCase()
+                                    )?.name
+                                  : "Select Assignee"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[13rem] p-0 bg-white">
+                              <Command>
+                                <CommandInput placeholder="Search User" />
+                                <CommandEmpty>No User found</CommandEmpty>
+                                <CommandGroup heading="Professors">
+                                  {facultys.map((professor) => (
+                                    <CommandItem
+                                      key={professor.id}
+                                      value={professor.dept}
+                                      onSelect={(currentValue: string) => {
+                                        console.log(currentValue);
+                                        setInputValue(professor.id);
+                                        setOpen(false);
+                                      }}
+                                      className="hover:bg-stone-500 pointer-events-auto COMMAND cursor-pointer"
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          inputValue === professor.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {professor.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                                <CommandSeparator />
+                                <CommandGroup>
+                                  {students.map((student) => (
+                                    <CommandItem
+                                      key={student.id}
+                                      value={
+                                        student.roll_no ? student.roll_no : ""
+                                      }
+                                      onSelect={(currentValue: string) => {
+                                        console.log(currentValue);
+
+                                        setInputValue(student.id);
+                                        setOpen(false);
+                                      }}
+                                      className="hover:bg-stone-500 pointer-events-auto COMMAND cursor-pointer"
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          inputValue === student.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {student.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
+                        )
+                      ) : (
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              aria-expanded={open}
+                              className="bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start"
+                            >
+                              {inputValue
+                                ? filteredPeople.find(
+                                    (person) =>
+                                      person.id.toLowerCase() ==
+                                      inputValue.toLowerCase()
+                                  )?.name
+                                : "Select Assignee"}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-[13rem] p-0 bg-white">
+                            <Command>
+                              <CommandInput placeholder="Search User" />
+                              <CommandEmpty>No User found</CommandEmpty>
+                              {hods.length != 0 ? (
+                                <CommandGroup heading="Head of Departments">
+                                  {hods.map((hod) => (
+                                    <CommandItem
+                                      key={hod.id}
+                                      value={hod.name}
+                                      onSelect={(currentValue: string) => {
+                                        setfiltervalue(currentValue);
+                                        setInputValue(hod.id);
+                                        setOpen(false);
+                                      }}
+                                      className="hover:bg-stone-500 pointer-events-auto COMMAND cursor-pointer"
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          inputValue === hod.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {hod.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              ) : (
+                                <div></div>
+                              )}
+                              {facultys.length != 0 ? (
+                                <CommandGroup heading="Professors">
+                                  {facultys.map((professor) => (
+                                    <CommandItem
+                                      key={professor.id}
+                                      value={professor.name}
+                                      onSelect={(currentValue: string) => {
+                                        setfiltervalue(currentValue);
+                                        setInputValue(professor.id);
+                                        setOpen(false);
+                                      }}
+                                      className="hover:bg-stone-500 pointer-events-auto COMMAND cursor-pointer"
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          inputValue === professor.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {professor.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              ) : (
+                                <div></div>
+                              )}
+                              <CommandSeparator />
+                              <CommandGroup heading="Students">
+                                {students.map((student) => (
+                                  <CommandItem
+                                    key={student.id}
+                                    value={student.name}
+                                    onSelect={(currentValue: string) => {
+                                      setfiltervalue(currentValue);
+                                      setInputValue(student.id);
+                                      setOpen(false);
+                                    }}
+                                    className="hover:bg-stone-500 pointer-events-auto COMMAND cursor-pointer"
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        inputValue === student.id
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                    {student.name}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      )}
                       <input
                         className={inputtext}
                         type="text"

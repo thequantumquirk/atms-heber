@@ -2,26 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 body {
-    color:#020030
+  color: #020030;
 }
 
 .EaseFadeIn {
-    animation: FadeIn 1s
+  animation: FadeIn 1s;
+}
+
+.COMMAND {
+  pointer-events: auto !important;
 }
 
 @keyframes FadeIn {
-    0% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
 
-    25% {
-        opacity: 0;
-    }
+  25% {
+    opacity: 0;
+  }
 
-    100% {
-        opacity: 1;
-    }
+  100% {
+    opacity: 1;
+  }
 }
