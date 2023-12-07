@@ -30,10 +30,12 @@ export async function resendSignupOtp(
     return { status: true, data: `OTP has been resent to ${email}` };
   }
 }
-
+const redirectURL = `${
+  process.env.NEXT_PUBLIC_SITE_URL || ""
+}/update-password/`;
 export async function resetPasswordWithEmail(email: string) {
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ""}/update-password`,
+    redirectTo: redirectURL,
   });
   if (error) {
     return { status: false, error: error.message };
