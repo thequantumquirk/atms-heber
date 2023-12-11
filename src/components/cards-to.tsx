@@ -12,7 +12,14 @@ import { CircularProgress } from "@nextui-org/react";
 type Props = { Assigned: Tasktype[] | undefined };
 const CardsTo = ({ Assigned }: Props) => {
   const [assigned, setAssigned] = useState<Tasktype[] | undefined>(undefined);
-
+  function calculateProgress(task: Tasktype): number {
+    console.log(task.status_details);
+    const milestonesDone = task.status_details.filter(
+      (milestone) => milestone.milestoneDone !== null
+    ).length;
+    const totalMilestones = task.status_details.length;
+    return Math.ceil((milestonesDone * 100) / totalMilestones);
+  }
   // Set the initial state when 'Assigned' prop changes
   useEffect(() => {
     if (Assigned) {
@@ -34,14 +41,14 @@ const CardsTo = ({ Assigned }: Props) => {
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
-              const status_details = task.status_details.split(",");
-              const current_status = task.current_status.split(",");
-              let count = current_status.length;
-              if (current_status[0] == "") count = 0;
-              const complete = Math.ceil((count / status_details.length) * 100);
+              const progress = calculateProgress(task);
+
               // console.log(current_status, status_details);
               return (
-                <div key={key} className="bg-[#3e38f5]/10 px-7 py-5 w-full rounded box-border">
+                <div
+                  key={key}
+                  className="bg-[#3e38f5]/10 px-7 py-5 w-full rounded box-border"
+                >
                   <div>
                     <div className="w-full flex justify-between">
                       <div className="py-1 h-14 text-left">
@@ -57,7 +64,7 @@ const CardsTo = ({ Assigned }: Props) => {
                         </p>
                       </div>
                       <div>
-                        <Progress percent={complete} />
+                        <Progress percent={progress} />
                       </div>
                     </div>
                     <div className="flex flex-row justify-between pt-5 w-full gap-5">
@@ -69,7 +76,7 @@ const CardsTo = ({ Assigned }: Props) => {
                         style="rounded bg-[rgba(62,56,245,0.9)]  hover:bg-[hsl(242,80%,65%)] text-white w-44 py-2"
                         id={task.id}
                         status_details={task.status_details}
-                        current_status={task.current_status}
+                        order={task.order}
                       />
                     </div>
                   </div>

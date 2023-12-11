@@ -45,7 +45,11 @@ import {
   DialogTrigger,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ro } from "date-fns/locale";
+import { MilestoneType } from "@/types/milestonetype";
+type Milestone = {
+  name: string;
+  deadline: string;
+};
 const inputtext =
   "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 ";
 
@@ -53,12 +57,40 @@ type Props = { role: number; userId: string; onAssign: () => void };
 
 export default function TaskForm({ role, userId, onAssign }: Props) {
   const [filteredPeople, setfilteredPeople] = useState<PersonType[]>();
-  const [open, setOpen] = React.useState(false);
-  const [filtervalue, setfiltervalue] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [order, setOrder] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [filter, setfilter] = useState(false);
-
   const [date, setDate] = useState<Date>();
+  const [milestones, setMilestones] = useState<Milestone[]>([
+    { name: "", deadline: "" },
+  ]);
+
+  const generateMilestones = (object: Milestone[]): MilestoneType[] => {
+    const milestones = object.map((task, index) => ({
+      id: index + 1, // Increases for each task
+      milestoneDone: null, // Always null
+      milestoneName: task.name, // Name of each task in input
+      milestoneComment: "", // Always empty string
+      milestoneDeadline: new Date(task.deadline), // Input date
+    }));
+    return milestones;
+  };
+
+  const addMilestone = () => {
+    setMilestones([...milestones, { name: "", deadline: "" }]);
+  };
+
+  const handleMilestoneChange = (
+    index: number,
+    key: keyof Milestone,
+    value: string
+  ) => {
+    const updatedMilestones = [...milestones];
+    updatedMilestones[index][key] = value;
+    setMilestones(updatedMilestones);
+  };
+
   const { toast } = useToast();
   async function fetch() {
     const data: any | null = await fetchUsers(role);
@@ -76,21 +108,22 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     var to = String(inputValue);
     var name = String(event.target.name.value);
     var desc = String(event.target.desc.value);
-    var milestones = String(event.target.milestones.value);
+    const status_details = generateMilestones(milestones);
     var due = String(date);
+    console.log("Submitted with milestones:", status_details);
     var dueDate;
     if (date) {
       var due = String(date);
       dueDate = new Date(due);
-      console.log(userId, to, name, desc, dueDate, milestones);
       const result: any | null = await createTask(
         userId,
         to,
         name,
         desc,
         dueDate,
-        milestones,
-        ""
+        status_details,
+        "",
+        order
       );
       console.log(result);
       toast({
@@ -120,7 +153,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     return (
       <div>
         <Dialog>
-          <DialogTrigger className="py-2 rounded bg-slate-100 px-5 flex gap-2">
+          <DialogTrigger className="py-2 rounded bg-stone-200 px-5 flex gap-2">
             <Image src={plus} alt="plus icon" className=" mt-1"></Image>
             Assign Task
           </DialogTrigger>
@@ -136,6 +169,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                 <DialogDescription>
                   <div>
                     <p className="font-semibold text-lg pb-2">Task Details</p>
+                    {/* assignee search starts here */}
                     <Switch
                       size="sm"
                       color="success"
@@ -353,7 +387,6 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                                       key={hod.id}
                                       value={hod.name}
                                       onSelect={(currentValue: string) => {
-                                        setfiltervalue(currentValue);
                                         setInputValue(hod.id);
                                         setOpen(false);
                                       }}
@@ -381,7 +414,6 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                                       key={professor.id}
                                       value={professor.name}
                                       onSelect={(currentValue: string) => {
-                                        setfiltervalue(currentValue);
                                         setInputValue(professor.id);
                                         setOpen(false);
                                       }}
@@ -409,7 +441,6 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                                     key={student.id}
                                     value={student.name}
                                     onSelect={(currentValue: string) => {
-                                      setfiltervalue(currentValue);
                                       setInputValue(student.id);
                                       setOpen(false);
                                     }}
@@ -431,26 +462,89 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                           </PopoverContent>
                         </Popover>
                       )}
+                      {/* assignee search ends here */}
                       <input
                         className={inputtext}
                         type="text"
                         name="name"
                         id="name"
                         placeholder="Task Title"
+                        required
                       ></input>
                       <input
-                        className={inputtext}
+                        className={inputtext + " col-span-2"}
                         type="text"
                         name="desc"
                         id="desc"
                         placeholder="Description"
+                        required
                       ></input>
-                      <input
-                        className={`${inputtext} h-20`}
-                        type="text"
-                        id="milestones"
-                        placeholder="Milestones (seperated with comma)"
-                      ></input>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <p className="font-semibold text-lg pb-2">
+                      Milestone Details
+                    </p>
+
+                    <div
+                      className={`grid ${
+                        milestones.length === 1 ? "grid-cols-1" : "grid-cols-2"
+                      } ${
+                        milestones.length > 2 ? "h-[11rem]" : "h-[5.5rem]"
+                      } gap-3 h-[11rem] w-auto overflow-auto`}
+                    >
+                      {milestones.map((milestone, index) => (
+                        <div key={index} className="flex flex-col gap-1">
+                          <input
+                            type="text"
+                            value={milestone.name}
+                            className={inputtext}
+                            onChange={(e) =>
+                              handleMilestoneChange(
+                                index,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                            placeholder="Milestone Name"
+                          />
+                          <input
+                            type="date"
+                            value={milestone.deadline}
+                            className={inputtext}
+                            onChange={(e) =>
+                              handleMilestoneChange(
+                                index,
+                                "deadline",
+                                e.target.value
+                              )
+                            }
+                            placeholder="Milestone Deadline"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-between mt-">
+                      <Switch
+                        size="sm"
+                        color="success"
+                        isSelected={order}
+                        onValueChange={setOrder}
+                        className={
+                          order
+                            ? "my-2 text-sm text-black font-semibold"
+                            : `my-2 text-sm text-stone-400`
+                        }
+                      >
+                        Enforce Completion Order
+                      </Switch>
+                      <button
+                        type="button"
+                        onClick={addMilestone}
+                        className=" hover:bg-indigo-700 bg-indigo-600 text-white py-2 rounded px-3"
+                      >
+                        Add Milestone
+                      </button>
                     </div>
                   </div>
                   <div className="mt-4">

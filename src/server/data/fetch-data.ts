@@ -1,3 +1,4 @@
+import { MilestoneType } from "@/types/milestonetype";
 import supabase from "../supabase";
 
 export async function fetchTasks(userId: string) {
@@ -32,8 +33,9 @@ export async function createTask(
   task_title: string,
   task_description: string,
   task_due: Date,
-  status_details: string,
-  current_status: string
+  status_details: MilestoneType[],
+  current_status: string,
+  order: boolean
 ) {
   const { data, error } = await supabase
     .from("tasks")
@@ -46,6 +48,7 @@ export async function createTask(
         task_due,
         status_details,
         current_status,
+        order,
       },
     ])
     .select();
@@ -76,10 +79,10 @@ export async function fetchUsers(rolePower: number) {
   };
 }
 
-export async function updateTask(id: string, current_status: string) {
+export async function updateTask(id: string, current_status: MilestoneType[]) {
   const { data, error } = await supabase
     .from("tasks")
-    .update({ current_status: current_status })
+    .update({ status_details: current_status })
     .eq("id", id)
     .select();
   if (error) {

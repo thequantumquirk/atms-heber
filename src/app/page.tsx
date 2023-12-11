@@ -6,8 +6,6 @@ import { fetchTasks } from "@/server/data/fetch-data";
 import Dashboard from "@/components/dashboard";
 import { useToast } from "@/components/ui/use-toast";
 import CardsTo from "@/components/cards-to";
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../store/reducer';
 import { setUserInfo } from "@/store/slice";
 import { useDispatch } from "react-redux";
 import { Tasktype } from "@/types/tasktype";
@@ -16,16 +14,20 @@ import CardsFrom from "@/components/cards-from";
 import Image from "next/image";
 import Arrow from "../../public/arrowup.svg";
 import Calendar from "@/components/calander";
-import Filter from "../../public/filter.svg";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Completed from "@/components/completed";
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../store/reducer';
+// import Filter from "../../public/filter.svg";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuRadioGroup,
+//   DropdownMenuRadioItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -105,8 +107,68 @@ export default function Home() {
         userId={details.id}
         onassign={fetchUpdatedTasks}
       />
-      <div className="mx-20 mt-2 mb-5">
-        {details.rolePower != 1 && details.rolePower != 5 ? (
+
+      <Tabs defaultValue="To" className="-mt-10 ">
+        <TabsList
+          className={
+            details.rolePower == 5 || details.rolePower == 1
+              ? `grid w-full grid-cols-2 bg-white `
+              : `grid w-full grid-cols-3 bg-white `
+          }
+        >
+          {details.rolePower != 5 ? (
+            <TabsTrigger
+              value="To"
+              className="bg-stone-100 focus:bg-white p-4 font-semibold rounded -mt-1"
+            >
+              Your Tasks
+            </TabsTrigger>
+          ) : null}
+          {details.rolePower != 1 ? (
+            <TabsTrigger
+              value="By"
+              className="bg-stone-100 focus:bg-white p-4 font-semibold rounded-t-lg -mt-1"
+            >
+              Assigned Tasks
+            </TabsTrigger>
+          ) : null}
+          <TabsTrigger
+            value="Done"
+            className="bg-stone-100 focus:bg-white p-4 font-semibold rounded-t-lg -mt-1"
+          >
+            Completed
+          </TabsTrigger>
+        </TabsList>
+        <div className="mx-20 mb-5">
+          <TabsContent value="To">
+            <CardsTo Assigned={assignedTo} />
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button className="bg-slate-100 rounded-full px-3 py-6 fixed bottom-20 right-20">
+                  <Image src={Arrow} alt="arrow" width={25} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="bg-white" side="bottom">
+                <SheetHeader>
+                  <SheetTitle className="mx-5">
+                    Upcoming Task Due Dates
+                  </SheetTitle>
+                  <SheetDescription>
+                    <Calendar tasks={assignedTo} />
+                  </SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+          </TabsContent>
+          <TabsContent value="By">
+            <CardsFrom Assigned={assignedBy} onDelete={fetchUpdatedTasks} />
+          </TabsContent>
+          <TabsContent value="Done">
+            <Completed />
+          </TabsContent>
+        </div>
+      </Tabs>
+      {/* {details.rolePower != 1 && details.rolePower != 5 ? (
           <div className="flex justify-end ">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -160,8 +222,7 @@ export default function Home() {
           </div>
         ) : (
           <CardsFrom Assigned={assignedBy} onDelete={fetchUpdatedTasks} />
-        )}
-      </div>
+        )} */}
     </>
   );
 }

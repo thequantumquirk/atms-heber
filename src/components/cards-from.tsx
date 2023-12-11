@@ -16,11 +16,13 @@ import {
   CircularProgress,
 } from "@nextui-org/react";
 import { useToast } from "./ui/use-toast";
-function stripMilestones(status_details: string, current_status: string) {
-  const completedMilestones: string[] = current_status
-    .split(",")
-    .map((milestone) => milestone.trim());
-  return completedMilestones;
+
+function calculateProgress(task: Tasktype): number {
+  const milestonesDone = task.status_details.filter(
+    (milestone) => milestone.milestoneDone !== null
+  ).length;
+  const totalMilestones = task.status_details.length;
+  return Math.ceil((milestonesDone * 100) / totalMilestones);
 }
 
 type Props = { Assigned: Tasktype[] | undefined; onDelete: () => void };
@@ -66,17 +68,7 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
-              const completedMilestones = stripMilestones(
-                task.status_details,
-                task.current_status
-              );
-              const milestones: string[] = task.status_details.split(",");
-              let complete = 0;
-              if (task.current_status.length !== 0) {
-                complete = Math.ceil(
-                  (completedMilestones.length * 100) / milestones.length
-                );
-              }
+              const progress = calculateProgress(task);
 
               const isModalOpen = openModalIndex === key;
               return (
@@ -107,7 +99,7 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                               </p>
                             </div>
                             <div>
-                              <Progress percent={complete} />
+                              <Progress percent={progress} />
                             </div>
                           </div>
                           <div className="flex flex-row justify-between pt-5 w-full gap-5">
@@ -117,7 +109,7 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                             <Button
                               className="w-44 py-2 bg-[#3e38f5] hover:bg-[#f53838] rounded text-white font-semibold"
                               onClick={() => {
-                                deleteTask(task.id);
+                                remove(task.id);
                                 onDelete();
                               }}
                             >
@@ -138,15 +130,16 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                         Task Completion
                       </ModalHeader>
                       <ModalBody>
-                        {milestones.map((milestone, index) => (
+                        {task.status_details.map((milestone, index) => (
                           <p key={index} className="my-1 mx-16">
                             <span
-                              className={`p-2 rounded ${completedMilestones.includes(milestone.trim())
-                                ? "bg-green-200"
-                                : "bg-red-200"
-                                }`}
+                              className={`p-2 rounded ${
+                                milestone.milestoneDone != null
+                                  ? "bg-green-200"
+                                  : "bg-red-200"
+                              }`}
                             >
-                              {milestone.trim()}
+                              {milestone.milestoneName}
                             </span>
                           </p>
                         ))}
