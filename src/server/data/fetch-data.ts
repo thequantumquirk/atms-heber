@@ -1,5 +1,6 @@
 import { MilestoneType } from "@/types/milestonetype";
 import supabase from "../supabase";
+import { parse } from "json2csv";
 
 export async function fetchTasks(userId: string) {
   let { data: assignedByTasks, error: byError } = await supabase
@@ -89,7 +90,7 @@ export async function updateTask(id: string, current_status: MilestoneType[]) {
     return {
       status: false,
       error,
-      message: "Status update Unsuccessful",
+      message: error.message,
     };
   }
   return {
@@ -107,7 +108,7 @@ export async function deleteTask(taskId: string) {
     return {
       status: false,
       error,
-      message: "Couldn't Delete Task",
+      message: error.message,
     };
   }
   return {
@@ -115,4 +116,85 @@ export async function deleteTask(taskId: string) {
     data,
     message: "Task Deleted Successfully",
   };
+}
+
+export async function exportTasksToCSV(id: string, option: string) {
+  try {
+    let query = supabase
+      .from("tasks")
+      .select(
+        "id, task_title, task_description, task_due, status_details, assigned_date, assigner_name:assigner_id(name, id), assignee_name:assignee_id(name, id)"
+      );
+    switch (option) {
+      case "by":
+        query = query.eq("assigner_id", id);
+        break;
+      case "to":
+        query = query.eq("assignee_id", id);
+        break;
+      default:
+        console.log("query1");
+        let query1 = supabase
+          .from("tasks")
+          .select(
+            "id, task_title, task_description, task_due, status_details, assigned_date, assigner_name:assigner_id(name, id), assignee_name:assignee_id(name, id)"
+          )
+          .eq("assignee_id", id);
+        const { data, error } = await query1;
+        if (error) {
+          return {
+            status: false,
+            exportError: error,
+            message: error.message,
+          };
+        }
+        // Convert data to CSV
+        const csv = parse(data);
+        // Create a Blob containing the CSV data
+        const blob = new Blob([csv], { type: "text/csv" });
+
+        // Create a download link
+        const downloadLink = document.createElement("a");
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = "tasks.csv";
+
+        // Simulate a click on the download link to trigger the download
+        downloadLink.click();
+        query = query.eq("assigner_id", id);
+        break;
+    }
+    console.log("query");
+    const { data, error } = await query;
+    if (error) {
+      return {
+        status: false,
+        exportError: error,
+        message: error.message,
+      };
+    }
+    // Convert data to CSV
+    const csv = parse(data);
+    // Create a Blob containing the CSV data
+    const blob = new Blob([csv], { type: "text/csv" });
+
+    // Create a download link
+    const downloadLink = document.createElement("a");
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = "tasks.csv";
+
+    // Simulate a click on the download link to trigger the download
+    downloadLink.click();
+
+    return {
+      status: true,
+      csv,
+      message: "Exported Successfully",
+    };
+  } catch (error) {
+    return {
+      status: false,
+      exportError: error,
+      message: "Export Failed",
+    };
+  }
 }

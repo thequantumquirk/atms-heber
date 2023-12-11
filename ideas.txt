@@ -1,5 +1,4 @@
-completion of tasks. seperate filter button
-refresh afrer assigning task
+completed tasks tab
 export functionality
 adding hod by  principal
 comment for milestones

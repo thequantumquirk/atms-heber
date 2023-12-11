@@ -5,6 +5,7 @@ import exportIcon from "../../public/export.svg";
 import { ToLocalTime } from "@/utilities/utillities";
 import { signOut } from "@/server/auth/auth-user";
 import { useToast } from "@/components/ui/use-toast";
+import { exportTasksToCSV } from "@/server/data/fetch-data";
 
 type Props = {
   rolePower: number;
@@ -37,6 +38,17 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
       });
     }
   }
+  async function exportData() {
+    const { status, message } = await exportTasksToCSV(userId, "all");
+    if (status) {
+      // If export is successful, show a success message or perform any necessary actions
+      toast({ description: "Export Successful" });
+    } else {
+      // If export fails, show an error message or handle the failure appropriately
+      toast({ description: `Export Failed: ${message}` });
+    }
+  }
+
   return (
     <>
       {rolePower === 1 ? (
@@ -85,7 +97,12 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
           {/* {name ? ( */}
           <div className="flex gap-12  items-center justify-center">
             <TaskForm role={rolePower} userId={userId} onAssign={onassign} />
-            <Button className="rounded bg-stone-200">
+            <Button
+              className="rounded bg-stone-200"
+              onClick={() => {
+                exportData();
+              }}
+            >
               <Image src={exportIcon} width={20} alt="Plus"></Image>
               Export
             </Button>
