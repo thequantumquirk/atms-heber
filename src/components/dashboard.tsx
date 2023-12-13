@@ -52,12 +52,15 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
   return (
     <>
       {rolePower === 1 ? (
-        <div className="px-20 pt-10 pb-12 flex flex-col xl:flex-row gap-6 justify-between items-center ">
+        <div className="px-20 pt-10 pb-12 flex flex-col xl:flex-row gap-6 justify-between items-center">
           <div className="flex flex-col gap-3">
             <h1 className="text-3xl  xl:text-4xl font-semibold flex gap-2">
               {greeting}
               {name ? (
-                <span className="text-[rgba(62,56,245)]"> {name}</span>
+                <span className="text-[rgba(62,56,245)] EaseFadeIn">
+                  {" "}
+                  {name}
+                </span>
               ) : (
                 <Skeleton className="h-3 w-3/5 rounded-lg" />
               )}
@@ -82,7 +85,10 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
             <h1 className="text-3xl xl:text-4xl font-semibold flex gap-2">
               {greeting}
               {name ? (
-                <span className="text-[rgba(62,56,245)]"> {name}</span>
+                <span className="text-[rgba(62,56,245)] EaseFadeIn">
+                  {" "}
+                  {name}
+                </span>
               ) : (
                 <span>
                   <Skeleton className="h-12 w-40 rounded-lg" />
@@ -95,10 +101,10 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
             </p>
           </div>
           {/* {name ? ( */}
-          <div className="flex gap-12  items-center justify-center">
+          <div className="flex gap-12 items-center justify-center">
             <TaskForm role={rolePower} userId={userId} onAssign={onassign} />
             <Button
-              className="rounded bg-stone-200"
+              className="rounded bg-stone-200 EaseFadeIn"
               onClick={() => {
                 exportData();
               }}

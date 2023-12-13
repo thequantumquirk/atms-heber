@@ -153,7 +153,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     return (
       <div>
         <Dialog>
-          <DialogTrigger className="py-2 rounded bg-stone-200 px-5 flex gap-2">
+          <DialogTrigger className="py-2 rounded bg-stone-200 px-5 flex gap-2 EaseFadeIn">
             <Image src={plus} alt="plus icon" className=" mt-1"></Image>
             Assign Task
           </DialogTrigger>

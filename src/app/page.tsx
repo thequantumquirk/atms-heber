@@ -112,35 +112,20 @@ export default function Home() {
         <TabsList
           className={
             details.rolePower == 5 || details.rolePower == 1
-              ? `grid w-full grid-cols-2 bg-white `
-              : `grid w-full grid-cols-3 bg-white `
+              ? `grid w-full grid-cols-2 bg-stone-100 `
+              : `grid w-full grid-cols-3 bg-stone-100 `
           }
         >
           {details.rolePower != 5 ? (
-            <TabsTrigger
-              value="To"
-              className="bg-stone-100 focus:bg-white p-4 font-semibold rounded -mt-1"
-            >
-              Your Tasks
-            </TabsTrigger>
+            <TabsTrigger value="To">Your Tasks</TabsTrigger>
           ) : null}
           {details.rolePower != 1 ? (
-            <TabsTrigger
-              value="By"
-              className="bg-stone-100 focus:bg-white p-4 font-semibold rounded-t-lg -mt-1"
-            >
-              Assigned Tasks
-            </TabsTrigger>
+            <TabsTrigger value="By">Assigned Tasks</TabsTrigger>
           ) : null}
-          <TabsTrigger
-            value="Done"
-            className="bg-stone-100 focus:bg-white p-4 font-semibold rounded-t-lg -mt-1"
-          >
-            Completed
-          </TabsTrigger>
+          <TabsTrigger value="Done">Completed</TabsTrigger>
         </TabsList>
         <div className="mx-20 mb-5">
-          <TabsContent value="To">
+          <TabsContent value="To" className="">
             <CardsTo Assigned={assignedTo} />
             <Sheet>
               <SheetTrigger asChild>

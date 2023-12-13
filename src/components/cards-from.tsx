@@ -102,12 +102,12 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                               <Progress percent={progress} />
                             </div>
                           </div>
-                          <div className="flex flex-row justify-between pt-5 w-full gap-5">
-                            <div className="px-2 bg-indigo-600/10 rounded ring-1 ring-inset w-fit ring-indigo-600/50 text-center leading-10 cursor-pointer font-medium">
+                          <div className="flex flex-row justify-between pt-5 w-full gap-4">
+                            <div className="px-1 py-2 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
                               {date}
                             </div>
                             <Button
-                              className="w-44 py-2 bg-[#3e38f5] hover:bg-[#f53838] rounded text-white font-semibold"
+                              className="w-56 py-2 bg-indigo-600  hover:bg-[#f53838] rounded text-white font-semibold"
                               onClick={() => {
                                 remove(task.id);
                                 onDelete();
