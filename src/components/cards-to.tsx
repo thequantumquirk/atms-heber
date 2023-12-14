@@ -68,7 +68,7 @@ const CardsTo = ({ Assigned }: Props) => {
                       </div>
                     </div>
                     <div className="flex flex-row justify-between pt-5 w-full gap-4">
-                      <div className="px-1 py-2 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
+                      <div className="px-1 pb-1 pt-1.5 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
                         {date}
                       </div>
                       <Update

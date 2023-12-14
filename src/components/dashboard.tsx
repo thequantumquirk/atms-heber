@@ -113,7 +113,7 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
               Export
             </Button>
             <Button
-              className=" hover:bg-indigo-600 bg-indigo-500 text-white font-semibold px-5 py-2 rounded"
+              className=" hover:bg-indigo-500 bg-indigo-600 text-white font-semibold px-5 py-2 rounded"
               onClick={() => signUserOut()}
             >
               Sign-out

@@ -14,6 +14,7 @@ import { updateTask } from "@/server/data/fetch-data";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { MilestoneType } from "@/types/milestonetype";
+import { FormatDate } from "@/utilities/utillities";
 
 type Props = {
   id: string;
@@ -120,33 +121,37 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
           <DialogDescription>
             <div>
               <div className="my-4 mx-7">
-                {status_details.map((milestone, index) => (
-                  <div
-                    key={index}
-                    className="text-[1.1rem] leading-[1.5rem] my-1"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={checkedMilestones[index] || false}
-                      onChange={() => handleCheckboxChange(index)}
-                      className="w-4 h-4 mr-2"
-                    />
-                    {milestone.milestoneName}
-                    <input
-                      type="text"
-                      value={milestoneComments[index]}
-                      onChange={(e) =>
-                        handleCommentChange(index, e.target.value)
-                      }
-                      placeholder={
-                        milestone.milestoneComment
-                          ? milestone.milestoneComment
-                          : "Add a comment"
-                      }
-                      className="ml-4 border rounded px-2 py-1"
-                    />
-                  </div>
-                ))}
+                {status_details.map((milestone, index) => {
+                  let due = FormatDate(new Date(milestone.milestoneDeadline));
+                  return (
+                    <div
+                      key={index}
+                      className="text-[1.1rem] leading-[1.5rem] my-1"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checkedMilestones[index] || false}
+                        onChange={() => handleCheckboxChange(index)}
+                        className="w-4 h-4 mr-2"
+                      />
+                      {milestone.milestoneName}
+                      <input
+                        type="text"
+                        value={milestoneComments[index]}
+                        onChange={(e) =>
+                          handleCommentChange(index, e.target.value)
+                        }
+                        placeholder={
+                          milestone.milestoneComment
+                            ? milestone.milestoneComment
+                            : "Add a comment"
+                        }
+                        className="ml-4 border rounded px-2 py-1"
+                      />
+                      <p>{due}</p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </DialogDescription>

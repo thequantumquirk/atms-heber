@@ -22,9 +22,4 @@ Greeting - space in punctuation
 filter - "Assigned tasks" "your tasks"
 
 
-i dont know hoew to implement deadlines for milestone
-seems a bit compicated
-
-drop it on ravi 
-
-"s
+    

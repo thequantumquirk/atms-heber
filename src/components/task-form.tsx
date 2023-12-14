@@ -190,7 +190,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                             <PopoverTrigger asChild>
                               <Button
                                 aria-expanded={open}
-                                className=" bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start"
+                                className=" bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start text-black"
                               >
                                 {inputValue
                                   ? filteredPeople.find(
@@ -289,7 +289,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                             <PopoverTrigger asChild>
                               <Button
                                 aria-expanded={open}
-                                className=" bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start"
+                                className=" bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start text-black"
                               >
                                 {inputValue
                                   ? filteredPeople.find(
@@ -365,7 +365,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                           <PopoverTrigger asChild>
                             <Button
                               aria-expanded={open}
-                              className="bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start"
+                              className="bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 justify-start text-black"
                             >
                               {inputValue
                                 ? filteredPeople.find(

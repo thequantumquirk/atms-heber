@@ -33,6 +33,7 @@
     "framer-motion": "^10.16.12",
     "json2csv": "^6.0.0-alpha.2",
     "lucide-react": "^0.292.0",
+    "moment": "^2.29.4",
     "next": "13.4.19",
     "notificationapi-js-client-sdk": "^4.4.0",
     "postcss": "8.4.29",

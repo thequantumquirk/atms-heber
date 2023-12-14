@@ -16,6 +16,7 @@ import {
   CircularProgress,
 } from "@nextui-org/react";
 import { useToast } from "./ui/use-toast";
+import moment from "moment";
 
 function calculateProgress(task: Tasktype): number {
   const milestonesDone = task.status_details.filter(
@@ -45,13 +46,14 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
     }
   }
   const [openModalIndex, setOpenModalIndex] = useState<number | null>(null);
-
+  const today: Date = new Date();
   const { toast } = useToast();
   async function remove(taskId: string) {
     const res = await deleteTask(taskId);
     toast({
       description: res.message,
     });
+    onDelete();
   }
   if (assigned) {
     const handleOpenModal = (index: number) => {
@@ -103,14 +105,13 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                             </div>
                           </div>
                           <div className="flex flex-row justify-between pt-5 w-full gap-4">
-                            <div className="px-1 py-2 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
+                            <div className="px-1 pt-2 pb-1 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
                               {date}
                             </div>
                             <Button
-                              className="w-56 py-2 bg-indigo-600  hover:bg-[#f53838] rounded text-white font-semibold"
+                              className="w-56 py-1 bg-indigo-600  hover:bg-[#f53838] rounded text-white font-semibold"
                               onClick={() => {
                                 remove(task.id);
-                                onDelete();
                               }}
                             >
                               Delete Task
@@ -130,19 +131,45 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                         Task Completion
                       </ModalHeader>
                       <ModalBody>
-                        {task.status_details.map((milestone, index) => (
-                          <p key={index} className="my-1 mx-16">
-                            <span
-                              className={`p-2 rounded ${
-                                milestone.milestoneDone != null
-                                  ? "bg-green-200"
-                                  : "bg-red-200"
-                              }`}
-                            >
-                              {milestone.milestoneName}
-                            </span>
-                          </p>
-                        ))}
+                        <table>
+                          <tr className="text-lg">
+                            <th className="py-5">Milestone</th>
+                            <th className="h-5">Comment</th>
+                            <th className="h-5">Completed On</th>
+                          </tr>
+                          {task.status_details.map((milestone, index) => {
+                            let done: Date = new Date(
+                              milestone.milestoneDone
+                                ? milestone.milestoneDone
+                                : ""
+                            );
+                            let date = FormatDate(done);
+                            let due = new Date(milestone.milestoneDeadline);
+
+                            const color = milestone.milestoneDone
+                              ? due > done
+                                ? "bg-green-200"
+                                : "bg-yellow-200"
+                              : "bg-red-200";
+                            return (
+                              <tr key={index} className={color}>
+                                <th className="py-2 font-medium">
+                                  {milestone.milestoneName}
+                                </th>
+                                <th className="py-2 font-medium ">
+                                  {milestone.milestoneComment
+                                    ? milestone.milestoneComment
+                                    : "No Comments"}
+                                </th>
+                                <th className="py-2 font-medium ">
+                                  {milestone.milestoneDone
+                                    ? date
+                                    : "Not Done Yet"}
+                                </th>
+                              </tr>
+                            );
+                          })}
+                        </table>
                       </ModalBody>
                       <ModalFooter>
                         <Button
