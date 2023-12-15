@@ -162,9 +162,7 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                                     : "No Comments"}
                                 </th>
                                 <th className="py-2 font-medium ">
-                                  {milestone.milestoneDone
-                                    ? date
-                                    : "Not Done Yet"}
+                                  {milestone.milestoneDone ? date : "Pending"}
                                 </th>
                               </tr>
                             );
