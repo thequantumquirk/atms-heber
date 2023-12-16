@@ -36,7 +36,8 @@ export async function createTask(
   task_due: Date,
   status_details: MilestoneType[],
   current_status: string,
-  order: boolean
+  order: boolean,
+  priority: number = 1
 ) {
   const { data, error } = await supabase
     .from("tasks")
@@ -50,6 +51,7 @@ export async function createTask(
         status_details: JSON.stringify(status_details),
         current_status,
         order,
+        priority,
       },
     ])
     .select();
