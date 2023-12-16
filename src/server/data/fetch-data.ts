@@ -47,7 +47,7 @@ export async function createTask(
         task_title,
         task_description,
         task_due,
-        status_details,
+        status_details: JSON.stringify(status_details),
         current_status,
         order,
       },
