@@ -14,7 +14,7 @@ import CardsFrom from "@/components/cards-from";
 import Image from "next/image";
 import Arrow from "../../public/arrowup.svg";
 import Calendar from "@/components/calander";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import Completed from "@/components/completed";
 // import { useSelector } from 'react-redux';
 // import { RootState } from '../store/reducer';
@@ -98,7 +98,6 @@ export default function Home() {
     },
     [] //rendering once
   );
-
   return (
     <>
       <Dashboard
@@ -108,24 +107,9 @@ export default function Home() {
         onassign={fetchUpdatedTasks}
       />
 
-      <Tabs defaultValue="To" className="-mt-10 ">
-        <TabsList
-          className={
-            details.rolePower == 5 || details.rolePower == 1
-              ? `grid w-full grid-cols-2 bg-stone-100 `
-              : `grid w-full grid-cols-3 bg-stone-100 `
-          }
-        >
-          {details.rolePower != 5 ? (
-            <TabsTrigger value="To">Your Tasks</TabsTrigger>
-          ) : null}
-          {details.rolePower != 1 ? (
-            <TabsTrigger value="By">Assigned Tasks</TabsTrigger>
-          ) : null}
-          <TabsTrigger value="Done">Completed</TabsTrigger>
-        </TabsList>
-        <div className="mx-20 mb-5">
-          <TabsContent value="To" className="">
+      <Tabs className="flex justify-center my-2">
+        {details.rolePower != 5 ? (
+          <Tab key="To" title="Assigned To You">
             <CardsTo Assigned={assignedTo} />
             <Sheet>
               <SheetTrigger asChild>
@@ -144,14 +128,16 @@ export default function Home() {
                 </SheetHeader>
               </SheetContent>
             </Sheet>
-          </TabsContent>
-          <TabsContent value="By">
+          </Tab>
+        ) : null}
+        {details.rolePower != 1 ? (
+          <Tab key="By" title="Assigned By You">
             <CardsFrom Assigned={assignedBy} onDelete={fetchUpdatedTasks} />
-          </TabsContent>
-          <TabsContent value="Done">
-            <Completed />
-          </TabsContent>
-        </div>
+          </Tab>
+        ) : null}
+        <Tab key="done" title="Completed">
+          <Completed />
+        </Tab>
       </Tabs>
       {/* {details.rolePower != 1 && details.rolePower != 5 ? (
           <div className="flex justify-end ">
