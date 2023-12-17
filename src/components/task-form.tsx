@@ -1,7 +1,6 @@
 "use client";
-import Plus from "../../public/plus.svg";
 import Image from "next/image";
-import React, { Key, useState } from "react";
+import { useEffect, useState } from "react";
 import { createTask, fetchUsers } from "@/server/data/fetch-data";
 import plus from "../../public/plus.svg";
 import { useToast } from "./ui/use-toast";
@@ -12,29 +11,20 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { Avatar } from "@nextui-org/react";
 import { Switch } from "@nextui-org/react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import {
-  Autocomplete,
-  AutocompleteSection,
-  AutocompleteItem,
-} from "@nextui-org/react";
-import {
   Command,
-  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 import {
   Dialog,
@@ -92,17 +82,6 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
   };
 
   const { toast } = useToast();
-  async function fetch() {
-    const data: any | null = await fetchUsers(role);
-    if (data.data) {
-      setfilteredPeople(data.data);
-    } else {
-      toast({
-        description: data.message,
-      });
-    }
-  }
-  fetch();
   async function handleSubmit(event: any) {
     event.preventDefault();
     var to = String(inputValue);
@@ -141,6 +120,23 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
       }
     }
   }
+
+  useEffect(() => {
+    async function fetchAssignees() {
+      if (role != 0) {
+        const data: any | null = await fetchUsers(role);
+        if (data.data) {
+          setfilteredPeople(data.data);
+        } else {
+          toast({
+            description: data.message,
+          });
+        }
+      }
+    }
+    fetchAssignees();
+  }, [role]);
+
   if (filteredPeople) {
     const students = filteredPeople.filter(
       (person) => person.role == "Student"
