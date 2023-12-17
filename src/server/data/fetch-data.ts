@@ -105,6 +105,27 @@ export async function fetchUsers(rolePower: number) {
   };
 }
 
+export async function fetchMilestones(userId: string) {
+  const { data, error } = await supabase
+    .from("milestones")
+    .select("*, tasks(assigner_id, assignee_id)")
+    .or(`assigner_id.eq.${userId},assignee_id.eq.${userId}`, {
+      foreignTable: "tasks",
+    });
+  if (error) {
+    return {
+      status: false,
+      error,
+      message: error.message,
+    };
+  }
+  return {
+    status: true,
+    data,
+    message: "Milestones fetched successfully",
+  };
+}
+
 export async function updateTask(id: string, current_status: MilestoneType[]) {
   const { data, error } = await supabase
     .from("tasks")
