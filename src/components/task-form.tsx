@@ -36,6 +36,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MilestoneType } from "@/types/milestonetype";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 type Milestone = {
   name: string;
   deadline: string;
@@ -55,6 +64,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
   const [milestones, setMilestones] = useState<Milestone[]>([
     { name: "", deadline: "" },
   ]);
+  const [priority, setPriority] = useState<number>(1);
 
   const generateMilestones = (object: Milestone[]): MilestoneType[] => {
     const milestones = object.map((task, index) => ({
@@ -81,6 +91,10 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     setMilestones(updatedMilestones);
   };
 
+  const handlePriority = (value: string) => {
+    setPriority(parseInt(value));
+  };
+
   const { toast } = useToast();
   async function handleSubmit(event: any) {
     event.preventDefault();
@@ -102,7 +116,8 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
         dueDate,
         status_details,
         "",
-        order
+        order,
+        priority
       );
       console.log(result);
       toast({
@@ -475,6 +490,20 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                         placeholder="Description"
                         required
                       ></input>
+                      <Select onValueChange={handlePriority} defaultValue="1">
+                        <SelectTrigger className="col-span-2">
+                          <SelectValue placeholder="Select Task Priority" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Task Priority</SelectLabel>
+                            <SelectItem value="1">Low</SelectItem>
+                            <SelectItem value="2">Medium</SelectItem>
+                            <SelectItem value="3">High</SelectItem>
+                            <SelectItem value="4">Very High</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                   <div className="mt-4">

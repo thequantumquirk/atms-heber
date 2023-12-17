@@ -1,7 +1,7 @@
 "use client";
 import { Tasktype } from "@/types/tasktype";
 import { useState, useEffect } from "react";
-import { FormatDate } from "@/utilities/utillities";
+import { FormatDate, getPriority } from "@/utilities/utillities";
 import NoTask from "../../public/notask.svg";
 import Image from "next/image";
 import Update from "./update-tasks";
@@ -61,6 +61,9 @@ const CardsTo = ({ Assigned }: Props) => {
                           <span className="text-[#3e38f5] font-semibold">
                             {task.assigner_name.name}
                           </span>
+                        </p>
+                        <p>
+                          Priority: <span>{getPriority(task.priority)}</span>
                         </p>
                       </div>
                       <div>

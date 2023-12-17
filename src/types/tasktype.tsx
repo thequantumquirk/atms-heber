@@ -13,4 +13,5 @@ export interface Tasktype {
   task_due: Date;
   task_title: string;
   order: boolean;
+  priority: number;
 }
