@@ -59,6 +59,28 @@ export async function createTask(
   if (error) {
     return error;
   }
+
+  let i = 1;
+  for (const milestone of status_details) {
+    const { data: mileStoneData, error } = await supabase
+      .from("milestones")
+      .insert([
+        {
+          task_id: data[0].id,
+          milestone_name: milestone.milestoneName,
+          milestone_due: milestone.milestoneDeadline,
+          milestone_comment: milestone.milestoneComment,
+          milestone_complete: milestone.milestoneDone,
+          milestone_order: i,
+        },
+      ])
+      .select();
+    if (error) {
+      return error;
+    } else {
+      i += 1;
+    }
+  }
   return {
     status: true,
     data,
