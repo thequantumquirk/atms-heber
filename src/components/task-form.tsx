@@ -135,7 +135,6 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
         desc,
         dueDate,
         status_details,
-        "",
         order,
         priority
       );

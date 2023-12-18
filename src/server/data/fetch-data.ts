@@ -35,7 +35,6 @@ export async function createTask(
   task_description: string,
   task_due: Date,
   status_details: MilestoneType[],
-  current_status: string,
   order: boolean,
   priority: number = 1
 ) {
@@ -49,7 +48,6 @@ export async function createTask(
         task_description,
         task_due,
         status_details,
-        current_status,
         order,
         priority,
       },

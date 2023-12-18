@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Tasktype } from "@/types/tasktype";
 import { FormatDate, getPriority } from "@/utilities/utillities";
 import Progress from "./progress";
@@ -66,7 +66,7 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
     return (
       <>
         {assigned.length != 0 ? (
-          <div className="mt-8 mx-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          <div className="mt-8 mx-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
               const progress = calculateProgress(task);
@@ -84,8 +84,8 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                     <div className="w-full">
                       {
                         <div className="w-full">
-                          <div className=" w-full flex justify-between">
-                            <div className="flex flex-col gap-1 py-1 text-left">
+                          <div className=" w-full flex justify-between leading-10">
+                            <div className="py-1 h-14 text-left">
                               <p className="text-xl font-bold">
                                 {task.task_title}
                               </p>
@@ -98,17 +98,13 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                                   {task.assignee_name.name}
                                 </span>
                               </p>
-                              <p>
-                                Priority:{" "}
-                                <span>{getPriority(task.priority)}</span>
-                              </p>
                             </div>
                             <div>
                               <Progress percent={progress} />
                             </div>
                           </div>
-                          <div className="flex flex-row justify-between pt-5 w-full gap-4">
-                            <div className="px-1 pt-2 pb-1 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
+                          <div className="flex flex-row  pt-5 w-full gap-4">
+                            <div className="px-1 pt-2 pb-1 w-[50%] bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
                               {date}
                             </div>
                             <Button
@@ -125,20 +121,21 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                     </div>
                   </Button>
                   <Modal
-                    size="xl"
+                    size="2xl"
                     isOpen={isModalOpen}
                     onClose={handleCloseModal}
                   >
                     <ModalContent>
-                      <ModalHeader className="flex flex-col gap-1 text-xl">
+                      <ModalHeader className="flex flex-col gap-1 text-xl text-center">
                         Task Completion
                       </ModalHeader>
                       <ModalBody>
                         <table>
-                          <tr className="text-lg">
-                            <th className="py-5">Milestone</th>
-                            <th className="h-5">Comment</th>
-                            <th className="h-5">Completed On</th>
+                          <tr className="text-lg bg-[#3e38be]/20">
+                            {/* <th className="py-4">Status</th> */}
+                            <th className="py-3 pl-3 text-left">Milestone</th>
+                            <th className="h-3 text-left">Comment</th>
+                            <th className="h-3 text-left">Completed On</th>
                           </tr>
                           {task.status_details.map((milestone, index) => {
                             let done: Date = new Date(
@@ -151,20 +148,27 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
 
                             const color = milestone.milestoneDone
                               ? due > done
-                                ? "bg-green-200"
-                                : "bg-yellow-200"
-                              : "bg-red-200";
+                                ? "bg-green-400"
+                                : "bg-yellow-400"
+                              : "bg-red-400";
                             return (
-                              <tr key={index} className={color}>
-                                <th className="py-2 font-medium">
+                              <tr
+                                key={index}
+                                className="bg-[#3f38ff]/10 border border-y-2 border-white p-5"
+                              >
+                                {/* <th className="text-center pl-6"><div className={`w-5 h-5 ${color} rounded`}></div></th> */}
+                                <th className="py-2 font-medium text-left w-30 flex gap-3 items-center">
+                                  <div
+                                    className={`w-4 h-4 ml-2 ${color} rounded-full`}
+                                  ></div>
                                   {milestone.milestoneName}
                                 </th>
-                                <th className="py-2 font-medium ">
+                                <th className="py-2 font-medium text-left">
                                   {milestone.milestoneComment
                                     ? milestone.milestoneComment
                                     : "No Comments"}
                                 </th>
-                                <th className="py-2 font-medium ">
+                                <th className="py-2 font-medium text-left">
                                   {milestone.milestoneDone ? date : "Pending"}
                                 </th>
                               </tr>

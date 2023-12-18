@@ -121,6 +121,15 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
         });
       });
   };
+
+  const calculateDaysLeft = (dueDate: Date) => {
+    const currentDate = new Date();
+    const dueDateObj = new Date(dueDate);
+    const timeDifference = dueDateObj.getTime() - currentDate.getTime();
+    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    return daysLeft;
+  };
+
   if (status_details.length != 1) {
     return (
       <div>
@@ -128,39 +137,73 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
           <DialogTrigger className={`${style}`}>Update Task</DialogTrigger>
           <DialogContent className="bg-white">
             <DialogHeader>
-              <DialogTitle className="text-xl">Update Your Tasks</DialogTitle>
+              <DialogTitle className="text-xl text-center">
+                Update Your Tasks
+              </DialogTitle>
             </DialogHeader>
             <DialogDescription>
-              <div>
-                <div className="my-4 mx-7">
+              <div className="h-[30rem] overflow-auto">
+                <div className="my-4 mx-7 flex flex-col gap-3">
                   {status_details.map((milestone, index) => {
                     let due = FormatDate(new Date(milestone.milestoneDeadline));
+                    let daysLeft = calculateDaysLeft(
+                      milestone.milestoneDeadline
+                    );
+                    let dueOn;
+                    let dueWarningColor;
+                    if (daysLeft < 0) {
+                      dueOn = "Pending";
+                      dueWarningColor = "red";
+                    } else if (daysLeft === 0) {
+                      dueOn = "Due Today";
+                      dueWarningColor = "red";
+                    } else {
+                      dueOn = `Due in ${daysLeft} days`;
+                      dueWarningColor = "green";
+                    }
                     return (
-                      <div
-                        key={index}
-                        className="text-[1.1rem] leading-[1.5rem] my-1"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={checkedMilestones[index] || false}
-                          onChange={() => handleCheckboxChange(index)}
-                          className="w-4 h-4 mr-2"
-                        />
-                        {milestone.milestoneName}
-                        <input
-                          type="text"
-                          value={milestoneComments[index]}
-                          onChange={(e) =>
-                            handleCommentChange(index, e.target.value)
-                          }
-                          placeholder={
-                            milestone.milestoneComment
-                              ? milestone.milestoneComment
-                              : "Add a comment"
-                          }
-                          className="ml-4 border rounded px-2 py-1"
-                        />
-                        <p>{due}</p>
+                      <div key={index}>
+                        <div className=" w-full bg-[#3f38ff]/20 border border-b-0 border-indigo-600/50  py-2 rounded-t flex justify-between">
+                          <p className="px-3  text-black font-bold">{due}</p>
+                          <div className="flex items-center">
+                            <div
+                              className={`h-2 w-2 rounded-full bg-${dueWarningColor}-500`}
+                            ></div>
+                            <p className="px-3 italic">{dueOn}</p>
+                          </div>
+                        </div>
+                        <div className="border border-t-0 border-indigo-600/50 p-3 rounded-b bg-[#3f38ff]/10">
+                          {/* bg-[#3f38ff]/20  */}
+                          <div
+                            key={index}
+                            className="text-[1rem] leading-[1.5rem] my-2"
+                          >
+                            <div className="flex gap-3 items-center mb-2">
+                              <input
+                                type="checkbox"
+                                checked={checkedMilestones[index] || false}
+                                onChange={() => handleCheckboxChange(index)}
+                                className="w-5 h-5"
+                              />
+                              <span className="text-[1.15rem] text-black font-semibold">
+                                {milestone.milestoneName}
+                              </span>
+                            </div>
+                            <input
+                              type="text"
+                              value={milestoneComments[index]}
+                              onChange={(e) =>
+                                handleCommentChange(index, e.target.value)
+                              }
+                              placeholder={
+                                milestone.milestoneComment
+                                  ? milestone.milestoneComment
+                                  : "Add a comment"
+                              }
+                              className="ring-1 ring-inset ring-indigo-600/50 rounded px-2 py-1 mt-2   w-full"
+                            />
+                          </div>
+                        </div>
                       </div>
                     );
                   })}
@@ -171,7 +214,7 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
               <DialogClose asChild>
                 <Button
                   onClick={updateTaskStatus}
-                  className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed]  transition-all ease-linear"
+                  className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed] transition-all ease-linear"
                 >
                   Update
                 </Button>
