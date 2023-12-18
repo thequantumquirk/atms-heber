@@ -36,6 +36,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MilestoneType } from "@/types/milestonetype";
+import { FormatDate } from "@/utilities/utillities";
 type Milestone = {
   name: string;
   deadline: string;
@@ -48,7 +49,7 @@ type Props = { role: number; userId: string; onAssign: () => void };
 export default function TaskForm({ role, userId, onAssign }: Props) {
   const [filteredPeople, setfilteredPeople] = useState<PersonType[]>();
   const [open, setOpen] = useState(false);
-  const [order, setOrder] = useState(true);
+  const [order, setOrder] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [filter, setfilter] = useState(false);
   const [date, setDate] = useState<Date>();
@@ -68,9 +69,13 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
   };
 
   const addMilestone = () => {
-    setMilestones([...milestones, { name: "", deadline: "" }]);
+    const lastMilestone = milestones[milestones.length - 1];
+    if (lastMilestone.name !== "" && lastMilestone.deadline !== "") {
+      setMilestones([...milestones, { name: "", deadline: "" }]);
+    } else {
+      toast({ description: "Add previous milestone first" });
+    }
   };
-
   const handleMilestoneChange = (
     index: number,
     key: keyof Milestone,
@@ -80,8 +85,26 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     updatedMilestones[index][key] = value;
     setMilestones(updatedMilestones);
   };
+  useEffect(() => {
+    // Update 'date' state with the largest deadline from milestones
+    if (milestones.length > 0) {
+      const largestDeadline = milestones.reduce((maxDate, milestone) => {
+        const currentDeadline = new Date(milestone.deadline);
+        return currentDeadline > maxDate ? currentDeadline : maxDate;
+      }, new Date(0));
+      setDate(largestDeadline);
+    }
+  }, [milestones]);
 
   const { toast } = useToast();
+  function clear() {
+    setMilestones([{ name: "", deadline: "" }]);
+    setfilter(false);
+    setDate(new Date(0));
+    setInputValue("");
+    setOrder(false);
+    setOpen(false);
+  }
   async function handleSubmit(event: any) {
     event.preventDefault();
     var to = String(inputValue);
@@ -104,7 +127,6 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
         "",
         order
       );
-      console.log(result);
       toast({
         description: "Loading...",
       });
@@ -112,7 +134,8 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
         toast({
           description: result.message,
         });
-        onAssign();
+        onAssign(); //refresh
+        clear();
       } else {
         toast({
           description: `${result.message}`,
@@ -160,11 +183,11 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
               </DialogHeader>
               <form
                 onSubmit={handleSubmit}
-                className="my-3 flex flex-col gap-7 m-4"
+                className="flex flex-col gap-7 m-4 text-black"
               >
                 <DialogDescription>
                   <div>
-                    <p className="font-semibold text-lg pb-2">Task Details</p>
+                    <p className="font-semibold text-lg pb-2 ">Task Details</p>
                     {/* assignee search starts here */}
                     <Switch
                       size="sm"
@@ -508,6 +531,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                             type="date"
                             value={milestone.deadline}
                             className={inputtext}
+                            min={format(new Date(), "yyyy-MM-dd")}
                             onChange={(e) =>
                               handleMilestoneChange(
                                 index,
@@ -520,7 +544,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-between mt-">
+                    <div className="flex justify-between ">
                       <Switch
                         size="sm"
                         color="success"
@@ -537,50 +561,49 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                       <button
                         type="button"
                         onClick={addMilestone}
-                        className=" hover:bg-indigo-700 bg-indigo-600 text-white py-2 rounded px-3"
+                        className=" hover:bg-indigo-700 bg-indigo-600 text-white py-2 rounded px-3 font-semibold"
                       >
                         Add Milestone
                       </button>
                     </div>
                   </div>
                   <div className="mt-4">
-                    <p className="font-semibold text-lg pb-2">
-                      Deadline Details
+                    <p
+                      className={
+                        date
+                          ? FormatDate(date) == "1 Jan, 1970"
+                            ? "text-center text-red-400"
+                            : "text-center text-black font-semibold"
+                          : ""
+                      }
+                    >
+                      This Task&apos;s Deadline will be set to{" "}
+                      {date ? (
+                        FormatDate(date) == "1 Jan, 1970" ? (
+                          "The Last Milestone's Deadline"
+                        ) : (
+                          <b>{FormatDate(date)}</b>
+                        )
+                      ) : (
+                        "No Date Selected"
+                      )}{" "}
                     </p>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          className={cn(
-                            `justify-start text-left ${inputtext}`,
-                            !date && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? (
-                            format(date, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-white ">
-                        <Calendar
-                          mode="single"
-                          selected={date}
-                          onSelect={setDate}
-                          initialFocus
-                          className="bg-white"
-                        />
-                      </PopoverContent>
-                    </Popover>
                   </div>
                 </DialogDescription>
-                <DialogFooter>
+                <DialogFooter className="grid grid-cols-2 justify-stretch">
+                  <Button
+                    onClick={() => {
+                      clear();
+                    }}
+                    className=" hover:bg-stone-300 bg-stone-200 text-black py-2 mt-6 rounded px-3"
+                  >
+                    Clear Form
+                  </Button>
                   <Button
                     type="submit"
                     name="submit"
                     id="submit"
-                    className=" mx-auto  hover:bg-indigo-700 bg-indigo-600 text-white py-2 mt-6 rounded px-3"
+                    className=" hover:bg-indigo-700 bg-indigo-600 text-white py-2 mt-6 rounded px-3 font-semibold"
                   >
                     <p>Add Task</p>
                   </Button>

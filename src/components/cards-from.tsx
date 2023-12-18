@@ -67,7 +67,7 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
     return (
       <>
         {assigned.length != 0 ? (
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          <div className="mt-8 mx-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
               const progress = calculateProgress(task);

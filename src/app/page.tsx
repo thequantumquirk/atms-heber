@@ -113,7 +113,7 @@ export default function Home() {
             <CardsTo Assigned={assignedTo} />
             <Sheet>
               <SheetTrigger asChild>
-                <Button className="bg-slate-100 rounded-full px-3 py-6 fixed bottom-20 right-20">
+                <Button className="bg-slate-100 rounded-full px-3 py-6 fixed bottom-20 right-20 hover:bg-stone-200">
                   <Image src={Arrow} alt="arrow" width={25} />
                 </Button>
               </SheetTrigger>

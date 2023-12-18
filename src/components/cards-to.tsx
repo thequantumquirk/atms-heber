@@ -8,6 +8,7 @@ import Update from "./update-tasks";
 import Progress from "./progress";
 import { fetchTasks } from "@/server/data/fetch-data";
 import { CircularProgress } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 
 type Props = { Assigned: Tasktype[] | undefined };
 const CardsTo = ({ Assigned }: Props) => {
@@ -38,7 +39,7 @@ const CardsTo = ({ Assigned }: Props) => {
     return (
       <>
         {assigned.length != 0 ? (
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+          <div className="mt-8 mx-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
               const progress = calculateProgress(task);
@@ -54,7 +55,11 @@ const CardsTo = ({ Assigned }: Props) => {
                       <div className="py-1 h-14 text-left">
                         <p className="text-xl font-bold">{task.task_title}</p>
                         <p className="text-sm text-[#a7a9d2]">
-                          {task.task_description}
+                          {task.status_details.length == 1
+                            ? task.task_description +
+                              " - " +
+                              task.status_details[0].milestoneName
+                            : task.task_description}
                         </p>
                         <p>
                           Assigned By :{" "}
