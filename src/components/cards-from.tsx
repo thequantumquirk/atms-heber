@@ -104,8 +104,8 @@
                                 <Progress percent={progress} />
                               </div>
                             </div>
-                            <div className="flex flex-row justify-between pt-5 w-full gap-4">
-                              <div className="px-1 pt-2 pb-1 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
+                            <div className="flex flex-row  pt-5 w-full gap-4">
+                              <div className="px-1 pt-2 pb-1 w-[50%] bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
                                 {date}
                               </div>
                               <Button

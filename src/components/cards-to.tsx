@@ -67,13 +67,13 @@ const CardsTo = ({ Assigned }: Props) => {
                         <Progress percent={progress} />
                       </div>
                     </div>
-                    <div className="flex flex-row justify-between pt-5 w-full gap-4">
-                      <div className="px-1 pb-1 pt-1.5 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
+                    <div className="flex flex-row pt-5 w-full gap-4">
+                      <div className="px-1 pb-1 pt-1.5 w-[50%] bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
                         {date}
                       </div>
                       <Update
                         onUpdateTasks={fetchUpdatedTasks}
-                        style="w-44 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"
+                        style="w-64 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"
                         id={task.id}
                         status_details={task.status_details}
                         order={task.order}
