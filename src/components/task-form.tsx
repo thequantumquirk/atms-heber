@@ -36,9 +36,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MilestoneType } from "@/types/milestonetype";
-<<<<<<< HEAD
 import { FormatDate } from "@/utilities/utillities";
-=======
 import {
   Select,
   SelectContent,
@@ -48,7 +46,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
->>>>>>> af012a765bd3b9e995c1c2ee25e3f61b41978a56
 type Milestone = {
   name: string;
   deadline: string;
