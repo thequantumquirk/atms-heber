@@ -185,9 +185,10 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
     return (
       <Button
         onClick={updateTaskStatus}
+        isDisabled={status_details[0].milestoneDone ? true : false}
         className="w-44 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"
       >
-        Mark as Done
+        {status_details[0].milestoneDone ? "Done" : "Mark as Done"}
       </Button>
     );
   }

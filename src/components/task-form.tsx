@@ -6,10 +6,8 @@ import plus from "../../public/plus.svg";
 import { useToast } from "./ui/use-toast";
 import { PersonType } from "@/types/usertype";
 import { Skeleton } from "@nextui-org/react";
-import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Switch } from "@nextui-org/react";
 import { Check } from "lucide-react";
@@ -125,7 +123,6 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
     var name = String(event.target.name.value);
     var desc = String(event.target.desc.value);
     const status_details = generateMilestones(milestones);
-    var due = String(date);
     console.log("Submitted with milestones:", status_details);
     var dueDate;
     if (date) {
@@ -514,7 +511,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                         required
                       ></input>
                       <Select onValueChange={handlePriority} defaultValue="1">
-                        <SelectTrigger className="col-span-2">
+                        <SelectTrigger className={`col-span-2 ${inputtext}`}>
                           <SelectValue placeholder="Select Task Priority" />
                         </SelectTrigger>
                         <SelectContent>
@@ -544,6 +541,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                       {milestones.map((milestone, index) => (
                         <div key={index} className="flex flex-col gap-1">
                           <input
+                            required
                             type="text"
                             value={milestone.name}
                             className={inputtext}
@@ -557,6 +555,7 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
                             placeholder="Milestone Name"
                           />
                           <input
+                            required
                             type="date"
                             value={milestone.deadline}
                             className={inputtext}
