@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Tasktype } from "@/types/tasktype";
-import { FormatDate } from "@/utilities/utillities";
+import { FormatDate, getPriority } from "@/utilities/utillities";
 import Progress from "./progress";
 import NoTask from "../../public/notask.svg";
 import Image from "next/image";
@@ -16,7 +16,6 @@ import {
   CircularProgress,
 } from "@nextui-org/react";
 import { useToast } from "./ui/use-toast";
-import moment from "moment";
 
 function calculateProgress(task: Tasktype): number {
   const milestonesDone = task.status_details.filter(
@@ -85,8 +84,8 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                     <div className="w-full">
                       {
                         <div className="w-full">
-                          <div className=" w-full flex justify-between leading-10">
-                            <div className="py-1 h-14 text-left">
+                          <div className=" w-full flex justify-between">
+                            <div className="flex flex-col gap-1 py-1 text-left">
                               <p className="text-xl font-bold">
                                 {task.task_title}
                               </p>
@@ -98,6 +97,10 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                                 <span className="text-[#3e38f5] font-semibold">
                                   {task.assignee_name.name}
                                 </span>
+                              </p>
+                              <p>
+                                Priority:{" "}
+                                <span>{getPriority(task.priority)}</span>
                               </p>
                             </div>
                             <div>

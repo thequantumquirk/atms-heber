@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSession } from "@/server/auth/auth-user";
-import { fetchTasks } from "@/server/data/fetch-data";
+import { fetchMilestones, fetchTasks } from "@/server/data/fetch-data";
 import Dashboard from "@/components/dashboard";
 import { useToast } from "@/components/ui/use-toast";
 import CardsTo from "@/components/cards-to";
@@ -36,6 +36,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function Home() {
   const router = useRouter();
@@ -45,6 +51,8 @@ export default function Home() {
   const [assignedBy, setAssignedBy] = useState();
   const [details, setDetails] = useState({ name: "", id: "", rolePower: 0 });
   const [state, setState] = useState("To");
+  const [isOpen, setIsOpen] = useState(true);
+  const [currentMilestones, setCurrentMilestones] = useState<any[]>([]);
   const fetchUpdatedTasks = async () => {
     const updatedTasks: any = await fetchTasks(details.id);
     if (updatedTasks.data) {
@@ -80,6 +88,13 @@ export default function Home() {
                 role_power: meta.role_power,
               })
             );
+          }
+          const milestones = await fetchMilestones(id);
+          if (milestones.status && milestones.data) {
+            console.log(milestones.data);
+            setCurrentMilestones(milestones.data);
+          } else {
+            toast({ description: milestones.message });
           }
           //fetching all the tasks regarding that userId and storing in variables
           const tasks: any | null = await fetchTasks(id);
@@ -139,6 +154,29 @@ export default function Home() {
           <Completed />
         </Tab>
       </Tabs>
+
+      <Dialog open={currentMilestones.length > 0 && isOpen}>
+        <DialogContent className="w-[40vw] flex flex-col items-center justify-center">
+          <DialogHeader>
+            <DialogTitle>Tasks for Today</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-3 gap-4">
+            {currentMilestones.map((milestone) => (
+              <div
+                key={milestone.id}
+                className="p-4 rounded-lg bg-[#3e38f5]/10"
+              >
+                <div>Milestone Name: {milestone.milestone_name}</div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <Button onClick={() => setIsOpen(false)} variant={"destructive"}>
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
       {/* {details.rolePower != 1 && details.rolePower != 5 ? (
           <div className="flex justify-end ">
             <DropdownMenu>

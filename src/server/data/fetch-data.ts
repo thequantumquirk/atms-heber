@@ -59,6 +59,29 @@ export async function createTask(
   if (error) {
     return error;
   }
+
+  let i = 1;
+  for (const milestone of status_details) {
+    const { data: mileStoneData, error } = await supabase
+      .from("milestones")
+      .insert([
+        {
+          task_id: data[0].id,
+          milestone_name: milestone.milestoneName,
+          milestone_due: milestone.milestoneDeadline,
+          milestone_comment: milestone.milestoneComment,
+          milestone_complete: milestone.milestoneDone,
+          milestone_order: i,
+        },
+      ])
+      .select();
+    if (error) {
+      return error;
+    } else {
+      i += 1;
+    }
+  }
+
   return {
     status: true,
     data,
@@ -79,6 +102,27 @@ export async function fetchUsers(rolePower: number) {
     status: true,
     data: profiles,
     message: "Fetched Users Successfully",
+  };
+}
+
+export async function fetchMilestones(userId: string) {
+  const { data, error } = await supabase
+    .from("milestones")
+    .select("*, tasks(assigner_id, assignee_id)")
+    .or(`assigner_id.eq.${userId},assignee_id.eq.${userId}`, {
+      foreignTable: "tasks",
+    });
+  if (error) {
+    return {
+      status: false,
+      error,
+      message: error.message,
+    };
+  }
+  return {
+    status: true,
+    data,
+    message: "Milestones fetched successfully",
   };
 }
 
