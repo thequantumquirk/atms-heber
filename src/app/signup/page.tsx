@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { signUp, login } from "@/server/auth/auth-user";
+import { signUp } from "@/server/auth/auth-user";
 import vector from "../../../public/Login/signup-vector.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -16,12 +16,13 @@ export default function Signup() {
   async function signupUser(name: string, email: string, password: string) {
     const res = await signUp(name, email, password);
     if (res.status) {
-      login(email, password);
       toast({
-        title: `Logged In Successfully`,
+        title: `Follow the verification instructions sent to your Email`,
         description: res.data,
       });
-      router.push("/");
+      setInterval(() => {
+        router.push("/");
+      }, 2000);
     } else {
       toast({
         description: res.error,
@@ -89,7 +90,11 @@ export default function Signup() {
           </a>
         </h3>
       </div>
-      <Image src={vector} alt="Login Image" className="w-[480px] md:w-[360px] lg:w-[540px]"></Image>
+      <Image
+        src={vector}
+        alt="Login Image"
+        className="w-[480px] md:w-[360px] lg:w-[540px]"
+      ></Image>
     </div>
   );
 }
