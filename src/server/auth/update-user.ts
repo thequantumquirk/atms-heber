@@ -48,14 +48,31 @@ export async function resetPasswordWithEmail(email: string) {
 }
 
 export async function updatePassword(
+  email: string,
+  token: string,
   password: string
 ): Promise<SupabaseResponse> {
-  const { data, error } = await supabase.auth.updateUser({
-    password,
+  const { data, error } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: "email",
   });
-  if (error) {
-    return { status: false, error: error.message };
+  if (data) {
+    const { data: passwordData, error } = await supabase.auth.updateUser({
+      password,
+    });
+    if (error) {
+      return { status: false, error: error.message };
+    } else {
+      return {
+        status: true,
+        data: "Your password has been reset successfully",
+      };
+    }
   } else {
-    return { status: true, data: "Your password has been reset successfully" };
+    return {
+      status: false,
+      data: error?.message,
+    };
   }
 }
