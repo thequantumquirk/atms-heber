@@ -94,7 +94,12 @@ const CardsTo = ({ Assigned }: Props) => {
           </div>
         ) : (
           <div className="text-center">
-            <Image src={NoTask} alt="NoTask" className="mx-auto"></Image>
+            <Image
+              src={NoTask}
+              alt="NoTask"
+              className="mx-auto"
+              priority
+            ></Image>
             <p className=" text-stone-400 text-sm -my-10 ">
               No tasks assigned for you at the moment
             </p>
