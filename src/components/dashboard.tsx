@@ -49,75 +49,43 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
 
   return (
     <>
-      {rolePower === 1 ? (
-        <div className="px-20 py-8 flex flex-col xl:flex-row gap-6 justify-between items-center bg-stone-100">
-          <div className="flex flex-col gap-3">
-            <h1 className="text-3xl  xl:text-4xl font-semibold flex gap-2">
-              {greeting}
-              {name ? (
-                <span className="text-[rgba(62,56,245)] EaseFadeIn">
-                  {" "}
-                  {name}
-                </span>
-              ) : (
-                <Skeleton className="h-3 w-3/5 rounded-lg" />
-              )}
-            </h1>
-            <p className="text-xl  text-slate-500 mt-1">
-              Here is a list of your tasks
-            </p>
-          </div>
-          <div className="flex gap-12  items-center justify-center">
-            <Button
-              className=" hover:bg-indigo-600 bg-indigo-500 text-white font-semibold px-5 py-2 mt-6 rounded"
-              onClick={() => signUserOut()}
-            >
-              Sign-out
-            </Button>
-          </div>
+      <div className="px-20 py-8 flex flex-col xl:flex-row gap-6 justify-between items-center bg-stone-100">
+        <div className="flex flex-col gap-3">
+          <h1 className="text-3xl xl:text-4xl font-semibold flex gap-2">
+            {greeting}
+            {name ? (
+              <span className="text-[rgba(62,56,245)] EaseFadeIn"> {name}</span>
+            ) : (
+              <span>
+                <Skeleton className="h-12 w-40 rounded-lg" />
+              </span>
+            )}
+          </h1>
+          <p className="text-lg xl:text-xl">Here is a list of your tasks</p>
         </div>
-      ) : (
-        <div className="px-20 py-8 flex flex-col xl:flex-row gap-6 justify-between items-center bg-stone-100">
-          <div className="flex flex-col gap-3">
-            <h1 className="text-3xl xl:text-4xl font-semibold flex gap-2">
-              {greeting}
-              {name ? (
-                <span className="text-[rgba(62,56,245)] EaseFadeIn">
-                  {" "}
-                  {name}
-                </span>
-              ) : (
-                <span>
-                  <Skeleton className="h-12 w-40 rounded-lg" />
-                </span>
-              )}
-            </h1>
-            <p className="text-lg xl:text-xl text-slate-500 mt-1">
-              Here is a list of your tasks
-            </p>
-          </div>
-          {/* {name ? ( */}
-          <div className="flex gap-12 items-center justify-center">
-            <TaskForm role={rolePower} userId={userId} onAssign={onassign} />
-            <Button
-              className="rounded bg-stone-200 EaseFadeIn"
-              onClick={() => {
-                exportData();
-              }}
-            >
-              <Image src={exportIcon} width={20} alt="Plus"></Image>
-              Export
-            </Button>
-            <Button
-              className=" hover:bg-indigo-500 bg-indigo-600 text-white font-semibold px-5 py-2 rounded"
-              onClick={() => signUserOut()}
-            >
-              Sign-out
-            </Button>
-          </div>
-          {/* ) : null} */}
+        <div className="flex gap-2 items-center justify-center">
+          {rolePower != 1 && (
+            <div className="flex gap-2 items-center">
+              <TaskForm role={rolePower} userId={userId} onAssign={onassign} />
+              <Button
+                className="rounded bg-stone-200 EaseFadeIn"
+                onClick={() => {
+                  exportData();
+                }}
+              >
+                <Image src={exportIcon} width={20} alt="Plus"></Image>
+                Export
+              </Button>
+            </div>
+          )}
+          <Button
+            className=" hover:bg-indigo-500 bg-indigo-600 text-white font-semibold px-5 py-2 rounded"
+            onClick={() => signUserOut()}
+          >
+            Sign-out
+          </Button>
         </div>
-      )}
+      </div>
     </>
   );
 };
