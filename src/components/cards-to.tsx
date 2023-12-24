@@ -8,7 +8,6 @@ import Update from "./update-tasks";
 import Progress from "./progress";
 import { fetchTasks } from "@/server/data/fetch-data";
 import { CircularProgress } from "@nextui-org/react";
-import { Button } from "@nextui-org/react";
 
 type Props = { Assigned: Tasktype[] | undefined };
 const CardsTo = ({ Assigned }: Props) => {

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Tasktype } from "@/types/tasktype";
-import { FormatDate, getPriority } from "@/utilities/utillities";
+import { FormatDate } from "@/utilities/utillities";
 import Progress from "./progress";
 import NoTask from "../../public/notask.svg";
 import Image from "next/image";
