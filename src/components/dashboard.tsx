@@ -41,10 +41,8 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
   async function exportData() {
     const { status, message } = await exportTasksToCSV(userId, "all");
     if (status) {
-      // If export is successful, show a success message or perform any necessary actions
       toast({ description: "Export Successful" });
     } else {
-      // If export fails, show an error message or handle the failure appropriately
       toast({ description: `Export Failed: ${message}` });
     }
   }
