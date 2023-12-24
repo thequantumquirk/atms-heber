@@ -64,7 +64,6 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
               ) : (
                 <Skeleton className="h-3 w-3/5 rounded-lg" />
               )}
-              !
             </h1>
             <p className="text-xl  text-slate-500 mt-1">
               Here is a list of your tasks
@@ -94,7 +93,6 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
                   <Skeleton className="h-12 w-40 rounded-lg" />
                 </span>
               )}
-              !
             </h1>
             <p className="text-lg xl:text-xl text-slate-500 mt-1">
               Here is a list of your tasks
