@@ -5,13 +5,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface UserState {
   name: string;
   id: string;
-  role_power: number;
+  power: number;
 }
 
 const initialState: UserState = {
   name: "",
   id: "",
-  role_power: 0,
+  power: 0,
 };
 
 const userSlice = createSlice({

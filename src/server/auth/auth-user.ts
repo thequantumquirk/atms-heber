@@ -11,15 +11,12 @@ export async function signUp(
     return { status: false, error: "Invalid Email ID" };
   }
   let number = /\d/;
-  let role = "Student";
-  let role_power = 1;
-  console.log(number.test(email));
+  let power = 1;
   const detail = extractRollno(email);
   const roll_no = detail.roll_no;
   const dept = detail.dept;
   if (!number.test(email)) {
-    role = "Faculty";
-    role_power = 2;
+    power = 2;
   }
 
   const { data, error } = await supabase.auth.signUp({
@@ -28,8 +25,7 @@ export async function signUp(
     options: {
       data: {
         name,
-        role,
-        role_power,
+        power,
         roll_no,
         dept,
       },

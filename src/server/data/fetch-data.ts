@@ -87,11 +87,11 @@ export async function createTask(
   };
 }
 
-export async function fetchUsers(rolePower: number) {
+export async function fetchUsers(power: number) {
   const { data: profiles, error } = await supabase
     .from("profiles")
     .select("*")
-    .lt("role_power", rolePower);
+    .lt("power", power);
   if (error) {
     return error;
   }

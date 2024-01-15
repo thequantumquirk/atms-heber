@@ -14,7 +14,7 @@ import CardsFrom from "@/components/cards-from";
 import Image from "next/image";
 import Arrow from "../../public/arrowup.svg";
 import Calendar from "@/components/calander";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import { Tabs, Tab } from "@nextui-org/react";
 import Completed from "@/components/completed";
 // import { useSelector } from 'react-redux';
 // import { RootState } from '../store/reducer';
@@ -76,8 +76,8 @@ export default function Home() {
           let meta = data.data?.user.user_metadata;
           if (id && meta) {
             //storing into local variables for refreshing purpose
-            setDetails({ name: meta.name, id: id, rolePower: meta.role_power });
-            if (meta.role_power == 5) {
+            setDetails({ name: meta.name, id: id, rolePower: meta.power });
+            if (meta.power == 5) {
               setState("By");
             }
             //     storing into redux store for later use. comment if not needed
@@ -85,7 +85,7 @@ export default function Home() {
               setUserInfo({
                 name: meta.name,
                 id: id,
-                role_power: meta.role_power,
+                power: meta.power,
               })
             );
           }
