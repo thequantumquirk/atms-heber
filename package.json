@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nextui-org/react": "^2.2.9",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@types/json2csv": "^5.0.7",
     "eslint": "^8.49.0",
-    "eslint-plugin-check-file": "^2.6.2"
+    "eslint-plugin-check-file": "^2.6.2",
+    "husky": "^8.0.0"
   }
 }
