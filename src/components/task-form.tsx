@@ -172,13 +172,9 @@ export default function TaskForm({ role, userId, onAssign }: Props) {
   }, [role]);
 
   if (filteredPeople) {
-    const students = filteredPeople.filter(
-      (person) => person.role == "Student"
-    );
-    const hods = filteredPeople.filter((person) => person.role == "HOD");
-    const facultys = filteredPeople.filter(
-      (person) => person.role == "Faculty"
-    );
+    const students = filteredPeople.filter((person) => person.power === 1);
+    const hods = filteredPeople.filter((person) => person.power === 3);
+    const facultys = filteredPeople.filter((person) => person.power === 3);
 
     return (
       <div>

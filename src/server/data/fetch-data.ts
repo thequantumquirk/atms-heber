@@ -47,7 +47,6 @@ export async function createTask(
         task_title,
         task_description,
         task_due,
-        status_details,
         order,
         priority,
       },
@@ -124,10 +123,30 @@ export async function fetchMilestones(userId: string) {
   };
 }
 
+export async function fetchMilestonesByTask(taskId: string) {
+  const { data, error } = await supabase
+    .from("milestones")
+    .select("*")
+    .eq("id", taskId);
+
+  if (error) {
+    return {
+      status: false,
+      error,
+      message: error.message,
+    };
+  }
+  return {
+    status: true,
+    data,
+    message: "Milestones fetched successfully",
+  };
+}
+
 export async function updateTask(id: string, current_status: MilestoneType[]) {
   const { data, error } = await supabase
     .from("tasks")
-    .update({ status_details: current_status })
+    .update({ current_status })
     .eq("id", id)
     .select();
   if (error) {
