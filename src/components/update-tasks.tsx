@@ -18,7 +18,7 @@ import { FormatDate } from "@/utilities/utillities";
 
 type Props = {
   id: string;
-  status_details: MilestoneType[];
+  status_details: MilestoneType[] | undefined;
   order: boolean;
   style: string;
   onUpdateTasks: () => void;
@@ -32,208 +32,212 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
 
   // Initialize checkbox states based on status_details
   useEffect(() => {
-    const initialCheckedMilestones = status_details.map(
-      (milestone) => milestone.milestoneDone !== null
-    );
-    setCheckedMilestones(initialCheckedMilestones);
+    if (status_details) {
+      const initialCheckedMilestones = status_details.map(
+        (milestone) => milestone.milestone_complete !== null
+      );
+      setCheckedMilestones(initialCheckedMilestones);
 
-    const initialComments = status_details.map(
-      (milestone) => milestone.milestoneComment || ""
-    );
-    setMilestoneComments(initialComments);
+      const initialComments = status_details?.map(
+        (milestone) => milestone.milestone_comment || ""
+      );
+      setMilestoneComments(initialComments);
+    }
   }, [status_details]);
+  if (status_details) {
+    const handleCheckboxChange = (index: number) => {
+      if (order) {
+        setCheckedMilestones((prevState) => {
+          const newState = [...prevState];
+          newState[index] = !newState[index];
 
-  const handleCheckboxChange = (index: number) => {
-    if (order) {
-      setCheckedMilestones((prevState) => {
-        const newState = [...prevState];
-        newState[index] = !newState[index];
-
-        // Ensure sequential updating
-        for (let i = 0; i < index; i++) {
-          if (!newState[i]) {
-            // Notify the user or prevent checkbox toggle
-            // You can add UX logic here
-            return prevState;
+          // Ensure sequential updating
+          for (let i = 0; i < index; i++) {
+            if (!newState[i]) {
+              // Notify the user or prevent checkbox toggle
+              // You can add UX logic here
+              return prevState;
+            }
           }
-        }
-        return newState;
-      });
-    } else {
-      // Non-sequential updating
-      setCheckedMilestones((prevState) => {
-        const newState = [...prevState];
-        newState[index] = !newState[index];
-        return newState;
-      });
-    }
-  };
-  const handleCommentChange = (index: number, comment: string) => {
-    setMilestoneComments((prevComments) => {
-      const updatedComments = [...prevComments];
-      updatedComments[index] = comment;
-      console.log(updatedComments);
-      return updatedComments;
-    });
-  };
-
-  const updateTaskStatus = () => {
-    let updatedStatus: MilestoneType[] = [];
-    if (status_details.length == 1) {
-      const milestone = status_details[0];
-      updatedStatus = [
-        {
-          id: 1,
-          milestoneName: milestone.milestoneName, // Replace with the task title
-          milestoneDeadline: milestone.milestoneDeadline, // Replace with the due date
-          milestoneComment: "",
-          milestoneDone: new Date(),
-        },
-      ];
-    } else {
-      updatedStatus = status_details.map((milestone, index) => {
-        const shouldUpdate = checkedMilestones[index];
-
-        return {
-          ...milestone,
-          milestoneDone: shouldUpdate ? new Date() : null,
-          milestoneComment: milestoneComments[index] || "", // Update comments for all milestones
-        };
-      });
-    }
-
-    updateTask(id, updatedStatus)
-      .then((response) => {
-        if (response.status) {
-          toast({
-            description: response.message,
-          });
-          onUpdateTasks();
-        } else {
-          toast({
-            description: "Unable to Update Task. Try again.",
-          });
-        }
-      })
-      .catch((error) => {
-        toast({
-          description: error.message,
+          return newState;
         });
+      } else {
+        // Non-sequential updating
+        setCheckedMilestones((prevState) => {
+          const newState = [...prevState];
+          newState[index] = !newState[index];
+          return newState;
+        });
+      }
+    };
+    const handleCommentChange = (index: number, comment: string) => {
+      setMilestoneComments((prevComments) => {
+        const updatedComments = [...prevComments];
+        updatedComments[index] = comment;
+        console.log(updatedComments);
+        return updatedComments;
       });
-  };
+    };
 
-  const calculateDaysLeft = (dueDate: Date) => {
-    const currentDate = new Date();
-    const dueDateObj = new Date(dueDate);
-    const timeDifference = dueDateObj.getTime() - currentDate.getTime();
-    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-    return daysLeft;
-  };
+    // const updateTaskStatus = () => {
+    //   let updatedStatus: MilestoneType[] = [];
+    //   if (status_details.length == 1) {
+    //     const milestone = status_details[0];
+    //     updatedStatus = [
+    //       {
+    //         milestone_name: milestone.milestone_name, // Replace with the task title
+    //         milestone_due: milestone.milestone_due, // Replace with the due date
+    //         milestone_comment: "",
+    //         milestone_complete: new Date(),
+    //       },
+    //     ];
+    //   } else {
+    //     updatedStatus = status_details.map((milestone, index) => {
+    //       const shouldUpdate = checkedMilestones[index];
 
-  if (status_details.length != 1) {
-    return (
-      <div>
-        <Dialog>
-          <DialogTrigger className={`${style}`}>Update Task</DialogTrigger>
-          <DialogContent className="bg-white">
-            <DialogHeader>
-              <DialogTitle className="text-xl text-center">
-                Update Your Tasks
-              </DialogTitle>
-            </DialogHeader>
-            <DialogDescription>
-              <div className="h-[30rem] overflow-auto">
-                <div className="my-4 mx-7 flex flex-col gap-3">
-                  {status_details.map((milestone, index) => {
-                    let due = FormatDate(new Date(milestone.milestoneDeadline));
-                    let daysLeft = calculateDaysLeft(
-                      milestone.milestoneDeadline
-                    );
-                    let dueOn;
-                    let dueWarningColor;
-                    if (daysLeft < 0) {
-                      dueOn = "Pending";
-                      dueWarningColor = "red";
-                    } else if (daysLeft === 0) {
-                      dueOn = "Due Today";
-                      dueWarningColor = "red";
-                    } else {
-                      dueOn = `Due in ${daysLeft} days`;
-                      dueWarningColor = "green";
-                    }
-                    return (
-                      <div key={index}>
-                        <div className=" w-full bg-[#3f38ff]/20 border border-b-0 border-indigo-600/50  py-2 rounded-t flex justify-between">
-                          <p className="px-3  text-black font-bold">{due}</p>
-                          <div className="flex items-center">
-                            <div
-                              className={`h-2 w-2 rounded-full bg-${dueWarningColor}-500`}
-                            ></div>
-                            <p className="px-3 italic">{dueOn}</p>
-                          </div>
-                        </div>
-                        <div className="border border-t-0 border-indigo-600/50 p-3 rounded-b bg-[#3f38ff]/10">
-                          {/* bg-[#3f38ff]/20  */}
-                          <div
-                            key={index}
-                            className="text-[1rem] leading-[1.5rem] my-2"
-                          >
-                            <div className="flex gap-3 items-center mb-2">
-                              <input
-                                type="checkbox"
-                                checked={checkedMilestones[index] || false}
-                                onChange={() => handleCheckboxChange(index)}
-                                className="w-5 h-5"
-                              />
-                              <span className="text-[1.15rem] text-black font-semibold">
-                                {milestone.milestoneName}
-                              </span>
+    //       return {
+    //         ...milestone,
+    //         milestoneDone: shouldUpdate ? new Date() : null,
+    //         milestoneComment: milestoneComments[index] || "", // Update comments for all milestones
+    //       };
+    //     });
+    //   }
+
+    //   updateTask(id, updatedStatus)
+    //     .then((response) => {
+    //       if (response.status) {
+    //         toast({
+    //           description: response.message,
+    //         });
+    //         onUpdateTasks();
+    //       } else {
+    //         toast({
+    //           description: "Unable to Update Task. Try again.",
+    //         });
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       toast({
+    //         description: error.message,
+    //       });
+    //     });
+    // };
+
+    const calculateDaysLeft = (dueDate: Date) => {
+      const currentDate = new Date();
+      const dueDateObj = new Date(dueDate);
+      const timeDifference = dueDateObj.getTime() - currentDate.getTime();
+      const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      return daysLeft;
+    };
+
+    if (status_details.length != 1) {
+      return (
+        <Button className={`${style}`}>
+          <Dialog>
+            <DialogTrigger>Update Task</DialogTrigger>
+            <DialogContent className="bg-white">
+              <DialogHeader>
+                <DialogTitle className="text-xl text-center">
+                  Update Your Tasks
+                </DialogTitle>
+              </DialogHeader>
+              <DialogDescription>
+                <div className="h-[30rem] overflow-auto">
+                  <div className="my-4 mx-7 flex flex-col gap-3">
+                    {status_details.map((milestone, index) => {
+                      let due = FormatDate(new Date(milestone.milestone_due));
+                      let daysLeft = calculateDaysLeft(milestone.milestone_due);
+                      let dueOn;
+                      let dueWarningColor;
+                      if (daysLeft < 0) {
+                        dueOn = "Pending";
+                        dueWarningColor = "red";
+                      } else if (daysLeft === 0) {
+                        dueOn = "Due Today";
+                        dueWarningColor = "red";
+                      } else {
+                        dueOn = `Due in ${daysLeft} days`;
+                        dueWarningColor = "green";
+                      }
+                      return (
+                        <div key={index}>
+                          <div className=" w-full bg-[#3f38ff]/20 border border-b-0 border-indigo-600/50  py-2 rounded-t flex justify-between">
+                            <p className="px-3  text-black font-bold">{due}</p>
+                            <div className="flex items-center">
+                              <div
+                                className={`h-2 w-2 rounded-full bg-${dueWarningColor}-500`}
+                              ></div>
+                              <p className="px-3 italic">{dueOn}</p>
                             </div>
-                            <input
-                              type="text"
-                              value={milestoneComments[index]}
-                              onChange={(e) =>
-                                handleCommentChange(index, e.target.value)
-                              }
-                              placeholder={
-                                milestone.milestoneComment
-                                  ? milestone.milestoneComment
-                                  : "Add a comment"
-                              }
-                              className="ring-1 ring-inset ring-indigo-600/50 rounded px-2 py-1 mt-2   w-full"
-                            />
+                          </div>
+                          <div className="border border-t-0 border-indigo-600/50 p-3 rounded-b bg-[#3f38ff]/10">
+                            {/* bg-[#3f38ff]/20  */}
+                            <div
+                              key={index}
+                              className="text-[1rem] leading-[1.5rem] my-2"
+                            >
+                              <div className="flex gap-3 items-center mb-2">
+                                <input
+                                  type="checkbox"
+                                  checked={checkedMilestones[index] || false}
+                                  onChange={() => handleCheckboxChange(index)}
+                                  className="w-5 h-5"
+                                />
+                                <span className="text-[1.15rem] text-black font-semibold">
+                                  {milestone.milestone_name}
+                                </span>
+                              </div>
+                              <input
+                                type="text"
+                                value={milestoneComments[index]}
+                                onChange={(e) =>
+                                  handleCommentChange(index, e.target.value)
+                                }
+                                placeholder={
+                                  milestone.milestone_comment
+                                    ? milestone.milestone_comment
+                                    : "Add a comment"
+                                }
+                                className="ring-1 ring-inset ring-indigo-600/50 rounded px-2 py-1 mt-2   w-full"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            </DialogDescription>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button
-                  onClick={updateTaskStatus}
-                  className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed] transition-all ease-linear"
-                >
-                  Update
-                </Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-    );
-  } else {
-    return (
-      <Button
-        onClick={updateTaskStatus}
-        isDisabled={status_details[0].milestoneDone ? true : false}
-        className="w-44 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"
-      >
-        {status_details[0].milestoneDone ? "Done" : "Mark as Done"}
-      </Button>
-    );
+              </DialogDescription>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    onClick={() => {
+                      console.log("Update Function to be Updated. DO IT BITCH");
+                    }}
+                    className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed] transition-all ease-linear"
+                  >
+                    Update
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          onClick={() => {
+            console.log("Just update it");
+          }}
+          //   isDisabled={status_details[0].milestone_due ? true : false}
+          className="w-44 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"
+        >
+          {status_details[0].milestone_complete ? "Done" : "Mark as Done"}
+        </Button>
+      );
+    }
   }
 };
 

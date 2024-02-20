@@ -14,7 +14,7 @@ import CardsFrom from "@/components/cards-from";
 import Image from "next/image";
 import Arrow from "../../public/arrowup.svg";
 import Calendar from "@/components/calander";
-import { Tabs, Tab } from "@nextui-org/react";
+import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import Completed from "@/components/completed";
 // import { useSelector } from 'react-redux';
 // import { RootState } from '../store/reducer';
@@ -42,6 +42,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { MilestoneType } from "@/types/milestonetype";
 
 export default function Home() {
   const router = useRouter();
@@ -49,10 +50,17 @@ export default function Home() {
   const dispatch = useDispatch();
   const [assignedTo, setAssignedTo] = useState<Tasktype[]>();
   const [assignedBy, setAssignedBy] = useState();
-  const [details, setDetails] = useState({ name: "", id: "", rolePower: 0 });
+  const [details, setDetails] = useState({
+    name: "",
+    id: "",
+    rolePower: 0,
+    dept: "",
+  });
   const [state, setState] = useState("To");
   const [isOpen, setIsOpen] = useState(true);
-  const [currentMilestones, setCurrentMilestones] = useState<any[]>([]);
+  const [currentMilestones, setCurrentMilestones] = useState<MilestoneType[]>(
+    []
+  );
   const fetchUpdatedTasks = async () => {
     const updatedTasks: any = await fetchTasks(details.id);
     if (updatedTasks.data) {
@@ -76,18 +84,23 @@ export default function Home() {
           let meta = data.data?.user.user_metadata;
           if (id && meta) {
             //storing into local variables for refreshing purpose
-            setDetails({ name: meta.name, id: id, rolePower: meta.power });
-            if (meta.power == 5) {
+            setDetails({
+              name: meta.name,
+              id: id,
+              rolePower: meta.role_power,
+              dept: meta.dept,
+            });
+            if (meta.role_power == 5) {
               setState("By");
             }
             //     storing into redux store for later use. comment if not needed
-            dispatch(
-              setUserInfo({
-                name: meta.name,
-                id: id,
-                power: meta.power,
-              })
-            );
+            // dispatch(
+            //   setUserInfo({
+            //     name: meta.name,
+            //     id: id,
+            //     role_power: meta.role_power,
+            //   })
+            // );
           }
           const milestones = await fetchMilestones(id);
           if (milestones.status && milestones.data) {
@@ -119,13 +132,14 @@ export default function Home() {
         rolePower={details.rolePower}
         name={details.name}
         userId={details.id}
+        dept={details.dept}
         onassign={fetchUpdatedTasks}
       />
 
       <Tabs className="flex justify-center my-2">
         {details.rolePower != 5 ? (
           <Tab key="To" title="Assigned To You">
-            <CardsTo Assigned={assignedTo} />
+            <CardsTo Assigned={assignedTo} milestones={currentMilestones} />
             <Sheet>
               <SheetTrigger asChild>
                 <Button className="bg-slate-100 rounded-full px-3 py-6 fixed bottom-20 right-20 hover:bg-stone-200">

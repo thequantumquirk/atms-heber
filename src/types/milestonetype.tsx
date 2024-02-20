@@ -1,7 +1,9 @@
 export interface MilestoneType {
-  id: number;
-  milestoneName: string;
-  milestoneDeadline: Date;
-  milestoneComment: string;
-  milestoneDone: null | Date;
+  id: string;
+  task_id: string;
+  milestone_name: string;
+  milestone_due: Date;
+  milestone_comment: string;
+  milestone_complete: null | Date;
+  milestone_order: number;
 }

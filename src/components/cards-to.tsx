@@ -8,17 +8,32 @@ import Update from "./update-tasks";
 import Progress from "./progress";
 import { fetchTasks } from "@/server/data/fetch-data";
 import { CircularProgress } from "@nextui-org/react";
+import { MilestoneType } from "@/types/milestonetype";
+import { stat } from "fs/promises";
 
-type Props = { Assigned: Tasktype[] | undefined };
-const CardsTo = ({ Assigned }: Props) => {
+type Props = {
+  Assigned: Tasktype[] | undefined;
+  milestones: MilestoneType[];
+};
+const CardsTo = ({ Assigned, milestones }: Props) => {
   const [assigned, setAssigned] = useState<Tasktype[] | undefined>(undefined);
-  function calculateProgress(task: Tasktype): number {
-    console.log(task.status_details);
-    const milestonesDone = task.status_details.filter(
-      (milestone) => milestone.milestoneDone !== null
-    ).length;
-    const totalMilestones = task.status_details.length;
-    return Math.ceil((milestonesDone * 100) / totalMilestones);
+
+  function calculateProgress(task_id: string) {
+    const status_details = milestones.filter(
+      (status) => status.task_id == task_id
+    );
+    let completed = status_details.filter(
+      (status) => status.milestone_complete
+    );
+    let percent;
+    if (status_details.length != 0) {
+      percent = (completed?.length * 100) / status_details.length;
+    } else if ((status_details.length = 0)) {
+      percent = 0; //CASE TO BE SOLVED YET
+    } else {
+      percent = 100;
+    }
+    return percent;
   }
   // Set the initial state when 'Assigned' prop changes
   useEffect(() => {
@@ -41,8 +56,11 @@ const CardsTo = ({ Assigned }: Props) => {
           <div className="mt-8 mx-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
-              const progress = calculateProgress(task);
-
+              console.log(task.id);
+              const progress = calculateProgress(task.id);
+              const status_details = milestones?.filter(
+                (status) => status.task_id == task.id
+              );
               // console.log(current_status, status_details);
               return (
                 <div
@@ -53,13 +71,15 @@ const CardsTo = ({ Assigned }: Props) => {
                     <div className="w-full flex justify-between">
                       <div className="py-1 h-14 text-left">
                         <p className="text-xl font-bold">{task.task_title}</p>
+
+                        {/* CASE TO HANDLE WHEN THERE IS ONLY ONE MILESTONE
                         <p className="text-sm text-[#a7a9d2]">
                           {task.status_details.length == 1
                             ? task.task_description +
                               " - " +
                               task.status_details[0].milestoneName
                             : task.task_description}
-                        </p>
+                        </p> */}
                         <p>
                           Assigned By :{" "}
                           <span className="text-[#3e38f5] font-semibold">
@@ -82,7 +102,7 @@ const CardsTo = ({ Assigned }: Props) => {
                         onUpdateTasks={fetchUpdatedTasks}
                         style="w-44 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"
                         id={task.id}
-                        status_details={task.status_details}
+                        status_details={status_details}
                         order={task.order}
                       />
                     </div>

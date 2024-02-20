@@ -11,10 +11,11 @@ type Props = {
   rolePower: number;
   name: string;
   userId: string;
+  dept: string;
   onassign: () => void;
 };
 
-const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
+const Dashboard = ({ rolePower, name, userId, dept, onassign }: Props) => {
   const date = new Date();
   const today = ToLocalTime(date);
   const Hour = today.getUTCHours();
@@ -66,7 +67,12 @@ const Dashboard = ({ rolePower, name, userId, onassign }: Props) => {
         <div className="flex gap-2 items-center justify-center">
           {rolePower != 1 && (
             <div className="flex gap-2 items-center">
-              <TaskForm role={rolePower} userId={userId} onAssign={onassign} />
+              <TaskForm
+                role={rolePower}
+                userId={userId}
+                dept={dept}
+                onAssign={onassign}
+              />
               <Button
                 className="rounded bg-stone-200 EaseFadeIn"
                 onClick={() => {

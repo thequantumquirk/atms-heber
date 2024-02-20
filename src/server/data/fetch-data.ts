@@ -64,10 +64,10 @@ export async function createTask(
       .insert([
         {
           task_id: data[0].id,
-          milestone_name: milestone.milestoneName,
-          milestone_due: milestone.milestoneDeadline,
-          milestone_comment: milestone.milestoneComment,
-          milestone_complete: milestone.milestoneDone,
+          milestone_name: milestone.milestone_name,
+          milestone_due: milestone.milestone_due,
+          milestone_comment: milestone.milestone_comment,
+          milestone_complete: milestone.milestone_complete,
           milestone_order: i,
         },
       ])
@@ -86,11 +86,17 @@ export async function createTask(
   };
 }
 
-export async function fetchUsers(power: number) {
-  const { data: profiles, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .lt("power", power);
+export async function fetchUsers(power: number, dept: string | null = null) {
+  let query = supabase.from("profiles").select("*");
+
+  if (power === 5) {
+    query = query.lt("power", power);
+  } else {
+    query = query.lt("power", power).eq("dept", dept);
+  }
+
+  const { data: profiles, error } = await query;
+  console.log(profiles);
   if (error) {
     return error;
   }
