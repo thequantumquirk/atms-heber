@@ -17,19 +17,34 @@ import {
 } from "@nextui-org/react";
 import { useToast } from "./ui/use-toast";
 
-function calculateProgress(task: Tasktype): number {
-  const milestonesDone = task.status_details.filter(
-    (milestone) => milestone.milestoneDone !== null
-  ).length;
-  const totalMilestones = task.status_details.length;
-  return Math.ceil((milestonesDone * 100) / totalMilestones);
-}
+import { Murecho } from "next/font/google";
+import { MilestoneType } from "@/types/milestonetype";
 
-type Props = { Assigned: Tasktype[] | undefined; onDelete: () => void };
+type Props = {
+  Assigned: Tasktype[] | undefined;
+  onDelete: () => void;
+  milestones: MilestoneType[];
+};
 
-const CardsFrom = ({ Assigned, onDelete }: Props) => {
+const CardsFrom = ({ Assigned, onDelete, milestones }: Props) => {
   const [assigned, setAssigned] = useState<Tasktype[] | undefined>(undefined);
-
+  function calculateProgress(task_id: string) {
+    const status_details = milestones.filter(
+      (status) => status.task_id == task_id
+    );
+    let completed = status_details.filter(
+      (status) => status.milestone_complete
+    );
+    let percent;
+    if (status_details.length != 0) {
+      percent = (completed?.length * 100) / status_details.length;
+    } else if ((status_details.length = 0)) {
+      percent = 0; //CASE TO BE SOLVED YET
+    } else {
+      percent = 100;
+    }
+    return percent;
+  }
   // Set the initial state when 'Assigned' prop changes
   useEffect(() => {
     if (Assigned) {
@@ -69,8 +84,10 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
           <div className="mt-8 mx-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {assigned.map((task, key) => {
               const date = FormatDate(task.task_due);
-              const progress = calculateProgress(task);
-
+              const progress = calculateProgress(task.id);
+              const status_details = milestones?.filter(
+                (status) => status.task_id == task.id
+              );
               const isModalOpen = openModalIndex === key;
               return (
                 <div
@@ -137,16 +154,16 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                             <th className="h-3 text-left">Comment</th>
                             <th className="h-3 text-left">Completed On</th>
                           </tr>
-                          {task.status_details.map((milestone, index) => {
+                          {status_details.map((milestone, index) => {
                             let done: Date = new Date(
-                              milestone.milestoneDone
-                                ? milestone.milestoneDone
+                              milestone.milestone_complete
+                                ? milestone.milestone_complete
                                 : ""
                             );
                             let date = FormatDate(done);
-                            let due = new Date(milestone.milestoneDeadline);
+                            let due = new Date(milestone.milestone_due);
 
-                            const color = milestone.milestoneDone
+                            const color = milestone.milestone_complete
                               ? due > done
                                 ? "bg-green-400"
                                 : "bg-yellow-400"
@@ -161,15 +178,17 @@ const CardsFrom = ({ Assigned, onDelete }: Props) => {
                                   <div
                                     className={`w-4 h-4 ml-2 ${color} rounded-full`}
                                   ></div>
-                                  {milestone.milestoneName}
+                                  {milestone.milestone_name}
                                 </th>
                                 <th className="py-2 font-medium text-left">
-                                  {milestone.milestoneComment
-                                    ? milestone.milestoneComment
+                                  {milestone.milestone_comment
+                                    ? milestone.milestone_comment
                                     : "No Comments"}
                                 </th>
                                 <th className="py-2 font-medium text-left">
-                                  {milestone.milestoneDone ? date : "Pending"}
+                                  {milestone.milestone_complete
+                                    ? date
+                                    : "Pending"}
                                 </th>
                               </tr>
                             );

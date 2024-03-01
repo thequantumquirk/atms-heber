@@ -161,7 +161,11 @@ export default function Home() {
         ) : null}
         {details.rolePower != 1 ? (
           <Tab key="By" title="Assigned By You">
-            <CardsFrom Assigned={assignedBy} onDelete={fetchUpdatedTasks} />
+            <CardsFrom
+              Assigned={assignedBy}
+              onDelete={fetchUpdatedTasks}
+              milestones={currentMilestones}
+            />
           </Tab>
         ) : null}
         <Tab key="done" title="Completed">
