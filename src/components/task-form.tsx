@@ -49,7 +49,7 @@ type Milestone = {
   deadline: string;
 };
 const inputtext =
-  "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 ";
+  "bg-slate-100 w-full rounded-lg px-5 py-2 text-sm hover:bg-slate-200 text-black";
 
 type Props = {
   role: number;
@@ -70,16 +70,13 @@ export default function TaskForm({ role, userId, dept, onAssign }: Props) {
   ]);
   const [priority, setPriority] = useState<number>(1);
 
-  const generateMilestones = (object: Milestone[]): MilestoneType[] => {
+  const generateMilestones = (
+    object: Milestone[]
+  ): { milestone_name: string; milestone_due: Date }[] => {
     const milestones = object.map((task, index) => ({
-      task_id: "",
-      // ERROR IN THE PREVIOUS LINE. SHOULD CHNAGE IT
-      id: "", // Increases for each task
-      milestone_complete: null, // Always null
+      id: "",
       milestone_name: task.name, // Name of each task in input
-      milestone_comment: "", // Always empty string
       milestone_due: new Date(task.deadline), // Input date
-      milestone_order: 1,
     }));
     return milestones;
   };
@@ -165,19 +162,19 @@ export default function TaskForm({ role, userId, dept, onAssign }: Props) {
 
   useEffect(() => {
     async function fetchAssignees() {
-      if (role != 0) {
-        const data: any | null = await fetchUsers(role, dept);
-        if (data.data) {
-          setfilteredPeople(data.data);
-          console.log(filteredPeople);
-        } else {
-          toast({
-            description: data.message,
-          });
-        }
+      console.log(role);
+      const data: any = await fetchUsers(role, userId);
+      if (data.data) {
+        console.log(data.data);
+        setfilteredPeople(data.data);
+      } else {
+        toast({
+          description: data.message,
+        });
       }
     }
     fetchAssignees();
+    console.log(filteredPeople);
   }, [role]);
 
   if (filteredPeople) {

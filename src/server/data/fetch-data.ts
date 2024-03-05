@@ -34,10 +34,28 @@ export async function createTask(
   task_title: string,
   task_description: string,
   task_due: Date,
-  status_details: MilestoneType[],
+  status_details: { milestone_name: string; milestone_due: Date }[],
   order: boolean,
   priority: number = 1
 ) {
+  //   console.log(
+  //     "Assigner ID:",
+  //     assigner_id,
+  //     "\nAssignee ID:",
+  //     assignee_id,
+  //     "\nTitle:",
+  //     task_title,
+  //     "\nDescription:",
+  //     task_description,
+  //     "\nDue:",
+  //     task_due,
+  //     "\nMilestones:",
+  //     status_details,
+  //     "\nOrder:",
+  //     order,
+  //     "\nPriority:",
+  //     priority
+  //   );
   const { data, error } = await supabase
     .from("tasks")
     .insert([
@@ -52,11 +70,9 @@ export async function createTask(
       },
     ])
     .select();
-
   if (error) {
     return error;
   }
-
   let i = 1;
   for (const milestone of status_details) {
     const { data: mileStoneData, error } = await supabase
@@ -66,19 +82,20 @@ export async function createTask(
           task_id: data[0].id,
           milestone_name: milestone.milestone_name,
           milestone_due: milestone.milestone_due,
-          milestone_comment: milestone.milestone_comment,
-          milestone_complete: milestone.milestone_complete,
           milestone_order: i,
         },
       ])
       .select();
     if (error) {
-      return error;
+      return {
+        status: false,
+        error,
+        message: "Task creation unsuccessful",
+      };
     } else {
       i += 1;
     }
   }
-
   return {
     status: true,
     data,
@@ -86,26 +103,46 @@ export async function createTask(
   };
 }
 
-export async function fetchUsers(power: number, dept: string | null = null) {
-  let query = supabase.from("profiles").select("*");
+export async function fetchUsers(power: number, id: string) {
+  // Fetch the department of the user identified by the given id
+  const { data: user, error: userError } = await supabase
+    .from("profiles")
+    .select("dept")
+    .eq("id", id)
+    .single();
 
-  if (power === 5) {
-    query = query.lt("power", power);
+  if (userError) {
+    return userError;
+  }
+
+  // If the user's department is available, proceed with fetching users
+  if (user) {
+    const { dept } = user;
+
+    // Construct the query to fetch users based on power and department
+    let query = supabase
+      .from("profiles")
+      .select("*")
+      .lt("power", power)
+      .eq("dept", dept);
+
+    // Execute the query
+    const { data: profiles, error: profilesError } = await query;
+
+    if (profilesError) {
+      return profilesError;
+    }
+
+    // Return the fetched users along with a success message
+    return {
+      status: true,
+      data: profiles,
+      message: "Fetched Users Successfully",
+    };
   } else {
-    query = query.lt("power", power).eq("dept", dept);
+    // Return an error if the user with the given id is not found
+    return { error: "User not found" };
   }
-
-  const { data: profiles, error } = await query;
-  console.log(profiles);
-  if (error) {
-    return error;
-  }
-
-  return {
-    status: true,
-    data: profiles,
-    message: "Fetched Users Successfully",
-  };
 }
 
 export async function fetchMilestones(userId: string) {
@@ -149,22 +186,33 @@ export async function fetchMilestonesByTask(taskId: string) {
   };
 }
 
-export async function updateTask(id: string, current_status: MilestoneType[]) {
-  const { data, error } = await supabase
-    .from("tasks")
-    .update({ current_status })
-    .eq("id", id)
-    .select();
-  if (error) {
-    return {
-      status: false,
-      error,
-      message: error.message,
-    };
+export async function updateTask(
+  update_details: {
+    id: string;
+    milestone_complete: Date | null;
+    milestone_comment: string;
+  }[]
+) {
+  console.log(update_details);
+  for (const milestone of update_details) {
+    const { error } = await supabase
+      .from("milestones")
+      .update({
+        milestone_comment: milestone.milestone_comment,
+        milestone_complete: milestone.milestone_complete,
+      })
+      .eq("id", milestone.id)
+      .select();
+    if (error) {
+      return {
+        status: false,
+        error,
+        message: error.message,
+      };
+    }
   }
   return {
     status: true,
-    data,
     message: "Status updated successfully",
   };
 }

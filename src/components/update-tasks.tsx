@@ -79,49 +79,35 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
       });
     };
 
-    // const updateTaskStatus = () => {
-    //   let updatedStatus: MilestoneType[] = [];
-    //   if (status_details.length == 1) {
-    //     const milestone = status_details[0];
-    //     updatedStatus = [
-    //       {
-    //         milestone_name: milestone.milestone_name, // Replace with the task title
-    //         milestone_due: milestone.milestone_due, // Replace with the due date
-    //         milestone_comment: "",
-    //         milestone_complete: new Date(),
-    //       },
-    //     ];
-    //   } else {
-    //     updatedStatus = status_details.map((milestone, index) => {
-    //       const shouldUpdate = checkedMilestones[index];
+    const updateTaskStatus = () => {
+      let updatedStatus: {
+        id: string;
+        milestone_complete: Date | null;
+        milestone_comment: string;
+      }[] = [];
+      // if (status_details.length == 1) {
+      //   const milestone = status_details[0];
+      //   updatedStatus = [
+      //     {
+      //       milestone_name: milestone.milestone_name, // Replace with the task title
+      //       milestone_due: milestone.milestone_due, // Replace with the due date
+      //       milestone_comment: "",
+      //       milestone_complete: new Date(),
+      //     },
+      //   ];
+      // } else {
+      updatedStatus = status_details.map((milestone, index) => {
+        const shouldUpdate = checkedMilestones[index];
 
-    //       return {
-    //         ...milestone,
-    //         milestoneDone: shouldUpdate ? new Date() : null,
-    //         milestoneComment: milestoneComments[index] || "", // Update comments for all milestones
-    //       };
-    //     });
-    //   }
+        return {
+          id: milestone.id,
+          milestone_complete: shouldUpdate ? new Date() : null,
+          milestone_comment: milestoneComments[index] || "", // Update comments for all milestones
+        };
+      });
 
-    //   updateTask(id, updatedStatus)
-    //     .then((response) => {
-    //       if (response.status) {
-    //         toast({
-    //           description: response.message,
-    //         });
-    //         onUpdateTasks();
-    //       } else {
-    //         toast({
-    //           description: "Unable to Update Task. Try again.",
-    //         });
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       toast({
-    //         description: error.message,
-    //       });
-    //     });
-    // };
+      updateTask(updatedStatus);
+    };
 
     const calculateDaysLeft = (dueDate: Date) => {
       const currentDate = new Date();
@@ -213,7 +199,7 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
                 <DialogClose asChild>
                   <Button
                     onClick={() => {
-                      console.log("Update Function to be Updated. DO IT BITCH");
+                      updateTaskStatus();
                     }}
                     className="p-2 mt-3 w-[6rem] m-auto rounded text-white font-semibold bg-[#4d47eb] hover:bg-[#635eed] transition-all ease-linear"
                   >
