@@ -9,6 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useToast } from "@/components/ui/use-toast";
 import { updateTask } from "@/server/data/fetch-data";
 import { Button } from "@nextui-org/react";
@@ -129,65 +135,94 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
                 </DialogTitle>
               </DialogHeader>
               <DialogDescription>
-                <div className="h-[30rem] overflow-auto">
-                  <div className="my-4 mx-7 flex flex-col gap-3">
+                <div className="h-[25rem] w-[30rem] overflow-auto">
+                  <div className="my-4 px-7 flex flex-col gap-3">
                     {status_details.map((milestone, index) => {
                       let due = FormatDate(new Date(milestone.milestone_due));
                       let daysLeft = calculateDaysLeft(milestone.milestone_due);
-                      let dueOn;
+                      let duein;
                       let dueWarningColor;
                       if (daysLeft < 0) {
-                        dueOn = "Pending";
-                        dueWarningColor = "red";
+                        duein = "Pending";
                       } else if (daysLeft === 0) {
-                        dueOn = "Due Today";
-                        dueWarningColor = "red";
+                        duein = "Due Today";
                       } else {
-                        dueOn = `Due in ${daysLeft} days`;
-                        dueWarningColor = "green";
+                        duein = `Due in ${daysLeft} days`;
+                      }
+
+                      if (milestone.milestone_complete) {
+                        dueWarningColor = "rose-400";
+                      } else {
+                        dueWarningColor = "emarald-400";
                       }
                       return (
-                        <div key={index}>
-                          <div className=" w-full bg-[#3f38ff]/20 border border-b-0 border-indigo-600/50  py-2 rounded-t flex justify-between">
-                            <p className="px-3  text-black font-bold">{due}</p>
-                            <div className="flex items-center">
-                              <div
-                                className={`h-2 w-2 rounded-full bg-${dueWarningColor}-500`}
-                              ></div>
-                              <p className="px-3 italic">{dueOn}</p>
-                            </div>
-                          </div>
-                          <div className="border border-t-0 border-indigo-600/50 p-3 rounded-b bg-[#3f38ff]/10">
-                            {/* bg-[#3f38ff]/20  */}
-                            <div
-                              key={index}
-                              className="text-[1rem] leading-[1.5rem] my-2"
+                        <div key={index} className="flex w-full">
+                          <div
+                            className={
+                              milestone.milestone_complete
+                                ? "bg-emerald-300  px-1"
+                                : "bg-rose-400  px-1"
+                            }
+                          ></div>
+                          <div className="w-full">
+                            <Accordion
+                              type="single"
+                              collapsible
+                              className="w-full"
                             >
-                              <div className="flex gap-3 items-center mb-2">
-                                <input
-                                  type="checkbox"
-                                  checked={checkedMilestones[index] || false}
-                                  onChange={() => handleCheckboxChange(index)}
-                                  className="w-5 h-5"
-                                />
-                                <span className="text-[1.15rem] text-black font-semibold">
-                                  {milestone.milestone_name}
-                                </span>
-                              </div>
-                              <input
-                                type="text"
-                                value={milestoneComments[index]}
-                                onChange={(e) =>
-                                  handleCommentChange(index, e.target.value)
-                                }
-                                placeholder={
-                                  milestone.milestone_comment
-                                    ? milestone.milestone_comment
-                                    : "Add a comment"
-                                }
-                                className="ring-1 ring-inset ring-indigo-600/50 rounded px-2 py-1 mt-2   w-full"
-                              />
-                            </div>
+                              <AccordionItem value={`${index}`}>
+                                <AccordionTrigger className="w-full">
+                                  <div className="px-2">
+                                    {/* bg-[#3f38ff]/20  */}
+                                    <div
+                                      key={index}
+                                      className="text-[1rem] leading-[1.5rem]"
+                                    >
+                                      <div className="flex gap-3 items-center mb-2">
+                                        <input
+                                          type="checkbox"
+                                          checked={
+                                            checkedMilestones[index] || false
+                                          }
+                                          onChange={() =>
+                                            handleCheckboxChange(index)
+                                          }
+                                          className="w-4 h-4"
+                                        />
+                                        <span className="text-[1.12rem] text-black font-semibold px-2">
+                                          {milestone.milestone_name}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <p className="text-xs text-black text-left">
+                                          {due} - <b>{duein}</b>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                  <div>
+                                    <input
+                                      type="text"
+                                      value={milestoneComments[index]}
+                                      onChange={(e) =>
+                                        handleCommentChange(
+                                          index,
+                                          e.target.value
+                                        )
+                                      }
+                                      placeholder={
+                                        milestone.milestone_comment
+                                          ? milestone.milestone_comment
+                                          : "Add a comment"
+                                      }
+                                      className="rounded px-2 py-1 mt-2 w-full"
+                                    />
+                                  </div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
                           </div>
                         </div>
                       );

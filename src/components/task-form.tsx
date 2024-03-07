@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { Switch } from "@nextui-org/react";
-import { Check } from "lucide-react";
+import { Check, Milestone } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -87,6 +87,24 @@ export default function TaskForm({ role, userId, dept, onAssign }: Props) {
       setMilestones([...milestones, { name: "", deadline: "" }]);
     } else {
       toast({ description: "Add previous milestone first" });
+    }
+  };
+  const deleteLastMilestone = () => {
+    // Check if there are any milestones to delete
+    if (milestones.length > 1) {
+      // Create a copy of the milestones array
+      const updatedMilestones = [...milestones];
+      // Remove the last milestone
+      updatedMilestones.pop();
+      // Update the state with the new array of milestones
+      setMilestones(updatedMilestones);
+      toast({ description: "Previous Milestone Deleted" });
+    } else if ((milestones.length = 1)) {
+      setMilestones([{ name: "", deadline: "" }]);
+      toast({ description: "Previous Milestone Deleted" });
+    } else {
+      // Notify the user if there are no milestones to delete
+      toast({ description: "No milestones to delete" });
     }
   };
   const handleMilestoneChange = (
@@ -819,13 +837,23 @@ export default function TaskForm({ role, userId, dept, onAssign }: Props) {
                       >
                         Enforce Completion Order
                       </Switch>
-                      <button
-                        type="button"
-                        onClick={addMilestone}
-                        className=" hover:bg-indigo-700 bg-indigo-600 text-white py-2 rounded px-3 font-semibold"
-                      >
-                        Add Milestone
-                      </button>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={addMilestone}
+                          className=" hover:bg-indigo-700 bg-indigo-600 text-white py-2 rounded px-3 font-semibold mr-2"
+                        >
+                          Add
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={deleteLastMilestone}
+                          className=" hover:bg-rose-600 bg-rose-500 text-white py-2 rounded px-3 disabled font-semibold"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div className="mt-4">

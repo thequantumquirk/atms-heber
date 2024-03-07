@@ -148,11 +148,11 @@ const CardsFrom = ({ Assigned, onDelete, milestones }: Props) => {
                       </ModalHeader>
                       <ModalBody>
                         <table>
-                          <tr className="text-lg bg-[#3e38be]/20">
+                          <tr className="text-lg bg-[#7f76ff37]">
                             {/* <th className="py-4">Status</th> */}
                             <th className="py-3 pl-3 text-left">Milestone</th>
+                            <th className="h-3 text-left">Completion</th>
                             <th className="h-3 text-left">Comment</th>
-                            <th className="h-3 text-left">Completed On</th>
                           </tr>
                           {status_details.map((milestone, index) => {
                             let done: Date = new Date(
@@ -171,24 +171,22 @@ const CardsFrom = ({ Assigned, onDelete, milestones }: Props) => {
                             return (
                               <tr
                                 key={index}
-                                className="bg-[#3f38ff]/10 border border-y-2 border-white p-5"
+                                className="bg-[#7f76ff1d] border border-y-2 border-white p-5"
                               >
                                 {/* <th className="text-center pl-6"><div className={`w-5 h-5 ${color} rounded`}></div></th> */}
-                                <th className="py-2 font-medium text-left w-30 flex gap-3 items-center">
-                                  <div
-                                    className={`w-4 h-4 ml-2 ${color} rounded-full`}
-                                  ></div>
-                                  {milestone.milestone_name}
-                                </th>
-                                <th className="py-2 font-medium text-left">
-                                  {milestone.milestone_comment
-                                    ? milestone.milestone_comment
-                                    : "No Comments"}
+                                <th className="py-2 font-medium text-left w-full flex gap-3 items-center ">
+                                  <div className={`w-1 h-6 ${color}`}></div>
+                                  <p>{milestone.milestone_name}</p>
                                 </th>
                                 <th className="py-2 font-medium text-left">
                                   {milestone.milestone_complete
                                     ? date
                                     : "Pending"}
+                                </th>
+                                <th className="py-2 font-medium text-left">
+                                  {milestone.milestone_comment
+                                    ? milestone.milestone_comment
+                                    : "No Comments"}
                                 </th>
                               </tr>
                             );

@@ -9,7 +9,12 @@ import Progress from "./progress";
 import { fetchTasks } from "@/server/data/fetch-data";
 import { CircularProgress } from "@nextui-org/react";
 import { MilestoneType } from "@/types/milestonetype";
-import { stat } from "fs/promises";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type Props = {
   Assigned: Tasktype[] | undefined;
@@ -86,9 +91,19 @@ const CardsTo = ({ Assigned, milestones }: Props) => {
                             {task.assigner_name.name}
                           </span>
                         </p>
-                        <p>
-                          Priority: <span>{getPriority(task.priority)}</span>
-                        </p>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <p className="text-sm text-[#a7a9d2] my-2">
+                                {/* Priority: <span>{getPriority(task.priority)}</span> */}
+                                {task.task_description.slice(0, 40)}...
+                              </p>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              {task.task_description}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
                       <div>
                         <Progress percent={progress} />
