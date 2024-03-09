@@ -127,7 +127,7 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
       return (
         <Button className={`${style}`}>
           <Dialog>
-            <DialogTrigger>Update Task</DialogTrigger>
+            <DialogTrigger className={`${style}`}>Update Task</DialogTrigger>
             <DialogContent className="bg-white">
               <DialogHeader>
                 <DialogTitle className="text-xl text-center">
@@ -150,17 +150,12 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
                         duein = `Due in ${daysLeft} days`;
                       }
 
-                      if (milestone.milestone_complete) {
-                        dueWarningColor = "rose-400";
-                      } else {
-                        dueWarningColor = "emarald-400";
-                      }
                       return (
                         <div key={index} className="flex w-full">
                           <div
                             className={
                               milestone.milestone_complete
-                                ? "bg-emerald-300  px-1"
+                                ? "bg-green-300  px-1"
                                 : "bg-rose-400  px-1"
                             }
                           ></div>
@@ -202,7 +197,7 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
                                   </div>
                                 </AccordionTrigger>
                                 <AccordionContent>
-                                  <div>
+                                  <div className="px-2 pt-3 border-t ">
                                     <input
                                       type="text"
                                       value={milestoneComments[index]}
@@ -217,7 +212,11 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
                                           ? milestone.milestone_comment
                                           : "Add a comment"
                                       }
-                                      className="rounded px-2 py-1 mt-2 w-full"
+                                      className={
+                                        milestone.milestone_complete
+                                          ? "w-full py-2 px-2 bg-green-50"
+                                          : "bg-rose-50 py-2 px-2 w-full"
+                                      }
                                     />
                                   </div>
                                 </AccordionContent>

@@ -96,7 +96,10 @@ const CardsTo = ({ Assigned, milestones }: Props) => {
                             <TooltipTrigger>
                               <p className="text-sm text-[#a7a9d2] my-2">
                                 {/* Priority: <span>{getPriority(task.priority)}</span> */}
-                                {task.task_description.slice(0, 40)}...
+                                {task.task_description.slice(0, 40)}
+                                {task.task_description.slice(41, 42)
+                                  ? "..."
+                                  : ""}
                               </p>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -110,12 +113,12 @@ const CardsTo = ({ Assigned, milestones }: Props) => {
                       </div>
                     </div>
                     <div className="flex flex-row justify-between pt-5 w-full gap-4">
-                      <div className="px-1 pb-1 pt-1.5 w-full bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
+                      <div className="px-1 pt-2 pb-1 w-[50%] bg-indigo-600/10 rounded text-center cursor-pointer font-medium">
                         {date}
                       </div>
                       <Update
                         onUpdateTasks={fetchUpdatedTasks}
-                        style="w-44 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"
+                        style="w-[50%] py-1 bg-indigo-600 hover:indigo-500 rounded text-white font-semibold"
                         id={task.id}
                         status_details={status_details}
                         order={task.order}

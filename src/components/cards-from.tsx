@@ -121,11 +121,11 @@ const CardsFrom = ({ Assigned, onDelete, milestones }: Props) => {
                             </div>
                           </div>
                           <div className="flex flex-row  pt-5 w-full gap-4">
-                            <div className="px-1 pt-2 pb-1 w-[50%] bg-indigo-600/10 rounded ring-1 ring-inset ring-indigo-600/50 text-center cursor-pointer font-medium">
+                            <div className="px-1 pt-2 pb-1 w-[50%] bg-indigo-600/10 rounded text-center cursor-pointer font-medium">
                               {date}
                             </div>
                             <Button
-                              className="w-56 py-1 bg-indigo-600  hover:bg-[#f53838] rounded text-white font-semibold"
+                              className="w-[50%] py-1 bg-indigo-600  hover:bg-[#f53838] rounded text-white font-semibold"
                               onClick={() => {
                                 remove(task.id);
                               }}
@@ -148,11 +148,17 @@ const CardsFrom = ({ Assigned, onDelete, milestones }: Props) => {
                       </ModalHeader>
                       <ModalBody>
                         <table>
-                          <tr className="text-lg bg-[#7f76ff37]">
+                          <tr className="text-lg bg-[#7f76ff1c]">
                             {/* <th className="py-4">Status</th> */}
-                            <th className="py-3 pl-3 text-left">Milestone</th>
-                            <th className="h-3 text-left">Completion</th>
-                            <th className="h-3 text-left">Comment</th>
+                            <th className="py-3 pl-3 text-left border border-x-1 border-[#7f76ff1c]">
+                              Milestone
+                            </th>
+                            <th className="h-3 pl-2  text-left border border-x-1 border-[#7f76ff1c]">
+                              Completion
+                            </th>
+                            <th className="h-3 pl-2  text-left border border-x-1 border-[#7f76ff1c]">
+                              Comment
+                            </th>
                           </tr>
                           {status_details.map((milestone, index) => {
                             let done: Date = new Date(
@@ -169,21 +175,20 @@ const CardsFrom = ({ Assigned, onDelete, milestones }: Props) => {
                                 : "bg-yellow-400"
                               : "bg-red-400";
                             return (
-                              <tr
-                                key={index}
-                                className="bg-[#7f76ff1d] border border-y-2 border-white p-5"
-                              >
+                              <tr key={index} className="">
                                 {/* <th className="text-center pl-6"><div className={`w-5 h-5 ${color} rounded`}></div></th> */}
-                                <th className="py-2 font-medium text-left w-full flex gap-3 items-center ">
-                                  <div className={`w-1 h-6 ${color}`}></div>
+                                <th className=" border border-x-1 border-[#7f76ff1c] font-medium text-left w-full flex gap-3 items-center ">
+                                  <div
+                                    className={`-py-1 w-1 h-9 ${color}`}
+                                  ></div>
                                   <p>{milestone.milestone_name}</p>
                                 </th>
-                                <th className="py-2 font-medium text-left">
+                                <th className="border border-x-1 border-[#7f76ff1c] font-medium text-left pl-2 ">
                                   {milestone.milestone_complete
                                     ? date
                                     : "Pending"}
                                 </th>
-                                <th className="py-2 font-medium text-left">
+                                <th className=" border border-x-1 border-[#7f76ff1c]  font-medium text-left pl-2 ">
                                   {milestone.milestone_comment
                                     ? milestone.milestone_comment
                                     : "No Comments"}
