@@ -176,15 +176,16 @@ export default function Home() {
       <Dialog open={currentMilestones.length > 0 && isOpen}>
         <DialogContent className="w-[40vw] flex flex-col items-center justify-center">
           <DialogHeader>
-            <DialogTitle>Tasks for Today</DialogTitle>
+            <DialogTitle>Milestones for Today</DialogTitle>
           </DialogHeader>
-          <div className="grid grid-cols-3 gap-4">
+          <hr className="border-b-1 border-[#3e38f5]/10"></hr>
+          <div className="grid grid-cols-3">
             {currentMilestones.map((milestone) => (
               <div
                 key={milestone.id}
-                className="p-4 rounded-lg bg-[#3e38f5]/10"
+                className="p-4 border-b-2 border-[#3e38f5]/10 text-center"
               >
-                <div>Milestone Name: {milestone.milestone_name}</div>
+                <div>{milestone.milestone_name}</div>
               </div>
             ))}
           </div>

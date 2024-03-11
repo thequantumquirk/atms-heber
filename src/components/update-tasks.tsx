@@ -91,17 +91,6 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
         milestone_complete: Date | null;
         milestone_comment: string;
       }[] = [];
-      // if (status_details.length == 1) {
-      //   const milestone = status_details[0];
-      //   updatedStatus = [
-      //     {
-      //       milestone_name: milestone.milestone_name, // Replace with the task title
-      //       milestone_due: milestone.milestone_due, // Replace with the due date
-      //       milestone_comment: "",
-      //       milestone_complete: new Date(),
-      //     },
-      //   ];
-      // } else {
       updatedStatus = status_details.map((milestone, index) => {
         const shouldUpdate = checkedMilestones[index];
 
@@ -123,7 +112,7 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
       return daysLeft;
     };
 
-    if (status_details.length != 1) {
+    if (status_details.length != 1 && status_details.length != 0) {
       return (
         <Button className={`${style}`}>
           <Dialog>
@@ -249,7 +238,7 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
       return (
         <Button
           onClick={() => {
-            console.log("Just update it");
+            updatesingleTask(id);
           }}
           //   isDisabled={status_details[0].milestone_due ? true : false}
           className="w-44 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"

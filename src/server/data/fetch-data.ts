@@ -2,6 +2,7 @@ import { MilestoneType } from "@/types/milestonetype";
 import supabase from "../supabase";
 import { parse } from "json2csv";
 
+//------------------------------------FETCH TASKS------------------------------------
 export async function fetchTasks(userId: string) {
   let { data: assignedByTasks, error: byError } = await supabase
     .from("tasks")
@@ -28,6 +29,7 @@ export async function fetchTasks(userId: string) {
   return { status: true, data: response, message: "Fetched Data Successfully" };
 }
 
+//------------------------------------CREATE TASKS------------------------------------
 export async function createTask(
   assigner_id: string,
   assignee_id: string,
@@ -38,24 +40,6 @@ export async function createTask(
   order: boolean,
   priority: number = 1
 ) {
-  //   console.log(
-  //     "Assigner ID:",
-  //     assigner_id,
-  //     "\nAssignee ID:",
-  //     assignee_id,
-  //     "\nTitle:",
-  //     task_title,
-  //     "\nDescription:",
-  //     task_description,
-  //     "\nDue:",
-  //     task_due,
-  //     "\nMilestones:",
-  //     status_details,
-  //     "\nOrder:",
-  //     order,
-  //     "\nPriority:",
-  //     priority
-  //   );
   const { data, error } = await supabase
     .from("tasks")
     .insert([
@@ -102,9 +86,70 @@ export async function createTask(
     message: "Task created successfully",
   };
 }
+// export async function createTask(
+//   assigner_id: string,
+//   assignee_id: string,
+//   task_title: string,
+//   task_description: string,
+//   task_due: Date,
+//   status_details: { milestone_name: string; milestone_due: Date }[],
+//   order: boolean,
+//   priority: number = 1
+// ) {
+//   const { data, error } = await supabase
+//     .from("tasks")
+//     .insert([
+//       {
+//         assigner_id,
+//         assignee_id,
+//         task_title,
+//         task_description,
+//         task_due,
+//         order,
+//         priority,
+//       },
+//     ])
+//     .select();
+//   if (error) {
+//     return error;
+//   }
+//   let i = 1;
+//   if (
+//     status_details[0].milestone_name != "one milestone" &&
+//     status_details[0].milestone_name != "zero milestone"
+//   ) {
+//     for (const milestone of status_details) {
+//       const { data: mileStoneData, error } = await supabase
+//         .from("milestones")
+//         .insert([
+//           {
+//             task_id: data[0].id,
+//             milestone_name: milestone.milestone_name,
+//             milestone_due: milestone.milestone_due,
+//             milestone_order: i,
+//           },
+//         ])
+//         .select();
+//       if (error) {
+//         return {
+//           status: false,
+//           error,
+//           message: "Task creation unsuccessful",
+//         };
+//       } else {
+//         i += 1;
+//       }
+//     }
+//   }
+//   return {
+//     status: true,
+//     data,
+//     message: "Task created successfully",
+//   };
+// }
 
+//------------------------------------FETCH USERS------------------------------------
 export async function fetchUsers(power: number, id: string) {
-  // Fetch the department of the user identified by the given id
   const { data: user, error: userError } = await supabase
     .from("profiles")
     .select("dept")
@@ -114,37 +159,29 @@ export async function fetchUsers(power: number, id: string) {
   if (userError) {
     return userError;
   }
-
-  // If the user's department is available, proceed with fetching users
   if (user) {
     const { dept } = user;
-
-    // Construct the query to fetch users based on power and department
     let query = supabase
       .from("profiles")
       .select("*")
       .lt("power", power)
       .eq("dept", dept);
-
-    // Execute the query
     const { data: profiles, error: profilesError } = await query;
 
     if (profilesError) {
       return profilesError;
     }
-
-    // Return the fetched users along with a success message
     return {
       status: true,
       data: profiles,
       message: "Fetched Users Successfully",
     };
   } else {
-    // Return an error if the user with the given id is not found
     return { error: "User not found" };
   }
 }
 
+//------------------------------------FETCH MILESTONES------------------------------------
 export async function fetchMilestones(userId: string) {
   const { data, error } = await supabase
     .from("milestones")
@@ -166,6 +203,7 @@ export async function fetchMilestones(userId: string) {
   };
 }
 
+//------------------------------------MILESTONES FOR SINGLE TASK------------------------------------
 export async function fetchMilestonesByTask(taskId: string) {
   const { data, error } = await supabase
     .from("milestones")
@@ -186,6 +224,7 @@ export async function fetchMilestonesByTask(taskId: string) {
   };
 }
 
+//------------------------------------UPDATE TASK------------------------------------
 export async function updateTask(
   update_details: {
     id: string;
@@ -217,6 +256,7 @@ export async function updateTask(
   };
 }
 
+//------------------------------------DELETE TASK------------------------------------
 export async function deleteTask(taskId: string) {
   let { data, error } = await supabase.from("tasks").delete().eq("id", taskId);
 
@@ -235,6 +275,7 @@ export async function deleteTask(taskId: string) {
   };
 }
 
+//------------------------------------EXPORT------------------------------------
 export async function exportTasksToCSV(id: string, option: string) {
   try {
     let query = supabase
@@ -265,17 +306,11 @@ export async function exportTasksToCSV(id: string, option: string) {
             message: error.message,
           };
         }
-        // Convert data to CSV
         const csv = parse(data);
-        // Create a Blob containing the CSV data
         const blob = new Blob([csv], { type: "text/csv" });
-
-        // Create a download link
         const downloadLink = document.createElement("a");
         downloadLink.href = window.URL.createObjectURL(blob);
         downloadLink.download = "tasks.csv";
-
-        // Simulate a click on the download link to trigger the download
         downloadLink.click();
         query = query.eq("assigner_id", id);
         break;
@@ -289,19 +324,12 @@ export async function exportTasksToCSV(id: string, option: string) {
         message: error.message,
       };
     }
-    // Convert data to CSV
     const csv = parse(data);
-    // Create a Blob containing the CSV data
     const blob = new Blob([csv], { type: "text/csv" });
-
-    // Create a download link
     const downloadLink = document.createElement("a");
     downloadLink.href = window.URL.createObjectURL(blob);
     downloadLink.download = "tasks.csv";
-
-    // Simulate a click on the download link to trigger the download
     downloadLink.click();
-
     return {
       status: true,
       csv,

@@ -146,7 +146,17 @@ export default function TaskForm({ role, userId, dept, onAssign }: Props) {
     var name = String(event.target.name.value);
     var desc = String(event.target.desc.value);
     const status_details = generateMilestones(milestones);
-    console.log("Submitted with milestones:", status_details);
+    // if (status_details.length == 1) {
+    //   if (status_details[0].milestone_name) {
+    //     desc = desc + " - " + status_details[0].milestone_name;
+    //     status_details[0].milestone_name = "one milestone";
+    //   } else {
+    //     status_details[0].milestone_name = "zero milestone";
+    //   }
+    // }
+    if (!status_details[0].milestone_name) {
+      status_details[0].milestone_name = name;
+    }
     var dueDate;
     if (date) {
       var due = String(date);
@@ -221,19 +231,24 @@ export default function TaskForm({ role, userId, dept, onAssign }: Props) {
                   <div>
                     <p className="font-semibold text-lg pb-2 ">Task Details</p>
                     {/* assignee search starts here */}
-                    <Switch
-                      size="sm"
-                      color="success"
-                      isSelected={filter}
-                      onValueChange={setfilter}
-                      className={
-                        filter
-                          ? "my-2 text-sm text-black font-semibold"
-                          : `my-2 text-sm text-stone-400`
-                      }
-                    >
-                      Search by {role == 5 ? "Name/Roll Number" : "Department"}
-                    </Switch>
+                    {role > 2 ? (
+                      <Switch
+                        size="sm"
+                        color="success"
+                        isSelected={filter}
+                        onValueChange={setfilter}
+                        className={
+                          filter
+                            ? "my-2 text-sm text-black font-semibold"
+                            : `my-2 text-sm text-stone-400`
+                        }
+                      >
+                        Search by{" "}
+                        {role == 5 ? "Name/Roll Number" : "Department"}
+                      </Switch>
+                    ) : (
+                      <div></div>
+                    )}
                     <div className="grid grid-cols-2 gap-3">
                       {filter ? (
                         //   (
@@ -792,7 +807,6 @@ export default function TaskForm({ role, userId, dept, onAssign }: Props) {
                       {milestones.map((milestone, index) => (
                         <div key={index} className="flex flex-col gap-1">
                           <input
-                            required
                             type="text"
                             value={milestone.name}
                             className={inputtext}
@@ -849,7 +863,7 @@ export default function TaskForm({ role, userId, dept, onAssign }: Props) {
                         <button
                           type="button"
                           onClick={deleteLastMilestone}
-                          className=" hover:bg-rose-600 bg-rose-500 text-white py-2 rounded px-3 disabled font-semibold"
+                          className=" hover:bg-rose-500 bg-rose-400 text-white py-2 rounded px-3 disabled font-semibold"
                         >
                           Delete
                         </button>
