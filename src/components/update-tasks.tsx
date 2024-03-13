@@ -237,9 +237,9 @@ const Update = ({ id, status_details, style, order, onUpdateTasks }: Props) => {
     } else {
       return (
         <Button
-          onClick={() => {
-            updatesingleTask(id);
-          }}
+          // onClick={() => {
+          //   updatesingleTask(id);
+          // }}
           //   isDisabled={status_details[0].milestone_due ? true : false}
           className="w-44 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-white font-semibold text-sm"
         >

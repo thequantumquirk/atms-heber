@@ -3,6 +3,7 @@ import { parse } from "json2csv";
 
 //------------------------------------FETCH TASKS------------------------------------
 export async function fetchCompletedTasks(userId: string) {
+  // @ts-ignore
   let { data } = await fetchTasks(userId);
   let tasks = [...data.assignedByTasks, ...data.assignedToTasks].map(
     (task) => task.id
