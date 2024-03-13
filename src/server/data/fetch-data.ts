@@ -1,8 +1,60 @@
-import { MilestoneType } from "@/types/milestonetype";
 import supabase from "../supabase";
 import { parse } from "json2csv";
 
 //------------------------------------FETCH TASKS------------------------------------
+export async function fetchCompletedTasks(userId: string) {
+  let { data } = await fetchTasks(userId);
+  let tasks = [...data.assignedByTasks, ...data.assignedToTasks].map(
+    (task) => task.id
+  );
+  let { data: miles, error } = await supabase
+    .from("milestones")
+    .select("*")
+    .in("task_id", tasks);
+  if (error) {
+    return {
+      status: false,
+      data: error,
+      message: "Error fetching completed milestones",
+    };
+  }
+  if (miles) {
+    const groupedTasks: any = {};
+    miles.forEach((obj) => {
+      if (!groupedTasks[obj.task_id]) {
+        groupedTasks[obj.task_id] = [];
+      }
+      groupedTasks[obj.task_id].push(obj.milestone_complete);
+    });
+    const taskIds = [];
+
+    for (const taskId in groupedTasks) {
+      if (groupedTasks[taskId].every((value: any) => value !== null)) {
+        taskIds.push(taskId);
+      }
+    }
+    let { data: completedTasks, error } = await supabase
+      .from("tasks")
+      .select(
+        "*, assigner_name:assigner_id(*), assignee_name:assignee_id(name)"
+      )
+      .in("id", taskIds);
+    if (error) {
+      return {
+        status: false,
+        data: error,
+        message: "Error fetching completed tasks",
+      };
+    }
+
+    return {
+      status: true,
+      data: completedTasks,
+      message: "Fetched completed tasks",
+    };
+  }
+}
+
 export async function fetchTasks(userId: string) {
   let { data: assignedByTasks, error: byError } = await supabase
     .from("tasks")
