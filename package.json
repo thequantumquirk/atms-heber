@@ -58,5 +58,10 @@
     "eslint": "^8.49.0",
     "eslint-plugin-check-file": "^2.6.2",
     "husky": "^8.0.0"
-  }
+  },
+  "description": "Welcome to ATMS-Heber! This is an Advanced Task Management System built for Bishop Heber College.",
+  "main": "next.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
